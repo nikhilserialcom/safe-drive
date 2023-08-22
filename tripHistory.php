@@ -6,7 +6,7 @@ header("content-type:application/json");
 if (isset($_POST['userId'])) 
 {
     $userId = $_POST['userId'];
-    $tripHistoryQuery = "SELECT * FROM book_ride WHERE userId = '$userId'";
+    $tripHistoryQuery = "SELECT * FROM book_ride WHERE userId = '$userId' or driverId = '$userId'";
     $tripHistory = mysqli_query($con,$tripHistoryQuery);
 
     if(mysqli_num_rows($tripHistory) > 0)

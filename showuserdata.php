@@ -7,7 +7,7 @@ if(isset($_POST['userId']))
 {
     $userId = $_POST['userId'];
 
-    $userDataQuery = "SELECT firstname,lastname,city,photo,email FROM user WHERE id = '$userId'";
+    $userDataQuery = "SELECT firstname,lastname,city,photo,email,mobile_number FROM user WHERE id = '$userId'";
     $userData = mysqli_query($con,$userDataQuery);
 
     if(mysqli_num_rows($userData) > 0)
