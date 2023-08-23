@@ -19,36 +19,56 @@ function findDistance($passengerLat, $passengerLog, $driverLat, $driverLog)
     return $distance;
 }
 
-function sendRequest($driverId)
+function calculateAverangeRating($driverId)
 {
     global $con;
-    $select_query = "SELECT * FROM book_ride ORDER BY id DESC limit 1";
-    $data = mysqli_query($con, $select_query);
-    
-    if (mysqli_num_rows($data)) {
-        $message = array();
-        while ($row = mysqli_fetch_assoc($data)) {
-            $message[] = "Sending ride request to Driver ID: " . $driverId;
-            $message[] = "Sending ride request to Passenger NAME: " . $row['pessangerName'];
-            $message[] = "Sending ride request to Pickup point: " . $row['pickup_letitude'] ."," . $row['pickup_longitude'];
-            $message[] = "Sending ride request to Destination: " . $row['drop_letitude'] ."," . $row['drop_longitude'];
-            $message[] = "Sending ride request to Amount: " . $row['amount'] . " " . "RS";
-        }
 
-        return $message;
+    $findRatingQuery = "SELECT rating,COUNT(*) AS count FROM rating WHERE driverId = '$driverId'";
+    $findRaiting = mysqli_query($con,$findRatingQuery);
+
+    $totalRating = 0;
+    $totalReviews = 0;
+
+    while($row = mysqli_fetch_assoc($findRaiting))
+    {
+        $rating = $row['rating'];
+        $count = $row['count'];
+
+        $totalReviews += $count;
+        $totalRating += ($rating * $count);
     }
 
-    return "No data found for driver ID: " . $driverId;
+    $averangeRating = ($totalRating / $totalReviews);
+
+    return round($averangeRating,2);
+}
+
+
+function sendRequest($driverId,$passengerLat, $passengerLog,$dropLat,$dropLog,$amount,$vehicleinfo)
+{
+  
+        $message[] = "Sending ride request to Driver ID: " . $driverId;
+        $message[] = "Passenger From latitude: " . $passengerLat;
+        $message[] = "Passenger From logitude: " . $passengerLog;
+        $message[] = "Passenger  amount: " . $amount;
+        $message[] = "Passenger selected vehicla: " . $vehicleinfo;
+        $message[] = "Passenger to latitude: " . $dropLat;
+        $message[] = "Passenger to logitude: " . $dropLog;
+        return $message;
 }
 
 if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     // Passenger's location
     $passengerLat = $_POST['passengerLat']; // Latitude
     $passengerLog = $_POST['passengerLog']; // Longitude
+    $dropLat = $_POST['dropLat'];
+    $dropLog = $_POST['dropLog'];
+    $amount = $_POST['amount'];
+    $vehicleinfo = $_POST['vehicleinfo'];
 
     // Array of potential driver locations
     $drivers = [];
-    $select_query = "SELECT id, firstname, driverLetitude, driverLongitude FROM user";
+    $select_query = "SELECT id, firstname,photo,driverLetitude, driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
     $data = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($data) > 0) {
@@ -63,24 +83,30 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     foreach ($drivers as $driver) {
         $driverLat = floatval($driver['driverLetitude']);
         $driverLog = floatval($driver['driverLongitude']);
+        $driverId = $driver['id'];
 
         $distance = findDistance($passengerLat, $passengerLog, $driverLat, $driverLog);
-
+        $rating = calculateAverangeRating($driverId);
+        
         if ($distance <= $range) {
             $driver['distance'] = $distance * 1000;
+            $driver['rating'] = $rating;
             $availableDrivers[] = $driver;
         }
     }
     
     $response['status'] = "200";
     $response['driver'] = $availableDrivers;
-    $response['message'] = array();
+    $response['message'] = "Request send to driver";
+    $response['sendmessage'] = array();
+    // $response['rating'] = array();
 
     // Send ride request to drivers within range
     foreach ($availableDrivers as $driver) {
         $driverID = $driver['id'];
-        $message = sendRequest($driverID);
-        $response['message'][] = $message;
+        $message = sendRequest($driverID,$passengerLat, $passengerLog,$dropLat,
+        $dropLog,$amount,$vehicleinfo);
+        $response['sendmessage'][] = $message;
     }
 } else {
     $response['status'] = "500";

@@ -124,9 +124,9 @@ if(isset($_POST['userId']) && isset($_POST['rating']))
     
     if(!empty($userId) && !empty($rating))
     {
-        $Name = mysqli_query($con,"SELECT fullname FROM user WHERE id = '$userId'");
+        $Name = mysqli_query($con,"SELECT firstname FROM user WHERE id = '$userId'");
         $data = mysqli_fetch_assoc($Name);
-        $passangerName = $data['fullname'];
+        $passangerName = $data['firstname'];
         $insertRatingQuery = "INSERT INTO rating(driverId,userId,passengername,rating,reviews,tag,comment)VALUES('$driverId','$userId','$passangerName','$rating','$reviews','$tag','$comment')";
         $insertRaitng = mysqli_query($con,$insertRatingQuery);
 
