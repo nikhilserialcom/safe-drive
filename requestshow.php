@@ -28,6 +28,30 @@ function showRequestHistory($driverId)
     return $response;
 }
 
+function calculateAverangeRating($driverId)
+{
+    global $con;
+
+    $findRatingQuery = "SELECT rating,COUNT(*) AS count FROM rating WHERE driverId = '$driverId'";
+    $findRaiting = mysqli_query($con,$findRatingQuery);
+
+    $totalRating = 0;
+    $totalReviews = 0;
+
+    while($row = mysqli_fetch_assoc($findRaiting))
+    {
+        $rating = $row['rating'];
+        $count = $row['count'];
+
+        $totalReviews += $count;
+        $totalRating += ($rating * $count);
+    }
+
+    $averangeRating = ($totalRating / $totalReviews);
+
+    return round($averangeRating,2);
+}
+
 if(isset($_POST['driverId']))
 {
     $driverId = $_POST['driverId'];
@@ -38,16 +62,18 @@ if(isset($_POST['id']))
     $user_id = $_POST['id'];
     if(!empty($user_id))
     {
-        $userdata = "SELECT firstname,photo,vehicle_brand_name,Number_plate FROM user INNER JOIN vehicleinfo ON user.id = vehicleinfo.user_id WHERE user.id = '$user_id' LIMIT 3";
+        $userdata = "SELECT firstname,mobile_number,photo,vehicleType,vehicle_brand_name,Number_plate FROM user INNER JOIN vehicleinfo ON user.id = vehicleinfo.user_id WHERE user.id = '$user_id' LIMIT 3";
         $result = mysqli_query($con, $userdata);
-
+        $rating = calculateAverangeRating($user_id);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $response['user'] = $row['firstname'];
+                $response['mobile_number'] = $row['mobile_number'];
                 $response['profile'] = $row['photo'];
                 $response['vehicle'] = $row['vehicle_brand_name'];
+                $response['vehicletype'] = $row['vehicleType'];
                 $response['numberPlate'] = $row['Number_plate'];
-            
+                $response['rating'] = $rating;
             }
         } else {
             $response['error'] = "400";

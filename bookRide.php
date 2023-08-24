@@ -16,13 +16,13 @@ function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
 
 }
 
-if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['pickupLongitude']) && isset($_POST['dropLetitude']) && isset($_POST['dropLongitude']))
+if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['pickupLongitude']) && isset($_POST['dropLatitude']) && isset($_POST['dropLongitude']))
 {
     $userId = $_POST['userId'];
     $driverId = $_POST['driverId'];
     $pickupLetitude = $_POST['pickupLetitude'];
     $pickupLongitude = $_POST['pickupLongitude'];
-    $dropLetitude = $_POST['dropLetitude'];
+    $dropLetitude = $_POST['dropLatitude'];
     $dropLongitude = $_POST['dropLongitude'];
     $amount = $_POST['amount'];
     $vehicaleType = $_POST['vehicaleType'];
@@ -31,7 +31,7 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
 
     if(isset($_POST['status']) == "accept")
     {
-        $passangerName = mysqli_query($con,"SELECT fullname FROM user WHERE id = 'userId'");
+        $passangerName = mysqli_query($con,"SELECT firstname FROM user WHERE id = 'userId'");
         $data = mysqli_fetch_assoc($passangerName);
         
         if(!empty($pickupLetitude) && !empty($pickupLongitude) && !empty($dropLetitude) && !empty($dropLongitude) && !empty($amount))
