@@ -68,7 +68,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
 
     // Array of potential driver locations
     $drivers = [];
-    $select_query = "SELECT id, firstname,photo,driverLetitude, driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
+    $select_query = "SELECT id, firstname,vehicleType,vehicleBrand,photo,driverLetitude, driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
     $data = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($data) > 0) {
@@ -91,6 +91,8 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
         if ($distance <= $range) {
             $driver['distance'] = $distance * 1000;
             $driver['rating'] = $rating;
+            $driver['amount'] = "500";
+            $driver['time'] = "3min";
             $availableDrivers[] = $driver;
         }
     }
