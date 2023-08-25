@@ -1,5 +1,4 @@
 <?php
-
 require 'db.php';
 header("content-type:application/json");
 
@@ -62,16 +61,19 @@ if(isset($_POST['id']))
     $user_id = $_POST['id'];
     if(!empty($user_id))
     {
-        $userdata = "SELECT firstname,mobile_number,photo,vehicleType,vehicle_brand_name,Number_plate FROM user INNER JOIN vehicleinfo ON user.id = vehicleinfo.user_id WHERE user.id = '$user_id' LIMIT 3";
+        $userdata = "SELECT driverLetitude,driverLongitude,firstname,mobile_number,photo,vehicleType,vehicle_brand_name,Number_plate FROM user INNER JOIN vehicleinfo ON user.id = vehicleinfo.user_id WHERE user.id = '$user_id' LIMIT 3";
         $result = mysqli_query($con, $userdata);
         $rating = calculateAverangeRating($user_id);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+                $response['driverLetitude'] = $row['driverLetitude'];
+                $response['driverLongitude'] = $row['driverLongitude'];
                 $response['user'] = $row['firstname'];
                 $response['mobile_number'] = $row['mobile_number'];
                 $response['profile'] = $row['photo'];
                 $response['vehicle'] = $row['vehicle_brand_name'];
                 $response['vehicletype'] = $row['vehicleType'];
+                $response['time'] = '2 min';
                 $response['numberPlate'] = $row['Number_plate'];
                 $response['rating'] = $rating;
             }

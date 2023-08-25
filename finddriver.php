@@ -1,5 +1,4 @@
 <?php
-
 require 'db.php';
 header("content-type:application/json");
 
@@ -66,9 +65,10 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     $amount = $_POST['amount'];
     $vehicleinfo = $_POST['vehicleinfo'];
 
+
     // Array of potential driver locations
     $drivers = [];
-    $select_query = "SELECT id, firstname,vehicleType,vehicleBrand,photo,driverLetitude, driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
+    $select_query = "SELECT id,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
     $data = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($data) > 0) {
