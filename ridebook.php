@@ -25,6 +25,8 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
     $dropLetitude = $_POST['dropLatitude'];
     $dropLongitude = $_POST['dropLongitude'];
     $amount = $_POST['amount'];
+    $fromaddress = $_POST['fromAddress'];
+    $toaddress = $_POST['toAddress'];
     $paymentMode = $_POST['paymentMode'];
     $vehicaleType = $_POST['vehicaleType'];
 
@@ -43,7 +45,7 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
             if($insertRide)
             {
                 $response['status'] = "200";
-                $response['message'] = "ride booking successfully!";
+                $response['message'] = "Ride booking successfully!";
             }
         }
     }

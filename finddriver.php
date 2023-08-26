@@ -43,29 +43,54 @@ function calculateAverangeRating($driverId)
 }
 
 
-function sendRequest($driverId,$passengerLat, $passengerLog,$dropLat,$dropLog,$amount,$vehicleinfo)
+function sendRequest($requests)
 {
-  
-        $message[] = "Sending ride request to Driver ID: " . $driverId;
-        $message[] = "Passenger From latitude: " . $passengerLat;
-        $message[] = "Passenger From logitude: " . $passengerLog;
-        $message[] = "Passenger  amount: " . $amount;
-        $message[] = "Passenger selected vehicla: " . $vehicleinfo;
-        $message[] = "Passenger to latitude: " . $dropLat;
-        $message[] = "Passenger to logitude: " . $dropLog;
-        return $message;
+    global $con;
+    $successCount = 0;
+    // print_r($requests);
+    foreach ($requests as $request) {
+        $driverId =  $request['driverId'];
+        $userId =  $request['userId'];
+        $name =  $request['pessangerName'];
+        $profile = $request['profile'];
+        $passengerLat =  $request['passengerLat'];
+        $passengerLog =  $request['passengerLog'];
+        $dropLat =  $request['dropLat'];
+        $dropLog =  $request['dropLog'];
+        $amount =  $request['amount'];
+        $fromaddress =  $request['fromAddress'];
+        $toaddress =  $request['toAddress'];
+        $paymentMode =  $request['paymentMode'];
+
+        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, fromAddress, toAddress) VALUES ";
+        $values = "('$driverId', '$userId','$name','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$fromaddress', '$toaddress')";
+
+        $insertRequestQuery .= $values;
+        $insertRequest = mysqli_query($con, $insertRequestQuery);
+
+        if ($insertRequest) {
+            $successCount++;
+        }
+    }
 }
 
 if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     // Passenger's location
+    $userId = $_POST['userId'];
     $passengerLat = $_POST['passengerLat']; // Latitude
     $passengerLog = $_POST['passengerLog']; // Longitude
     $dropLat = $_POST['dropLat'];
     $dropLog = $_POST['dropLog'];
     $amount = $_POST['amount'];
+    $fromaddress = $_POST['fromAddress'];
+    $toaddress = $_POST['toAddress'];
+    $paymentMode = $_POST['paymentMode'];
     $vehicleinfo = $_POST['vehicleinfo'];
 
-
+    $name = mysqli_query($con,"SELECT firstname,photo FROM user WHERE id = '$userId'");
+    $data = mysqli_fetch_assoc($name);
+    $passangerName = $data['firstname'];
+    $profile = $data['photo'];
     // Array of potential driver locations
     $drivers = [];
     $select_query = "SELECT id,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
@@ -100,15 +125,29 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     $response['status'] = "200";
     $response['driver'] = $availableDrivers;
     $response['message'] = "Request send to driver";
-    $response['sendmessage'] = array();
+
     // $response['rating'] = array();
 
     // Send ride request to drivers within range
     foreach ($availableDrivers as $driver) {
         $driverID = $driver['id'];
-        $message = sendRequest($driverID,$passengerLat, $passengerLog,$dropLat,
-        $dropLog,$amount,$vehicleinfo);
-        $response['sendmessage'][] = $message;
+        $requests = array(
+            'driverId' => $driverID,
+            'userId' => $userId,
+            'pessangerName' => $passangerName,
+            'profile' => $profile,
+            'passengerLat' =>$passengerLat,
+            'passengerLog' => $passengerLog,
+            'dropLat' => $dropLat,
+            'dropLog' => $dropLog,
+            'amount' => $amount,
+            'fromAddress' => $fromaddress,
+            'toAddress' => $toaddress,
+            'paymentMode' => $paymentMode
+
+        );
+        sendRequest(array($requests));
+        
     }
 } else {
     $response['status'] = "500";
