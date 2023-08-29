@@ -17,6 +17,8 @@ if($_POST['driverId'])
     {
         $data[] = $row;
     }
+
+    $response['status'] = "200";
     $response['earingData'] = $data;
     // $earingQuery = "SELECT * FROM book_ride WHERE driverId = '$driverId' and status ='finish'";
 

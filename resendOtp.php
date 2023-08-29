@@ -17,8 +17,8 @@ if(isset($_POST['userId']))
     {
         $otp = rand(1111,9999);
         // Your Account SID and Auth Token from console.twilio.com
-        $sid = "AC46cc8a9212de70e3e38764a51fae003e";
-        $token = "4f6e9e25db54f96a20dbfe258c37cb27";
+        $sid = "AC9df1a8f5bea5649437e9a9ab191dbbdd";
+        $token = "9408f5688c40f2b352036ef20d39ee1e";
         $client = new Twilio\Rest\Client($sid, $token);
 
         $message = $client->messages->create(
@@ -26,7 +26,7 @@ if(isset($_POST['userId']))
             $no,
             [
                 // A Twilio phone number you purchased at https://console.twilio.com
-                'from' => '+18588081143',
+                'from' => '+18155545270',
                 // The body of the text message you'd like to send
                 'body' => "Your otp is :" . $otp
             ]

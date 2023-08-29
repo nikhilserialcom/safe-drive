@@ -36,7 +36,7 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
     {
         $status = $_POST['status'];
         $passangerName = mysqli_query($con,"SELECT firstname FROM user WHERE id = '$userId'");
-         $data = mysqli_fetch_assoc($passangerName);
+        $data = mysqli_fetch_assoc($passangerName);
         $passangerName = $data['firstname'];
         if(!empty($pickupLetitude) && !empty($pickupLongitude) && !empty($dropLetitude) && !empty($dropLongitude) && !empty($amount))
         {

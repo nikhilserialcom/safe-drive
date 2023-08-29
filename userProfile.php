@@ -64,7 +64,7 @@ if (isset($_POST['userId']))
             {
                 $profileTmpName = $_FILES['profile']['tmp_name'];
                 $fileName = rand(111111111,999999999) . ".jpg";
-                $filedir = "driver/uploaded/profile/";
+                $filedir = "profile/";
                 $filePath = $filedir.$fileName;
 
                 $profileQuery = "UPDATE user SET photo = '$filePath' WHERE id = '$userId'";

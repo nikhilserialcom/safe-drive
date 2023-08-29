@@ -3,30 +3,27 @@
 require 'db.php';
 header("content-type:application/json");
 
-if (isset($_POST['userId']) && isset($_POST['driverId'])) 
-{
+if (isset($_POST['driverId'])) 
+{   
     $userId = $_POST['userId'];
     $driverId = $_POST['driverId'];
- 
-    
+    $amount = $_POST['amount'];
+
     if($_POST['status'] = "accept")
     {
-        $acceptRideQuery = "SELECT * from book_ride where  userId ='$userId' and driverId = '$driverId'";
-        $acceptRide = mysqli_query($con,$acceptRideQuery);
-        $imageQyery = mysqli_query($con,"SELECT photo FROM user where id = '$userId'");
-        $profile = mysqli_fetch_assoc($imageQyery);
-        if ($row = mysqli_fetch_assoc($acceptRide)) {
-            $response['status'] = "200";
-            $response['message'] = "cancle the ride";
-            $response['passangername'] =  $row['pessangerName'];
-            $response['passangerprofile'] = $profile;
-            $response['droplocation'] =  $row['drop_letitude'] . "," . $row['drop_longitude'];
-            $response['amount'] = $row['amount'];
-        }
-        else
+        $status = $_POST['status'];
+        $passangerName = mysqli_query($con,"SELECT firstname FROM user WHERE id = '$userId'");
+        $data = mysqli_fetch_assoc($passangerName);
+        $passangerName = $data['firstname'];
+        if(!empty($pickupLetitude) && !empty($pickupLongitude) && !empty($dropLetitude) && !empty($dropLongitude) && !empty($amount))
         {
-            $response['status'] = "400";
-            $response['message'] = "your ride is not cancle";
+            $insertRideQuery = "INSERT INTO book_ride(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status,fromAddress,toAddress)VALUES('$userId','$driverId','$passangerName','$pickupLetitude','$pickupLongitude','$dropLetitude','$dropLongitude','$vehicaleType','$amount','$paymentMode','$status','$fromaddress','$toaddress')";
+            $insertRide = mysqli_query($con,$insertRideQuery);
+            if($insertRide)
+            {
+                $response['status'] = "200";
+                $response['message'] = "Ride booking successfully!";
+            }
         }
     }
 }
