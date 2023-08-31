@@ -37,7 +37,11 @@ function calculateAverangeRating($driverId)
         $totalRating += ($rating * $count);
     }
 
-    $averangeRating = ($totalRating / $totalReviews);
+    $averangeRating = 0;
+    if($averangeRating > 0)
+    {
+        $averangeRating = ($totalRating / $totalReviews);
+    }
 
     return round($averangeRating,2);
 }
@@ -91,9 +95,10 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     $data = mysqli_fetch_assoc($name);
     $passangerName = $data['firstname'];
     $profile = $data['photo'];
+    // echo $profile;
     // Array of potential driver locations
     $drivers = [];
-    $select_query = "SELECT id,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
+    $select_query = "SELECT driverId,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
     $data = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($data) > 0) {
@@ -108,7 +113,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     foreach ($drivers as $driver) {
         $driverLat = floatval($driver['driverLetitude']);
         $driverLog = floatval($driver['driverLongitude']);
-        $driverId = $driver['id'];
+        $driverId = $driver['driverId'];
 
         $distance = findDistance($passengerLat, $passengerLog, $driverLat, $driverLog);
         $rating = calculateAverangeRating($driverId);
@@ -130,7 +135,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
 
     // Send ride request to drivers within range
     foreach ($availableDrivers as $driver) {
-        $driverID = $driver['id'];
+        $driverID = $driver['driverId'];
         $requests = array(
             'driverId' => $driverID,
             'userId' => $userId,
