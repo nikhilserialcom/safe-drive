@@ -61,7 +61,7 @@ if(isset($_POST['id']))
     $user_id = $_POST['id'];
     if(!empty($user_id))
     {
-        $userdata = "SELECT driverLetitude,driverLongitude,firstname,mobile_number,photo,vehicleType,vehicle_brand_name,Number_plate FROM user INNER JOIN vehicleinfo ON user.id = vehicleinfo.user_id WHERE user.id = '$user_id' LIMIT 3";
+        $userdata = "SELECT driverLetitude,driverLongitude,firstname,mobile_number,photo,vehicleType,vehicle_brand_name,Number_plate FROM user INNER JOIN vehicleinfo ON user.id = vehicleinfo.user_id WHERE user.id = '$user_id'";
         $result = mysqli_query($con, $userdata);
         $rating = calculateAverangeRating($user_id);
         if (mysqli_num_rows($result) > 0) {

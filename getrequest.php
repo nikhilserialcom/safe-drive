@@ -6,17 +6,25 @@ header("content-type:application/json");
 if (isset($_POST['userId'])) 
 {
     $userId = $_POST['userId'];
-    $checkQuery = "SELECT * FROM driver_request WHERE user_id = '$userId'";
+    $driverId = $_POST['driverId'];
+    $checkQuery = "SELECT * FROM book_ride WHERE driverId = '$driverId' AND userId = '$userId'";
     $check = mysqli_query($con,$checkQuery);
 
-    if(mysqli_num_rows($check) > 0)
+    $row = mysqli_fetch_assoc($check);
+    $status = $row['status'];
+
+    if($status == "accept")
     {
-        while($row = mysqli_fetch_assoc($check))
-        {
-            $response['status'] ="200";
-            $response['requests'][] = $row;
-        }
+        $response['status'] = "true";
+        $response['message'] = $status;
     }
+    else
+    {
+        $response['status'] = "false";
+        $response['message'] = $status;
+    } 
+
+    
 } 
 else 
 {
