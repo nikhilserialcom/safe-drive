@@ -65,9 +65,10 @@ function sendRequest($requests)
         $fromaddress =  $request['fromAddress'];
         $toaddress =  $request['toAddress'];
         $paymentMode =  $request['paymentMode'];
+        $vehicleinfo = $request['vehicleTpye'];
 
-        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, fromAddress, toAddress) VALUES ";
-        $values = "('$driverId', '$userId','$name','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$fromaddress', '$toaddress')";
+        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
+        $values = "('$driverId', '$userId','$name','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
 
         $insertRequestQuery .= $values;
         $insertRequest = mysqli_query($con, $insertRequestQuery);
@@ -148,8 +149,8 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
             'amount' => $amount,
             'fromAddress' => $fromaddress,
             'toAddress' => $toaddress,
-            'paymentMode' => $paymentMode
-
+            'paymentMode' => $paymentMode,
+            'vehicleTpye' => $vehicleinfo,
         );
         sendRequest(array($requests));
         
