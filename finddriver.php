@@ -56,6 +56,7 @@ function sendRequest($requests)
         $driverId =  $request['driverId'];
         $userId =  $request['userId'];
         $name =  $request['pessangerName'];
+        $mobileNumber = $request['mobile_number'];
         $profile = $request['profile'];
         $passengerLat =  $request['passengerLat'];
         $passengerLog =  $request['passengerLog'];
@@ -67,8 +68,8 @@ function sendRequest($requests)
         $paymentMode =  $request['paymentMode'];
         $vehicleinfo = $request['vehicleTpye'];
 
-        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
-        $values = "('$driverId', '$userId','$name','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
+        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,mobile_number,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
+        $values = "('$driverId', '$userId','$name','$mobileNumber','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
 
         $insertRequestQuery .= $values;
         $insertRequest = mysqli_query($con, $insertRequestQuery);
@@ -92,10 +93,11 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     $paymentMode = $_POST['paymentMode'];
     $vehicleinfo = $_POST['vehicleinfo'];
 
-    $name = mysqli_query($con,"SELECT firstname,photo FROM user WHERE id = '$userId'");
+    $name = mysqli_query($con,"SELECT firstname,photo,mobile_number FROM user WHERE id = '$userId'");
     $data = mysqli_fetch_assoc($name);
     $passangerName = $data['firstname'];
     $profile = $data['photo'];
+    $mobileNumber = $data['mobile_number'];
     // echo $profile;
     // Array of potential driver locations
     $drivers = [];
@@ -127,9 +129,26 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
             $availableDrivers[] = $driver;
         }
     }
+
+    $requestdata = array();
+    foreach($availableDrivers as $drRequest)
+    {
+        $driverid = $drRequest['driverId'];
+        $driverRequestQuery = "SELECT * FROM driver_request WHERE driverId = '$driverid' AND user_id = '$userId'";
+        $driverRequest = mysqli_query($con,$driverRequestQuery);
+        if(mysqli_num_rows($driverRequest))
+        {
+            while($data = mysqli_fetch_assoc($driverRequest))
+            {
+                $data['distance'] = $drRequest['distance'];
+                $requestdata[] = $data; 
+            }
+        }
+    }
     
     $response['status'] = "200";
-    $response['driver'] = $availableDrivers;
+    $response['driver'] = $requestdata;
+    // $response['driverequest'] = $availableDrivers;
     $response['message'] = "Request send to driver";
 
     // $response['rating'] = array();
@@ -141,6 +160,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
             'driverId' => $driverID,
             'userId' => $userId,
             'pessangerName' => $passangerName,
+            'mobile_number' => $mobileNumber,
             'profile' => $profile,
             'passengerLat' =>$passengerLat,
             'passengerLog' => $passengerLog,

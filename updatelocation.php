@@ -7,7 +7,7 @@ function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
 {   
     global $response,$con;
 
-    $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE id = '$driverId'");
+    $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE driverId = '$driverId'");
 
     if($updateLocation)
     {

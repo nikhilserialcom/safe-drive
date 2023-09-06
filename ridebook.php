@@ -40,7 +40,7 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
         $passangerName = $data['firstname'];
         if(!empty($pickupLetitude) && !empty($pickupLongitude) && !empty($dropLetitude) && !empty($dropLongitude) && !empty($amount))
         {
-            $insertRideQuery = "INSERT INTO book_ride(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status)VALUES('$userId','$driverId','$passangerName','$pickupLetitude','$pickupLongitude','$dropLetitude','$dropLongitude','$vehicaleType','$amount','$paymentMode','$status')";
+            $insertRideQuery = "INSERT INTO book_ride(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status,fromAddress,toAddress)VALUES('$userId','$driverId','$passangerName','$pickupLetitude','$pickupLongitude','$dropLetitude','$dropLongitude','$vehicaleType','$amount','$paymentMode','$status','$fromaddress','$toaddress')";
             $insertRide = mysqli_query($con,$insertRideQuery);
             if($insertRide)
             {
@@ -57,7 +57,7 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
         $passangerName = $data['firstname'];
         if(!empty($pickupLetitude) && !empty($pickupLongitude) && !empty($dropLetitude) && !empty($dropLongitude) && !empty($amount))
         {
-            $insertRideQuery = "INSERT INTO book_ride(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status)VALUES('$userId','$driverId','$passangerName','$pickupLetitude','$pickupLongitude','$dropLetitude','$dropLongitude','$vehicaleType','$amount','$paymentMode','$status')";
+            $insertRideQuery = "INSERT INTO book_ride(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status,,fromAddress,toAddress)VALUES('$userId','$driverId','$passangerName','$pickupLetitude','$pickupLongitude','$dropLetitude','$dropLongitude','$vehicaleType','$amount','$paymentMode','$status','$fromaddress','$toaddress')";
             $insertRide = mysqli_query($con,$insertRideQuery);
             if($insertRide)
             {

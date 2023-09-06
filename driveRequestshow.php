@@ -13,9 +13,10 @@ if(isset($_POST['driverId']))
     if(mysqli_num_rows($driverInfo) > 0)
     {
         while ($row = mysqli_fetch_assoc($driverInfo)) {
-            $response['status'] = "200";
-            $response['request'][] = $row;
+            $data[] = $row;
         }
+        $response['status'] = "200";
+        $response['request'] = $data;
     }
     else {
         $response['status'] = "400";
