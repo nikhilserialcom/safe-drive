@@ -9,14 +9,39 @@ function showRatingData($driverId)
 
     $ratingDataQuery = "SELECT * FROM rating WHERE driverId = '$driverId'";
     $ratingData = mysqli_query($con,$ratingDataQuery);
+    
+    $data = array();
 
-    if(mysqli_num_rows($ratingData) > 0)
+    while($row = mysqli_fetch_assoc($ratingData))
     {
-        while($row = mysqli_fetch_assoc($ratingData))
-        {
-            $response['ratingData'][] = $row;
-        }
+       $data[] = $row;
     }
+    
+    $groupData = array();
+    foreach($data as $row)
+    {
+        $rating_date = date("Y-m-d", strtotime($row['created_at']));
+        if(!isset($groupData[$rating_date]))
+        {
+            $groupData[$rating_date] = array(
+                'totalrating' => 0,
+                'rating' => array(),
+            );
+        }
+        $groupData[$rating_date]['totalrating']++;
+        $groupData[$rating_date]['rating'][] = $row;
+    }
+
+    $formatedData = array();
+
+    foreach($groupData as $date => $data)
+    {
+        $formatedData[] = array(
+            "Date" => date("d-m-Y", strtotime($date)),
+            "Data" => $data
+        );
+    }
+    $response['rideData'] = $formatedData;
 
     return $response;
 }
@@ -99,7 +124,11 @@ function calculateAverangeRating($driverId)
         $totalRating += ($rating * $count);
     }
 
-    $averangeRating = ($totalRating / $totalReviews);
+    $averangeRating = 0;
+    if($averangeRating > 0)
+    {
+        $averangeRating = ($totalRating / $totalReviews);
+    }
 
     return round($averangeRating,2);
 }
@@ -127,6 +156,8 @@ if(isset($_POST['userId']) && isset($_POST['rating']))
         $Name = mysqli_query($con,"SELECT firstname FROM user WHERE id = '$userId'");
         $data = mysqli_fetch_assoc($Name);
         $passangerName = $data['firstname'];
+
+
         $insertRatingQuery = "INSERT INTO rating(driverId,userId,passengername,rating,reviews,tag,comment)VALUES('$driverId','$userId','$passangerName','$rating','$reviews','$tag','$comment')";
         $insertRaitng = mysqli_query($con,$insertRatingQuery);
 

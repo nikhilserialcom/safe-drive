@@ -20,7 +20,7 @@ if($_POST['driverId'])
 
     // $response['status'] = "200";
     // $response['earingData'] = $data;
-    $earingQuery = "SELECT * FROM book_ride WHERE driverId = '$driverId' and status ='finish'";
+    $earingQuery = "SELECT * FROM completerides WHERE driverId = '$driverId' and rideStatus ='finish'";
 
     $earing = mysqli_query($con,$earingQuery);
 
