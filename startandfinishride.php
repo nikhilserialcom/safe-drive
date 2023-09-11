@@ -3,13 +3,14 @@
 require 'db.php';
 header("content-type:application/json");
 
+$response = [];
 if($_POST['driverId'])
 {
     $driverId = $_POST['driverId'];
     $userId = $_POST['userId'];
     $status = $_POST['status'];
 
-    if($status == 'start')
+    if($status == 'here')
     {
         $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'accept'";
         $checkStatus = mysqli_query($con,$checkStatusQuery);
@@ -17,6 +18,50 @@ if($_POST['driverId'])
         if(mysqli_num_rows($checkStatus) > 0)
         {
             $statusUpdateQuery = "UPDATE book_ride SET status = '$status' WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'accept'";
+            $statusUpdate = mysqli_query($con,$statusUpdateQuery);
+
+            if($statusUpdate)
+            {
+                $response['status'] = "200";
+                $response['message'] = "you are arrived at pickup point";
+            }
+        }
+        else
+        {
+            $response['status'] = "400";
+            $response['message'] = "No matching records found";
+        }
+    }
+    elseif($status == 'waiting')
+    {
+        $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'here'";
+        $checkStatus = mysqli_query($con,$checkStatusQuery);
+
+        if(mysqli_num_rows($checkStatus) > 0)
+        {
+            $statusUpdateQuery = "UPDATE book_ride SET status = '$status' WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'here'";
+            $statusUpdate = mysqli_query($con,$statusUpdateQuery);
+
+            if($statusUpdate)
+            {
+                $response['status'] = "200";
+                $response['message'] = "your ride waiting";
+            }
+        }
+        else
+        {
+            $response['status'] = "400";
+            $response['message'] = "No matching records found";
+        }
+    }
+    elseif($status == 'start')
+    {
+        $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'waiting'";
+        $checkStatus = mysqli_query($con,$checkStatusQuery);
+
+        if(mysqli_num_rows($checkStatus) > 0)
+        {
+            $statusUpdateQuery = "UPDATE book_ride SET status = '$status' WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'waiting'";
             $statusUpdate = mysqli_query($con,$statusUpdateQuery);
 
             if($statusUpdate)
