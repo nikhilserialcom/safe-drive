@@ -76,31 +76,31 @@ if($_POST['driverId'])
             $response['message'] = "No matching records found";
         }
     }
+    // elseif($status == 'finish')
+    // {
+    //     $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'start'";
+    //     $checkStatus = mysqli_query($con,$checkStatusQuery);
+
+    //     if(mysqli_num_rows($checkStatus) > 0)
+    //     {
+    //         $statusUpdateQuery = "UPDATE book_ride SET status = '$status' WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'start'";
+    //         $statusUpdate = mysqli_query($con,$statusUpdateQuery);
+
+    //         if($statusUpdate)
+    //         {
+    //             $response['status'] = "200";
+    //             $response['message'] = "your ride finish";
+    //         }
+    //     }
+    //     else
+    //     {
+    //         $response['status'] = "400";
+    //         $response['message'] = "No matching records found";
+    //     }
+    // }
     elseif($status == 'finish')
     {
         $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'start'";
-        $checkStatus = mysqli_query($con,$checkStatusQuery);
-
-        if(mysqli_num_rows($checkStatus) > 0)
-        {
-            $statusUpdateQuery = "UPDATE book_ride SET status = '$status' WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'start'";
-            $statusUpdate = mysqli_query($con,$statusUpdateQuery);
-
-            if($statusUpdate)
-            {
-                $response['status'] = "200";
-                $response['message'] = "your ride finish";
-            }
-        }
-        else
-        {
-            $response['status'] = "400";
-            $response['message'] = "No matching records found";
-        }
-    }
-    elseif($status == 'yes')
-    {
-        $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'finish'";
         $checkStatus = mysqli_query($con,$checkStatusQuery);
         $data = mysqli_fetch_assoc($checkStatus);
         if($data)
@@ -110,7 +110,7 @@ if($_POST['driverId'])
 
             if($insertComplete)
             {
-                $deleteRideQuery = "DELETE FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'finish'";
+                $deleteRideQuery = "DELETE FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'start'";
                 $deleteRide = mysqli_query($con,$deleteRideQuery);
 
                 $response['status'] = "200";
