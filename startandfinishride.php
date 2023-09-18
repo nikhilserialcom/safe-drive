@@ -105,7 +105,7 @@ if($_POST['driverId'])
         $data = mysqli_fetch_assoc($checkStatus);
         if($data)
         {
-            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,rideStatus,fromAddress,toAddress,booking_date)VALUES('{$data['userId']}','{$data['driverId']}','{$data['pessangerName']}','{$data['pickup_letitude']}','{$data['pickup_longitude']}','{$data['drop_letitude']}','{$data['drop_longitude']}','{$data['vehicle_type']}','{$data['amount']}','{$data['payment_mode']}','{$data['status']}','{$data['fromAddress']}','{$data['toAddress']}','{$data['booking_date']}')";
+            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,rideStatus,fromAddress,toAddress,booking_date)VALUES('{$data['userId']}','{$data['driverId']}','{$data['pessangerName']}','{$data['pickup_letitude']}','{$data['pickup_longitude']}','{$data['drop_letitude']}','{$data['drop_longitude']}','{$data['vehicle_type']}','{$data['amount']}','{$data['payment_mode']}','$status','{$data['fromAddress']}','{$data['toAddress']}','{$data['booking_date']}')";
             $insertComplete = mysqli_query($con,$insertCompleteQuery);
 
             if($insertComplete)

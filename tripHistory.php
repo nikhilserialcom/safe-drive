@@ -17,7 +17,21 @@ if (isset($_POST['userId']))
         {
             while($row = mysqli_fetch_assoc($tripHistory))
             {
-                $response[] = $row;
+                if($row['userId'] == "$userId")
+                {
+                    $dirverId = $row['driverId'];
+                    $driverDataQuery = "SELECT * FROM user WHERE driverId = '$dirverId'";
+                    $driverdata = mysqli_query($con,$driverDataQuery);
+                    $driver = mysqli_fetch_assoc($driverdata);
+                    $row['drivername'] = $driver['firstname'];
+                    $response['status'] = "200";
+                    $response['data'][] = $row;
+                }
+                else
+                {
+                    $response['status'] = "400";
+                    $response['data'][] = $row;
+                }
             }
         }
         else
@@ -55,7 +69,8 @@ if (isset($_POST['userId']))
                     $upcoming['vehicleBrand'] = $driver['vehicleBrand'];
                     $upcoming['rating'] = $driver['rating'];
                     $upcoming['time'] = $driver['time'];
-                    $response[] = $upcoming;
+                    $response['status'] = "200";
+                    $response['data'][] = $upcoming;
                 }
                 elseif($upcoming['driverId'] == $userId)
                 {
@@ -68,10 +83,12 @@ if (isset($_POST['userId']))
                     $upcoming['profile'] = $data['photo'];
                     $upcoming['mobile_number'] = $data['mobile_number'];
                     $upcoming['time'] = $driver['time'];
-                    $response[] = $upcoming;
+                    $response['status'] = "200";
+                    $response['data'][] = $upcoming;
                 }
                 else
                 {
+                    $response['status'] = "404";
                     $response['message'] = "user not found";
                 }
             }

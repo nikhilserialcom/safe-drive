@@ -6,19 +6,27 @@ header("content-type:application/json");
 if(isset($_POST['driverId']))
 {
     $driverid = $_POST['driverId'];
+    $checkOnlineQuery  = "SELECT * FROM user WHERE driverId = '$driverid' AND driverstatus = 'online'";
+    $checkOnline = mysqli_query($con,$checkOnlineQuery);
 
-    $driverinfoQuery = "SELECT * FROM request where driver_id = '$driverid'";
-    $driverInfo = mysqli_query($con,$driverinfoQuery);
-
-    if(mysqli_num_rows($driverInfo) > 0)
+    if(mysqli_num_rows($checkOnline) > 0)
     {
-        while ($row = mysqli_fetch_assoc($driverInfo)) {
-            $data[] = $row;
+        $row = mysqli_fetch_assoc($checkOnline);
+
+        $driverinfoQuery = "SELECT * FROM request where driver_id = '$driverid'";
+        $driverInfo = mysqli_query($con,$driverinfoQuery);
+    
+        if(mysqli_num_rows($driverInfo) > 0)
+        {
+            while ($row = mysqli_fetch_assoc($driverInfo)) {
+                $data[] = $row;
+            }
+            $response['status'] = "200";
+            $response['request'] = $data;
         }
-        $response['status'] = "200";
-        $response['request'] = $data;
     }
-    else {
+    else 
+    {
         $response['status'] = "400";
         $response['message'] = "User Not Found";
     }

@@ -101,7 +101,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     // echo $profile;
     // Array of potential driver locations
     $drivers = [];
-    $select_query = "SELECT driverId,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
+    $select_query = "SELECT driverId,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo' AND driverstatus = 'online'";
     $data = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($data) > 0) {
