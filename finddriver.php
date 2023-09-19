@@ -53,31 +53,65 @@ function sendRequest($requests)
     $successCount = 0;
     // print_r($requests);
     foreach ($requests as $request) {
+        
         $driverId =  $request['driverId'];
         $userId =  $request['userId'];
-        $name =  $request['pessangerName'];
-        $mobileNumber = $request['mobile_number'];
-        $profile = $request['profile'];
-        $passengerLat =  $request['passengerLat'];
-        $passengerLog =  $request['passengerLog'];
-        $dropLat =  $request['dropLat'];
-        $dropLog =  $request['dropLog'];
-        $amount =  $request['amount'];
-        $fromaddress =  $request['fromAddress'];
-        $toaddress =  $request['toAddress'];
-        $paymentMode =  $request['paymentMode'];
-        $vehicleinfo = $request['vehicleTpye'];
+        $checkRequestQuery = "SELECT * FROM request WHERE user_id = '$userId' AND driver_id = '$driverId'";
+        $checkRequest = mysqli_query($con,$checkRequestQuery);
 
-        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,mobile_number,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
-        $values = "('$driverId', '$userId','$name','$mobileNumber','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
-
-        $insertRequestQuery .= $values;
-        $insertRequest = mysqli_query($con, $insertRequestQuery);
-
-        if ($insertRequest) {
-            $successCount++;
+        if(mysqli_num_rows($checkRequest) > 0)
+        {
+            $name =  $request['pessangerName'];
+            $mobileNumber = $request['mobile_number'];
+            $profile = $request['profile'];
+            $passengerLat =  $request['passengerLat'];
+            $passengerLog =  $request['passengerLog'];
+            $dropLat =  $request['dropLat'];
+            $dropLog =  $request['dropLog'];
+            $amount =  $request['amount'];
+            $fromaddress =  $request['fromAddress'];
+            $toaddress =  $request['toAddress'];
+            $paymentMode =  $request['paymentMode'];
+            $vehicleinfo = $request['vehicleTpye'];
+                
+            $updateRequestQuery = "UPDATE request SET driver_id = '$driverId', user_id = '$userId',pessangerName = '$name',mobile_number = '$mobileNumber',profile = '$profile', passengerLat = '$passengerLat', passengerLog = '$passengerLog', dropLat = '$dropLat', dropLog = '$dropLog', amount = '$amount', payment_mode = '$paymentMode', vehicleType = '$vehicleinfo', fromAddress = '$fromaddress', toAddress = '$toaddress' WHERE user_id = '$userId' AND driver_id = '$driverId'";
+            $updateRequest = mysqli_query($con, $updateRequestQuery);
+        
+            if ($updateRequest) {
+                $response['update'] = "200";
+                $successCount++;
+            }
+           
+        }
+        else
+        {
+            $name =  $request['pessangerName'];
+            $mobileNumber = $request['mobile_number'];
+            $profile = $request['profile'];
+            $passengerLat =  $request['passengerLat'];
+            $passengerLog =  $request['passengerLog'];
+            $dropLat =  $request['dropLat'];
+            $dropLog =  $request['dropLog'];
+            $amount =  $request['amount'];
+            $fromaddress =  $request['fromAddress'];
+            $toaddress =  $request['toAddress'];
+            $paymentMode =  $request['paymentMode'];
+            $vehicleinfo = $request['vehicleTpye'];
+                
+            $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,mobile_number,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
+            $values = "('$driverId', '$userId','$name','$mobileNumber','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
+        
+            $insertRequestQuery .= $values;
+            $insertRequest = mysqli_query($con, $insertRequestQuery);
+        
+            if ($insertRequest) {
+                $response['insert'] = "200";
+                $successCount++;
+            }
         }
     }
+
+    return $response;
 }
 
 if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
@@ -101,7 +135,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     // echo $profile;
     // Array of potential driver locations
     $drivers = [];
-    $select_query = "SELECT driverId,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo' AND driverstatus = 'online'";
+    $select_query = "SELECT driverId,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
     $data = mysqli_query($con, $select_query);
 
     if (mysqli_num_rows($data) > 0) {
@@ -172,9 +206,15 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
             'paymentMode' => $paymentMode,
             'vehicleTpye' => $vehicleinfo,
         );
-        sendRequest(array($requests));
+        $checkStatusQuery = "SELECT * FROM user WHERE driverId = '$driverID' AND driverstatus = 'online'";
+        $checkStatus = mysqli_query($con,$checkStatusQuery);
+        if(mysqli_num_rows($checkStatus) > 0)
+        {
+            $driver_request = sendRequest(array($requests));
+        }
         
     }
+    $response['driverstatus'] = $driver_request;
 } else {
     $response['status'] = "500";
     $response['message'] = "passenger location not found";

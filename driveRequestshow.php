@@ -6,7 +6,7 @@ header("content-type:application/json");
 if(isset($_POST['driverId']))
 {
     $driverid = $_POST['driverId'];
-    $checkOnlineQuery  = "SELECT * FROM user WHERE driverId = '$driverid' AND driverstatus = 'online'";
+    $checkOnlineQuery  = "SELECT * FROM user WHERE driverId = '$driverid'";
     $checkOnline = mysqli_query($con,$checkOnlineQuery);
 
     if(mysqli_num_rows($checkOnline) > 0)

@@ -55,8 +55,15 @@ if($_POST['driverId'])
             "Data" => $data
        );
     }
-
-    $response['groupedRideData'] = $formatedData;
+    if($formatedData)
+    {
+        $response['groupedRideData'] = $formatedData;
+    }
+    else
+    {
+        $response['status'] = "404";
+        $response['message'] = "user data not found";
+    }
 }
 else
 {
