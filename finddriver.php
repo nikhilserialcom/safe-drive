@@ -143,6 +143,11 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
             $drivers[] = $row;
         }
     }
+    else
+    {
+        $response['status'] = '404';
+        $response['message'] = "driver not found";
+    }
 
     $range = 5; // Maximum range in kilometers
     $availableDrivers = [];

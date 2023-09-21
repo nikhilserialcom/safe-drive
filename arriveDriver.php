@@ -27,17 +27,18 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
                 $response['status'] = "200";
                 $response['message'] = "waiting";
             }
-            else
-            {
-                $response['status'] = "200";
-                $response['message'] = "finish";
-            }
         }
     }
     else
     {
-        $response['status'] = "400";
-        $response['message'] = "No matching records found";
+        $checkFinishRideQuery = "SELECT * FROM completerides WHERE userId = '$userId' AND driverId = '$driverId' AND rideStatus = 'finish'";
+        $checkFinishRide = mysqli_query($con,$checkFinishRideQuery);
+
+        if(mysqli_num_rows($checkFinishRide) > 0)
+        {
+            $response['status'] = "200";
+            $response['message'] = "finish";
+        }
     }
 }
 else
