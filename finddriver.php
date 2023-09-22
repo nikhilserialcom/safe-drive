@@ -46,6 +46,52 @@ function calculateAverangeRating($driverId)
     return round($averangeRating,2);
 }
 
+function sendPushNotification($driverId)
+{
+    global $con;
+    $findTokenQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
+    $findToken = mysqli_query($con,$findTokenQuery);
+
+    $deviceToken = array();
+    if(mysqli_num_rows($findToken) > 0)
+    {
+        while($row = mysqli_fetch_assoc($findToken))
+        {
+            if($row['deviceToken'])
+            {
+                $deviceToken[] = $row['deviceToken'];
+                $serverKey = 'AAAAzpUqMlE:APA91bEXySQ-4aw7rQB6Sloy2WLgyAr4XIEToPk5xo98u-wDOICMTC1ExzysY0SYBBio24gHaFgQlPh0BV3RIL-Ls34Y-d-_v205s79Bxj6MZ-tH2WI7_mlp6jGXtsxB5gNmloxmIIgQ'; // Replace with your Firebase Server Key
+                $data = [
+                    'to' => $row['deviceToken'], // The recipient's FCM token
+                    'notification' => [
+                        'title' => 'Safe Drive',
+                        'body' => 'you have a new request',
+                        // 'sound' => '21.mp3',
+                        'image' => 'https://mcdn.wallpapersafari.com/medium/55/83/Pl6QHc.jpg',
+                    ],
+                ];
+                $headers = [
+                    'Authorization: key=' . $serverKey,
+                    'Content-Type: application/json',
+                ];
+                $ch = curl_init('https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Not recommended for production
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                $response = curl_exec($ch);
+                if ($response === false) {
+                    die('Error: ' . curl_error($ch));
+                }
+                curl_close($ch);
+                echo $response;
+            }
+        }
+    }
+
+    return $deviceToken;
+}
 
 function sendRequest($requests)
 {
@@ -105,6 +151,7 @@ function sendRequest($requests)
             $insertRequest = mysqli_query($con, $insertRequestQuery);
         
             if ($insertRequest) {
+                
                 $response['insert'] = "200";
                 $successCount++;
             }
@@ -192,6 +239,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
 
     // $response['rating'] = array();
 
+    $notification = array();
     // Send ride request to drivers within range
     foreach ($availableDrivers as $driver) {
         $driverID = $driver['driverId'];
@@ -216,10 +264,13 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
         if(mysqli_num_rows($checkStatus) > 0)
         {
             $driver_request = sendRequest(array($requests));
+            $deviceTokens = sendPushNotification($driverId);
+            $notification[$driverId] = $deviceTokens; 
         }
         
     }
     $response['driverstatus'] = $driver_request;
+    $response['notification'] = $notification;
 } else {
     $response['status'] = "500";
     $response['message'] = "passenger location not found";
