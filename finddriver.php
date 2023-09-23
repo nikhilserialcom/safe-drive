@@ -57,12 +57,13 @@ function sendPushNotification($driverId)
     {
         while($row = mysqli_fetch_assoc($findToken))
         {
-            if($row['deviceToken'])
+            $token = $row['deviceToken'];
+            if(!empty($token))
             {
-                $deviceToken[] = $row['deviceToken'];
+                $deviceToken[] = $token;
                 $serverKey = 'AAAAzpUqMlE:APA91bEXySQ-4aw7rQB6Sloy2WLgyAr4XIEToPk5xo98u-wDOICMTC1ExzysY0SYBBio24gHaFgQlPh0BV3RIL-Ls34Y-d-_v205s79Bxj6MZ-tH2WI7_mlp6jGXtsxB5gNmloxmIIgQ'; // Replace with your Firebase Server Key
                 $data = [
-                    'to' => $row['deviceToken'], // The recipient's FCM token
+                    'to' => $token, // The recipient's FCM token
                     'notification' => [
                         'title' => 'Safe Drive',
                         'body' => 'you have a new request',
