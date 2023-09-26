@@ -7,7 +7,7 @@ header("content-type:application/json");
 function sendPushNotification($driverId)
 {
     global $con;
-    $findTokenQuery = "SELECT * FROM user WHERE driverId = '$driverId' or userId = '$driverId'";
+    $findTokenQuery = "SELECT * FROM user WHERE driverId = '$driverId' or Id = '$driverId'";
     $findToken = mysqli_query($con,$findTokenQuery);
     $token =  mysqli_fetch_assoc($findToken);
 
