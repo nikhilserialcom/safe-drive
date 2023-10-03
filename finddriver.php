@@ -235,7 +235,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     
     $response['status'] = "200";
     $response['driver'] = $requestdata;
-    $response['driverequest'] = $availableDrivers;
+    // $response['driverequest'] = $availableDrivers;
     $response['message'] = "Request send to driver";
 
     // $response['rating'] = array();
