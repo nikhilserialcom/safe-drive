@@ -13,7 +13,7 @@ if(isset($_POST['driverId']))
     {
         $row = mysqli_fetch_assoc($checkOnline);
 
-        $driverinfoQuery = "SELECT * FROM request where driver_id = '$driverid' ORDER BY id DESC";
+        $driverinfoQuery = "SELECT * FROM request where driver_id = '$driverid'";
         $driverInfo = mysqli_query($con,$driverinfoQuery);
     
         if(mysqli_num_rows($driverInfo) > 0)
