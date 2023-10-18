@@ -44,6 +44,9 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
             $insertRide = mysqli_query($con,$insertRideQuery);
             if($insertRide)
             {
+                $deletedriverRequestQuery = "DELETE FROM driver_request WHERE user_id = '$userId'";
+                $deletedriverRequest = mysqli_query($con,$deletedriverRequestQuery);
+
                 $response['status'] = "200";
                 $response['message'] = "Ride booking successfully!";
             }

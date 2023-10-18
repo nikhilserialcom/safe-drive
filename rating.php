@@ -50,7 +50,7 @@ function TotalRide($driverId)
 {
     global $con;
 
-    $totalRideQuery = "SELECT COUNT(*) AS count FROM book_ride WHERE driverId = '$driverId'";
+    $totalRideQuery = "SELECT COUNT(*) AS count FROM completerides WHERE driverId = '$driverId'";
     $totalRide = mysqli_query($con,$totalRideQuery);
 
     $rides = 0;

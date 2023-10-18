@@ -39,7 +39,7 @@ function sendPushNotification($driverId)
             die('Error: ' . curl_error($ch));
         }
         curl_close($ch);
-        echo $response;
+        // echo $response;
     }
 }
 
@@ -54,13 +54,16 @@ if(isset($_POST['userId']))
         while($row = mysqli_fetch_assoc($checkRide))
         {
             $driverId = $row['driverId'];
-            $response['driverId'] = $driverId;
+            // $response['driverId'] = $driverId;/
             $deleteUserRideQuery = "DELETE FROM book_ride WHERE userId = '$userId'";
             $deleteUserRide = mysqli_query($con,$deleteUserRideQuery);
 
             if($deleteUserRide)
             {
+                $deleteRequestQuery = "DELETE from request where user_id = '$userId'";
+                $deleteRequest = mysqli_query($con,$deleteRequestQuery);
                 sendPushNotification($driverId);
+
                 $response['status'] = "200";
                 $response['message'] = "cancle your ride";
             }
@@ -68,7 +71,7 @@ if(isset($_POST['userId']))
     }
 
 }
-if (isset($_POST['userId']) && isset($_POST['driverId'])) 
+elseif(isset($_POST['userId']) && isset($_POST['driverId'])) 
 {
     $userId = $_POST['userId'];
     $driverId = $_POST['driverId'];
@@ -78,14 +81,12 @@ if (isset($_POST['userId']) && isset($_POST['driverId']))
     $deleteRide = mysqli_query($con,$deleteRideQuery);
 
     if ($deleteRide) {
+        $deleteRequestQuery = "DELETE from request where user_id = '$userId' and driverId = '$driverId'";
+        $deleteRequest = mysqli_query($con,$deleteRequestQuery);
+
         sendPushNotification($userId);
         $response['status'] = "200";
         $response['message'] = "cancle the ride";
-    }
-    else
-    {
-        $response['status'] = "400";
-        $response['message'] = "your ride is not cancle";
     }
 }
 else

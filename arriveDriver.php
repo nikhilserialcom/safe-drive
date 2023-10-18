@@ -26,7 +26,7 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
             {
                 $response['status'] = "200";
                 $response['message'] = "waiting";
-            }
+            }   
             else
             {
                 $response['status'] = "400";

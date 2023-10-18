@@ -106,12 +106,15 @@ if($_POST['driverId'])
         if($data)
         {
             $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,rideStatus,fromAddress,toAddress,booking_date)VALUES('{$data['userId']}','{$data['driverId']}','{$data['pessangerName']}','{$data['pickup_letitude']}','{$data['pickup_longitude']}','{$data['drop_letitude']}','{$data['drop_longitude']}','{$data['vehicle_type']}','{$data['amount']}','{$data['payment_mode']}','$status','{$data['fromAddress']}','{$data['toAddress']}','{$data['booking_date']}')";
-            $insertComplete = mysqli_query($con,$insertCompleteQuery);
+            $insertComplete = mysqli_query($con,$insertCompleteQuery);  
 
             if($insertComplete)
             {
                 $deleteRideQuery = "DELETE FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'start'";
                 $deleteRide = mysqli_query($con,$deleteRideQuery);
+
+                $deleteRequestQuery  = "DELETE FROM request WHERE user_id = '$userId' AND driver_id = '$driverId'";
+                $deleteRequest =mysqli_query($con,$deleteRequestQuery);
 
                 $response['status'] = "200";
                 $response['message'] = "your Ride complete";

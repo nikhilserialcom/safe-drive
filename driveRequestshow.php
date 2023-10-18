@@ -24,6 +24,11 @@ if(isset($_POST['driverId']))
             $response['status'] = "200";
             $response['request'] = $data;
         }
+        else
+        {
+            $response['status'] = "404";
+            $response['message'] = "database empty";
+        }
     }
     else 
     {
