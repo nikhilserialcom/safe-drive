@@ -10,6 +10,11 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
     $userId = $_POST['userId'];
     $driverId = $_POST['driverId'];
 
+    $findlocationQuery = mysqli_query($con,"SELECT * FROM user WHERE driverId='$driverId'");
+    $data = mysqli_fetch_assoc($findlocationQuery);
+    $driverLetitude = $data['driverLetitude'];
+    $driverLongitude = $data['driverLongitude'];
+
     $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId'";
     $checkStatus = mysqli_query($con,$checkStatusQuery);
     if(mysqli_num_rows($checkStatus) > 0)
@@ -21,16 +26,22 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
                 $response['status'] = "200";
                 $response['id'] = $row['id'];
                 $response['message'] = "here";
+                $response['driverLetitude'] = $driverLetitude;
+                $response['driverLongitude'] = $driverLongitude;
             }
             elseif($row['status'] == 'waiting')
             {
                 $response['status'] = "200";
                 $response['message'] = "waiting";
+                $response['driverLetitude'] = $driverLetitude;
+                $response['driverLongitude'] = $driverLongitude;
             }   
             else
             {
                 $response['status'] = "400";
                 $response['message'] = "waiting for replay";
+                $response['driverLetitude'] = $driverLetitude;
+                $response['driverLongitude'] = $driverLongitude;
             }
         }
     }

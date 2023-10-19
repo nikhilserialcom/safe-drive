@@ -7,14 +7,14 @@ function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
 {   
     global $response,$con;
 
-    $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE driverId = '$driverId'");
+    $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE id= '$driverId' or driverId='$driverId'");
 
     if($updateLocation)
     {
         $response['status'] = "true";
-        $response['message'] = "update location";
     }
 
+    return $response;
 }
 
 if(isset($_POST['userId']) && $_POST['driverLetitude'] && $_POST['driverLongitude'])
@@ -30,7 +30,7 @@ if(isset($_POST['userId']) && $_POST['driverLetitude'] && $_POST['driverLongitud
 else
 {
     $response['status'] = "500";
-    $response['message'] = "ERROR:";
+    $response['message'] = "Please check your Network is on";
 }
 
 echo json_encode($response);
