@@ -36,8 +36,7 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
                 $insertRide = mysqli_query($con,$insertRideQuery);
                 if($insertRide)
                 {   
-                    $tenMinutesAgo = date('Y-m-d H:i:s', strtotime('-10 minutes'));
-                    $deleterequest = mysqli_query($con,"DELETE FROM book_ride WHERE status = 'decline' AND booking_date	< '$tenMinutesAgo'");
+                    $deleterequest = mysqli_query($con,"DELETE FROM book_ride WHERE booking_date <= CURRENT_DATE - INTERVAL 2 minute AND status = 'decline'");
                     if($deleteRequest)
                     {
                         $response['status'] = "200";

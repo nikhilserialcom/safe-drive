@@ -21,7 +21,7 @@ function sendPushNotification($driverId)
                 'title' => 'Safe Drive',
                 'body' => 'your ride cancle',
                 // 'sound' => '21.mp3',
-                'image' => 'https://mcdn.wallpapersafari.com/medium/55/83/Pl6QHc.jpg',
+                'image' => $token['photo'],
             ],
         ];
         $headers = [
