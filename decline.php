@@ -17,6 +17,8 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
         $deleteRequest = mysqli_query($con,$deleteRequestQuery);
         if($deleteRequest)
         {
+            $updateRequestQuery = mysqli_query($con,"UPDATE request SET status = 'decline'  WHERE driver_id = '$driverId' AND user_id = '$userId'");
+
             $pickupLetitude = $_POST['pickupLetitude'];
             $pickupLongitude = $_POST['pickupLongitude'];
             $dropLetitude = $_POST['dropLatitude'];

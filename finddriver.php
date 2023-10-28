@@ -98,12 +98,10 @@ function sendRequest($requests)
 {
     global $con;
     $successCount = 0;
-    // print_r($requests);
     foreach ($requests as $request) {
         
         $driverId =  $request['driverId'];
         $userId =  $request['userId'];
- 
         $name =  $request['pessangerName'];
         $mobileNumber = $request['mobile_number'];
         $profile = $request['profile'];
@@ -116,18 +114,39 @@ function sendRequest($requests)
         $toaddress =  $request['toAddress'];
         $paymentMode =  $request['paymentMode'];
         $vehicleinfo = $request['vehicleTpye'];
-            
-        $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,mobile_number,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
-        $values = "('$driverId', '$userId','$name','$mobileNumber','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
-    
-        $insertRequestQuery .= $values;
-        $insertRequest = mysqli_query($con, $insertRequestQuery);
-    
-        if ($insertRequest) {
-            
-            $response['insert'] = "200";
-            $successCount++;
+
+        $checkRequestQuery = "SELECT * FROM request WHERE driver_id = '$driverId' AND user_id = '$userId' AND toAddress = '$toaddress'";
+        $checkRequest = mysqli_query($con,$checkRequestQuery);
+        if(mysqli_num_rows($checkRequest) > 0)
+        {
+            $updateRequestQuery = "UPDATE request SET driver_id = '$driverId', user_id = '$userId',pessangerName = '$name',mobile_number = '$mobileNumber',profile = '$profile', passengerLat = '$passengerLat', passengerLog = '$passengerLog', dropLat = '$dropLat', dropLog = '$dropLog', amount = '$amount', payment_mode = '$paymentMode', vehicleType = '$vehicleinfo', fromAddress = '$fromaddress', toAddress = '$toaddress' WHERE driver_id = '$driverId' AND user_id = '$userId' AND toAddress = '$toaddress'";
+            $updateRequest = mysqli_query($con,$updateRequestQuery);
+            if($updateRequest)
+            {
+                $deleteDriverRequest = mysqli_query($con,"DELETE FROM driver_request  WHERE driverId = '$driverId' AND user_id = '$userId'");
+                if($deleteDriverRequest)
+                {
+                    $response['update'] = "200";
+                    $successCount ++;
+                }
+            }
         }
+        else
+        {
+
+            $insertRequestQuery = "INSERT INTO request(driver_id, user_id,	pessangerName,mobile_number,profile, passengerLat, passengerLog, dropLat, dropLog, amount, payment_mode, vehicleType, fromAddress, toAddress) VALUES ";
+            $values = "('$driverId', '$userId','$name','$mobileNumber','$profile','$passengerLat', '$passengerLog', '$dropLat', '$dropLog', '$amount', '$paymentMode', '$vehicleinfo', '$fromaddress', '$toaddress')";
+        
+            $insertRequestQuery .= $values;
+            $insertRequest = mysqli_query($con, $insertRequestQuery);
+        
+            if ($insertRequest) {
+                
+                $response['insert'] = "200";
+                $successCount++;
+            }
+        }
+
     }
 
     return $response;
@@ -152,7 +171,6 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     $passangerName = $data['firstname'];
     $profile = $data['photo'];
     $mobileNumber = $data['mobile_number'];
-    // echo $profile;
     // Array of potential driver locations
     $drivers = [];
     $select_query = "SELECT driverId,firstname,vehicleType,vehicleBrand,photo,driverLetitude,driverLongitude FROM user Where vehicletype = '$vehicleinfo'";
@@ -182,9 +200,6 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
         
         if ($distance <= $range) {
             $driver['distance'] = $distance * 1000;
-            // $driver['rating'] = $rating;
-            // $driver['amount'] = "500";
-            // $driver['time'] = "3min";
             $availableDrivers[] = $driver;
         }
     }
@@ -224,9 +239,6 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     }
    
     
-
-    // $response['rating'] = array();
-
     $notification = array();
     // Send ride request to drivers within range
     foreach ($availableDrivers as $driver) {
