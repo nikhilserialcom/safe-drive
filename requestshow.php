@@ -62,6 +62,8 @@ if(isset($_POST['driverId']))
 if(isset($_POST['id']))
 {
     $user_id = $_POST['id'];
+    $fromAddress = $_POST['fromAddress'];
+    $toAddress = $_POST['toAddress'];
     if(!empty($user_id))
     {
         $dataQuery = "SELECT driverLetitude,driverLongitude,mobile_number,Number_plate FROM user INNER JOIN vehicleinfo ON user.driverId = vehicleinfo.driverId WHERE user.driverId = '$user_id'";
@@ -74,6 +76,10 @@ if(isset($_POST['id']))
 
         $userdata = "SELECT * FROM driver_request WHERE driverId = '$user_id'";
         $result = mysqli_query($con,$userdata);
+
+        $placeinfoQuery = "SELECT * FROM request where driver_id = '$user_id'";
+        $placeinfo = mysqli_query($con,$placeinfoQuery);
+        
         $rating = calculateAverangeRating($user_id);
         if(mysqli_num_rows($result) > 0)
         {
@@ -91,6 +97,20 @@ if(isset($_POST['id']))
                 $response['time'] = $row['time'];
                 $response['numberPlate'] = $number_plate;
                 $response['rating'] = $rating;
+                
+            }
+            if(mysqli_num_rows($placeinfo))
+            {
+                while($placeData = mysqli_fetch_assoc($placeinfo))
+                {
+                    if($placeData['fromAddress'] == $fromAddress)
+                    {
+                        $response['fromLetitude'] = $placeData['passengerLat'];
+                        $response['fromLongitude'] = $placeData['passengerLog'];
+                        $response['toLetitude'] = $placeData['dropLat'];
+                        $response['toLongitude'] = $placeData['dropLog'];
+                    }
+                }
             }
         } else {
             $response['error'] = "400";
@@ -105,4 +125,3 @@ else
     $response['message'] = "user not found";
 }
 echo json_encode($response);
-?>
