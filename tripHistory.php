@@ -17,7 +17,7 @@ if (isset($_POST['userId']))
         {
             while($row = mysqli_fetch_assoc($tripHistory))
             {
-                if($row['userId'] == "$userId")
+                if($row['userId'] == "$userId" || $row['driverId'] == "$userId")
                 {
                     $dirverId = $row['driverId'];
                     $driverDataQuery = "SELECT * FROM user WHERE driverId = '$dirverId'";
@@ -30,7 +30,7 @@ if (isset($_POST['userId']))
                 else
                 {
                     $response['status'] = "400";
-                    $response['data'][] = $row;
+                    $response['message'] = 'database empty';
                 }
             }
         }
@@ -56,7 +56,7 @@ if (isset($_POST['userId']))
                     $dataQuery = mysqli_query($con,"SELECT driverLetitude,driverLongitude,mobile_number,Number_plate FROM user INNER JOIN vehicleinfo ON user.driverId = vehicleinfo.driverId WHERE user.driverId = '{$upcoming['driverId']}'");
                     $data = mysqli_fetch_assoc($dataQuery);
 
-                    $driverdataQuery = "SELECT * FROM driver_request WHERE driverId = '{$upcoming['driverId']}'";
+                    $driverdataQuery = "SELECT * FROM trash_driver_request WHERE driverId = '{$upcoming['driverId']}'";
                     $driverdata = mysqli_query($con,$driverdataQuery);
                     $driver = mysqli_fetch_assoc($driverdata);
 
@@ -74,7 +74,7 @@ if (isset($_POST['userId']))
                 }
                 elseif($upcoming['driverId'] == $userId)
                 {
-                    $driverdataQuery = "SELECT * FROM driver_request WHERE driverId = '{$upcoming['driverId']}'";
+                    $driverdataQuery = "SELECT * FROM trash_driver_request WHERE driverId = '{$upcoming['driverId']}'";
                     $driverdata = mysqli_query($con,$driverdataQuery);
                     $driver = mysqli_fetch_assoc($driverdata);
 

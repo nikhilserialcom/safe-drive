@@ -119,7 +119,7 @@ function sendRequest($requests)
         $checkRequest = mysqli_query($con,$checkRequestQuery);
         if(mysqli_num_rows($checkRequest) > 0)
         {
-            $updateRequestQuery = "UPDATE request SET driver_id = '$driverId', user_id = '$userId',pessangerName = '$name',mobile_number = '$mobileNumber',profile = '$profile', passengerLat = '$passengerLat', passengerLog = '$passengerLog', dropLat = '$dropLat', dropLog = '$dropLog', amount = '$amount', payment_mode = '$paymentMode', vehicleType = '$vehicleinfo', fromAddress = '$fromaddress', toAddress = '$toaddress' WHERE driver_id = '$driverId' AND user_id = '$userId' AND toAddress = '$toaddress'";
+            $updateRequestQuery = "UPDATE request SET driver_id = '$driverId', user_id = '$userId',pessangerName = '$name',mobile_number = '$mobileNumber',profile = '$profile', passengerLat = '$passengerLat', passengerLog = '$passengerLog', dropLat = '$dropLat', dropLog = '$dropLog',status = 'pending', amount = '$amount', payment_mode = '$paymentMode', vehicleType = '$vehicleinfo', fromAddress = '$fromaddress', toAddress = '$toaddress' WHERE driver_id = '$driverId' AND user_id = '$userId' AND toAddress = '$toaddress'";
             $updateRequest = mysqli_query($con,$updateRequestQuery);
             if($updateRequest)
             {
@@ -265,9 +265,14 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
         {
             if($check == "true")
             {
-                $driver_request = sendRequest(array($requests));
-                $deviceTokens = sendPushNotification($driverId);
-                $notification[$driverId] = $deviceTokens; 
+                $checkRideQuery = "SELECT * FROM book_ride WHERE driverId = '$driverID'";
+                $checkRide = mysqli_query($con,$checkRideQuery);
+                if(mysqli_num_rows($checkRide) == 0)
+                {
+                    $driver_request = sendRequest(array($requests));
+                    $deviceTokens = sendPushNotification($driverID);
+                    $notification[$driverId] = $deviceTokens; 
+                }
             }
         }
         

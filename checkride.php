@@ -10,7 +10,7 @@ if (isset($_POST['userId']))
     $fromAddress = $_POST['fromAddress'];
     $toAddress = $_POST['toAddress'];
     
-    $checkQuery = "SELECT * FROM book_ride WHERE driverId = '$driverId' AND userId = '$userId' AND fromAddress = '$fromAddress' AND toAddress = '$toAddress'";
+    $checkQuery = "SELECT * FROM request WHERE driver_id = '$driverId' AND user_id = '$userId' AND fromAddress = '$fromAddress' AND toAddress = '$toAddress'";
     $check = mysqli_query($con,$checkQuery);
 
     // $row = mysqli_fetch_assoc($check);

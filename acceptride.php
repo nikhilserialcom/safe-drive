@@ -92,7 +92,7 @@ if (isset($_POST['driverId']))
         if(mysqli_num_rows($check_booking) > 0)
         {
             // $request = mysqli_fetch_assoc($check_booking);
-            $updateRequestQuery = "UPDATE request SET amount = '$amount' , arrived_time = '$arrivedTime', status = 'accept'  WHERE driver_id = '$driverId' AND user_id = '$userId'";
+            $updateRequestQuery = "UPDATE request SET amount = '$amount' , arrived_time = '$arrivedTime' WHERE driver_id = '$driverId' AND user_id = '$userId'";
             $updateRequest = mysqli_query($con,$updateRequestQuery);
     
             if($updateRequest)

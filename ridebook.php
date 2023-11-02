@@ -16,6 +16,35 @@ header("content-type:application/json");
 
 // }
 
+function softDeleteDriverRequest($userId)
+{
+    global $con;
+    $data = [];
+    $checkDriverRequestQuery = "SELECT * FROM driver_request WHERE user_id = '$userId'";
+    $checkDriverRequest = mysqli_query($con,$checkDriverRequestQuery);
+
+    if(mysqli_num_rows($checkDriverRequest) > 0)
+    {
+        while($row = mysqli_fetch_assoc($checkDriverRequest))
+        {
+           $insertRequestQuery = "INSERT INTO trash_driver_request(user_id,driverId,firstname,photo,vehicleType,vahicleBrand,rating,amount,time,arrived_status)VALUES('{$row['user_id']}','{$row['driverId']}','{$row['firstname']}','{$row['photo']}','{$row['vehicleType']}','{$row['vehicleBrand']}','{$row['rating']}','{$row['amount']}','{$row['time']}','{$row['arrived_status']}')";
+           $insertRequest = mysqli_query($con,$insertRequestQuery);
+           if($insertRequest)
+           {
+                $deletedriverRequest =mysqli_query($con,"DELETE FROM driver_request WHERE user_id = '$userId'");
+                $response['status'] = "200";                                
+           }  
+        }
+    }
+    else
+    {
+        $response['status'] = "404";
+        $response['message'] = "Database empty";
+    }
+
+    return $response;
+}
+
 if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['pickupLongitude']) && isset($_POST['dropLatitude']) && isset($_POST['dropLongitude']))
 {
     $userId = $_POST['userId'];
@@ -44,9 +73,10 @@ if(isset($_POST['amount']) && isset($_POST['pickupLetitude']) && isset($_POST['p
             $insertRide = mysqli_query($con,$insertRideQuery);
             if($insertRide)
             {
-                $deletedriverRequestQuery = "DELETE FROM driver_request WHERE user_id = '$userId'";
-                $deletedriverRequest = mysqli_query($con,$deletedriverRequestQuery);
+                $updateRequestQuery = "UPDATE request SET status = '$status' WHERE driver_id = '$driverId' AND user_id = '$userId'";
+                $updateRequest = mysqli_query($con,$updateRequestQuery);
 
+                softDeleteDriverRequest($userId);
                 $response['status'] = "200";
                 $response['message'] = "Ride booking successfully!";
             }
