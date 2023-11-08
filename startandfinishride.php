@@ -116,6 +116,8 @@ if($_POST['driverId'])
                 $deleteRequestQuery  = "DELETE FROM request WHERE user_id = '$userId' AND driver_id = '$driverId'";
                 $deleteRequest =mysqli_query($con,$deleteRequestQuery);
 
+                $permenatdeleteQuery = mysqli_query($con,"DELETE FROM trash_driver_request WHERE user_id = '$userId' AND driver_id = '$driverId'");
+
                 $response['status'] = "200";
                 $response['message'] = "your Ride complete";
             }

@@ -9,13 +9,15 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
 {
     $userId = $_POST['userId'];
     $driverId = $_POST['driverId'];
+    $fromAddress = $_POST['fromAddress'];
+    $toAddress = $_POST['toAddress'];
 
     $findlocationQuery = mysqli_query($con,"SELECT * FROM user WHERE driverId='$driverId'");
     $data = mysqli_fetch_assoc($findlocationQuery);
     $driverLetitude = $data['driverLetitude'];
     $driverLongitude = $data['driverLongitude'];
 
-    $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId'";
+    $checkStatusQuery = "SELECT * FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId' AND fromAddress = '$fromAddress' AND toAddress = '$toAddress'";
     $checkStatus = mysqli_query($con,$checkStatusQuery);
     if(mysqli_num_rows($checkStatus) > 0)
     {
@@ -35,7 +37,14 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
                 $response['message'] = "waiting";
                 $response['driverLetitude'] = $driverLetitude;
                 $response['driverLongitude'] = $driverLongitude;
-            }   
+            } 
+            elseif($row['status'] == 'start')
+            {
+                $response['status'] = "200";
+                $response['message'] = "start";
+                $response['driverLetitude'] = $driverLetitude;
+                $response['driverLongitude'] = $driverLongitude;
+            }  
             else
             {
                 $response['status'] = "400";
@@ -47,14 +56,19 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
     }
     else
     {
-        $checkFinishRideQuery = "SELECT * FROM completerides WHERE userId = '$userId' AND driverId = '$driverId' AND rideStatus = 'finish'";
+        $checkFinishRideQuery = "SELECT * FROM completerides WHERE userId = '$userId' AND driverId = '$driverId' AND rideStatus = 'finish' AND fromAddress = '$fromAddress' AND toAddress = '$toAddress'";
         $checkFinishRide = mysqli_query($con,$checkFinishRideQuery);
-
         if(mysqli_num_rows($checkFinishRide) > 0)
         {
             $response['status'] = "200";
             $response['message'] = "finish";
         }
+        else
+        {
+            $response['status'] = "200";
+            $response['message'] = "cancel";
+        }
+
     }
 }
 else

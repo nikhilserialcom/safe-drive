@@ -221,7 +221,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
         $driverid = $drRequest['driverId'];
         $driverRequestQuery = "SELECT * FROM driver_request WHERE driverId = '$driverid' AND user_id = '$userId'";
         $driverRequest = mysqli_query($con,$driverRequestQuery);
-        if(mysqli_num_rows($driverRequest))
+        if(mysqli_num_rows($driverRequest) > 0)
         {
             while($data = mysqli_fetch_assoc($driverRequest))
             {
