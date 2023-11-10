@@ -40,10 +40,10 @@ function sendPushNotification($userId,$message)
             die('Error: ' . curl_error($ch));
         }
         curl_close($ch);
-        echo $response;
+        // echo $response;
     }
 
-    return $deviceToken;
+    // return $deviceToken;
 }
 
 
@@ -54,7 +54,7 @@ if(isset($_POST['outgoing_msg_id']) and isset($_POST['incoming_msg_id']))
     $message = mysqli_real_escape_string($con,$_POST['message']);
     $currenttime = date('h:i A');
 
-    $msg = sendPushNotification($incoming_msg_id,$message);
+    sendPushNotification($incoming_msg_id,$message);
     // echo $currenttime;
     if(!empty($message))
     {
@@ -63,7 +63,7 @@ if(isset($_POST['outgoing_msg_id']) and isset($_POST['incoming_msg_id']))
 
         if ($message) {
             $response['status'] = "200";
-            $response['message'] = $msg;
+            $response['message'] = 'send message';
         }
     }
     else

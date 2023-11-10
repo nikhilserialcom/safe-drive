@@ -18,7 +18,7 @@ if(isset($_POST['userId']))
         $otp = rand(1111,9999);
         // Your Account SID and Auth Token from console.twilio.com
         $sid = "AC9df1a8f5bea5649437e9a9ab191dbbdd";
-        $token = "af5825e06ff127d2e228251663bc4ca5";
+        $token = "38ec33869a7dd56497c3349bc9071407";
         $client = new Twilio\Rest\Client($sid, $token);
 
         $message = $client->messages->create(
