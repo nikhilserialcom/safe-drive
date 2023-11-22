@@ -8,8 +8,9 @@ $data = [
     'notification' => [
         'title' => 'Safe Drive',
         'body' => $_POST['message'],
-        // 'sound' => '21.mp3',
-        'image' => 'profile/31Cd9UQp6eL._AC_UF1000,1000_QL80_.jpg',
+    ],
+    "data" => [
+        "main_picture" => 'profile/icon.png',
     ],
 ];
 $headers = [
@@ -20,7 +21,7 @@ $ch = curl_init('https://fcm.googleapis.com/fcm/send');
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Not recommended for production
+// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Not recommended for production
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 $response = curl_exec($ch);
 if ($response === false) {
@@ -28,6 +29,6 @@ if ($response === false) {
 }
 curl_close($ch);
 
-echo json_encode($response);
+echo json_encode($response,JSON_PRETTY_PRINT);
 
 ?>

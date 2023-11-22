@@ -15,16 +15,22 @@ function sendPushNotification($userId,$message)
     if($token)
     {
         $deviceToken = $token['deviceToken'];
+        $firstName = $token['firstname'];
+        $lastname = $token['lastname'];
+        $profile = $token['photo'];
         $serverKey = 'AAAAzpUqMlE:APA91bEXySQ-4aw7rQB6Sloy2WLgyAr4XIEToPk5xo98u-wDOICMTC1ExzysY0SYBBio24gHaFgQlPh0BV3RIL-Ls34Y-d-_v205s79Bxj6MZ-tH2WI7_mlp6jGXtsxB5gNmloxmIIgQ'; // Replace with your Firebase Server Key
         $data = [
             'to' => $deviceToken, // The recipient's FCM token
             'notification' => [
-                'title' => 'Safe Drive',
-                'body' => $message,
-                // 'sound' => '21.mp3',
-                // 'image' => 'https://mcdn.wallpapersafari.com/medium/55/83/Pl6QHc.jpg',
+              'title' => $firstName . ' ' . $lastname,
+              'body' => $message,
+              'image' => [
+                'url' => 'http://192.168.1.3/safe-drive/' . $profile,
+                'width' => '50px',
+                'height' => '50px',
+              ],
             ],
-        ];
+          ];
         $headers = [
             'Authorization: key=' . $serverKey,
             'Content-Type: application/json',
@@ -33,7 +39,7 @@ function sendPushNotification($userId,$message)
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Not recommended for production
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Not recommended for production
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         $response = curl_exec($ch);
         if ($response === false) {
