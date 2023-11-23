@@ -13,18 +13,26 @@ if ($_POST['outgoing_id'] && $_POST['incoming_id'])
 
     $response = array(); 
 
-    while ($row = mysqli_fetch_assoc($chat)) {
-        if($row['outgoing_msg_id'] == $outgoing_id)
-        {
-            $response['status'] = '200';
-            $response['chat'][] = $row;
-        }
-        else
-        {
-            $response['status'] = '200';
-            $response['chat'][] = $row;
+    if(mysqli_num_rows($chat))
+    {
+        while ($row = mysqli_fetch_assoc($chat)) {
+            if($row['outgoing_msg_id'] == $outgoing_id)
+            {
+                $response['status'] = '200';
+                $response['chat'][] = $row;
+            }
+            else
+            {
+                $response['status'] = '200';
+                $response['chat'][] = $row;
+            }
         }
     }
+    else{
+        $response['status'] = '500';
+        $response['chat'] = [];
+    }
+    
 } else {
     $response['status'] = "500";
     $response['message'] = "ERROR: Insufficient data provided.";

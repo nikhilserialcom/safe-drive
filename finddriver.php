@@ -38,12 +38,12 @@ function calculateAverangeRating($driverId)
     }
 
     $averangeRating = 0;
-    if($averangeRating > 0)
+    if($totalReviews > 0)
     {
         $averangeRating = ($totalRating / $totalReviews);
     }
 
-    return round($averangeRating,2);
+    return number_format($averangeRating,1);
 }
 
 function sendPushNotification($driverId)
@@ -199,7 +199,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
         $rating = calculateAverangeRating($driverId);
         
         if ($distance <= $range) {
-            $driver['distance'] = $distance * 1000;
+            $driver['distance'] = number_format($distance,3);
             $availableDrivers[] = $driver;
         }
     }
@@ -207,6 +207,7 @@ if (isset($_POST['passengerLat']) && isset($_POST['passengerLog'])) {
     if($availableDrivers)
     {
         $response['status'] = "200";
+        $response['rating'] = $rating;
         // $response['driverequest'] = $availableDrivers;
         $response['message'] = "Request send to driver";
     }

@@ -62,11 +62,15 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
         {
             $response['status'] = "200";
             $response['message'] = "finish";
+            $response['driverLetitude'] = $driverLetitude;
+            $response['driverLongitude'] = $driverLongitude;
         }
         else
         {
             $response['status'] = "200";
             $response['message'] = "cancel";
+            $response['driverLetitude'] = $driverLetitude;
+            $response['driverLongitude'] = $driverLongitude;
         }
 
     }

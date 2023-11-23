@@ -12,6 +12,15 @@ function sendPushNotification($userId,$message)
     $findToken = mysqli_query($con,$findTokenQuery);
     $token =  mysqli_fetch_assoc($findToken);
 
+    if($userId == $token['driverId'])
+    {
+        $userType = 'Driver';
+    }
+    else
+    {
+        $userType = 'Pessanger';
+    }
+
     if($token)
     {
         $deviceToken = $token['deviceToken'];
@@ -22,15 +31,12 @@ function sendPushNotification($userId,$message)
         $data = [
             'to' => $deviceToken, // The recipient's FCM token
             'notification' => [
-              'title' => $firstName . ' ' . $lastname,
-              'body' => $message,
-              'image' => [
-                'url' => 'http://192.168.1.3/safe-drive/' . $profile,
-                'width' => '50px',
-                'height' => '50px',
-              ],
+                'title' => $firstName . ' ' . $lastname . ' (' . $userType . ')',
+                'body' => $message,
+                'image' => 'http://192.168.1.3/safe-drive/' . $profile,
             ],
-          ];
+            
+        ];
         $headers = [
             'Authorization: key=' . $serverKey,
             'Content-Type: application/json',

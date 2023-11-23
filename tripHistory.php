@@ -66,7 +66,7 @@ if (isset($_POST['userId']))
                     $upcoming['Number_plate'] = $data['Number_plate'];
                     $upcoming['driverLetitude'] = $data['driverLetitude'];
                     $upcoming['driverLongitude'] = $data['driverLongitude'];
-                    $upcoming['vehicleBrand'] = $driver['vehicleBrand'];
+                    $upcoming['vehicleBrand'] = $driver['vahicleBrand'];
                     $upcoming['rating'] = $driver['rating'];
                     $upcoming['time'] = $driver['time'];
                     $response['status'] = "200";

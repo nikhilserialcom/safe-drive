@@ -25,12 +25,12 @@ function calculateAverangeRating($driverId)
     }
 
     $averangeRating = 0;
-    if($averangeRating > 0)
+    if($totalReviews > 0)
     {
         $averangeRating = ($totalRating / $totalReviews);
     }
 
-    return round($averangeRating,2);
+    return number_format($averangeRating,1);
 }
 
 
