@@ -33,7 +33,6 @@ function sendPushNotification($userId,$message)
             'notification' => [
                 'title' => $firstName . ' ' . $lastname . ' (' . $userType . ')',
                 'body' => $message,
-                'image' => 'http://192.168.1.3/safe-drive/' . $profile,
             ],
             
         ];

@@ -20,8 +20,6 @@ function sendPushNotification($driverId)
             'notification' => [
                 'title' => 'Safe Drive',
                 'body' => 'your ride cancle',
-                // 'sound' => '21.mp3',
-                'image' => $token['photo'],
             ],
         ];
         $headers = [
