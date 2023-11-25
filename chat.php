@@ -5,14 +5,14 @@ header("content-type:application/json");
 
 date_default_timezone_set('Asia/Kolkata');
 
-function sendPushNotification($userId,$message)
+function sendPushNotification($userId,$deviceToken,$message)
 {
     global $con;
-    $findTokenQuery = "SELECT * FROM user WHERE driverId = '$userId' or Id = '$userId'";
-    $findToken = mysqli_query($con,$findTokenQuery);
-    $token =  mysqli_fetch_assoc($findToken);
+    $recieverDataQuery = "SELECT * FROM user WHERE driverId = '$userId' or Id = '$userId'";
+    $recieverData = mysqli_query($con,$recieverDataQuery);
+    $reciever =  mysqli_fetch_assoc($recieverData);
 
-    if($userId == $token['driverId'])
+    if($userId == $reciever['driverId'])
     {
         $userType = 'Driver';
     }
@@ -21,12 +21,10 @@ function sendPushNotification($userId,$message)
         $userType = 'Pessanger';
     }
 
-    if($token)
+    if($reciever)
     {
-        $deviceToken = $token['deviceToken'];
-        $firstName = $token['firstname'];
-        $lastname = $token['lastname'];
-        $profile = $token['photo'];
+        $firstName = $reciever['firstname'];
+        $lastname = $reciever['lastname'];
         $serverKey = 'AAAAzpUqMlE:APA91bEXySQ-4aw7rQB6Sloy2WLgyAr4XIEToPk5xo98u-wDOICMTC1ExzysY0SYBBio24gHaFgQlPh0BV3RIL-Ls34Y-d-_v205s79Bxj6MZ-tH2WI7_mlp6jGXtsxB5gNmloxmIIgQ'; // Replace with your Firebase Server Key
         $data = [
             'to' => $deviceToken, // The recipient's FCM token
@@ -65,7 +63,11 @@ if(isset($_POST['outgoing_msg_id']) and isset($_POST['incoming_msg_id']))
     $message = mysqli_real_escape_string($con,$_POST['message']);
     $currenttime = date('h:i A');
 
-    sendPushNotification($incoming_msg_id,$message);
+    $findTokenQuery = "SELECT * FROM user WHERE driverId = '$incoming_msg_id' or Id = '$incoming_msg_id'";
+    $findToken = mysqli_query($con,$findTokenQuery);
+    $token =  mysqli_fetch_assoc($findToken);
+
+    sendPushNotification($outgoing_msg_id, $token['deviceToken'],$message);
     // echo $currenttime;
     if(!empty($message))
     {
