@@ -3,12 +3,38 @@
 require 'db.php';
 header("content-type:application/json");
 
+function Driverdata($dirverId){
+
+    global $con;
+
+    $dataQuery = mysqli_query($con,"SELECT driverLetitude,driverLongitude,mobile_number,Number_plate,firstname FROM user INNER JOIN vehicleinfo ON user.driverId = vehicleinfo.driverId WHERE user.driverId = '$dirverId'");
+    $data = mysqli_fetch_assoc($dataQuery);
+
+    $driverdataQuery = "SELECT * FROM trash_driver_request WHERE driverId = '$dirverId'";
+    $driverdata = mysqli_query($con,$driverdataQuery);
+    $driver = mysqli_fetch_assoc($driverdata);
+    $driverdata = array(
+        'drivername' => $data['firstname'],
+        'profile' => $driver['photo'],
+        'mobile_number' => $data['mobile_number'],
+        'Number_plate' => $data['Number_plate'],
+        'driverLetitude' => $data['driverLetitude'],
+        'driverLongitude' => $data['driverLongitude'],
+        'vehicleBrand' => $driver['vahicleBrand'],
+        'rating' => $driver['rating'],
+        'time' => $driver['time'],
+    );
+
+    return $driverdata;
+
+}
+
 if (isset($_POST['userId'])) 
 {
     $userId = $_POST['userId'];
     $tripStatus = $_POST['tripStatus'];
 
-    if($tripStatus == "past")
+    if($tripStatus == "cancel")
     {
         $tripHistoryQuery = "SELECT * FROM completerides WHERE userId = '$userId' OR driverId = '$userId'";
         $tripHistory = mysqli_query($con,$tripHistoryQuery);
@@ -17,7 +43,7 @@ if (isset($_POST['userId']))
         {
             while($row = mysqli_fetch_assoc($tripHistory))
             {
-                if($row['userId'] == "$userId" || $row['driverId'] == "$userId")
+                if(($row['userId'] == "$userId" && $row['rideStatus'] == "cancel") || ($row['driverId'] == "$userId" && $row['rideStatus'] == "cancel"))
                 {
                     $dirverId = $row['driverId'];
                     $driverDataQuery = "SELECT * FROM user WHERE driverId = '$dirverId'";
@@ -27,77 +53,57 @@ if (isset($_POST['userId']))
                     $response['status'] = "200";
                     $response['data'][] = $row;
                 }
-                else
-                {
-                    $response['status'] = "400";
-                    $response['message'] = 'database empty';
-                }
             }
         }
         else
         {
             $response['status'] = "404";
-            $response['message'] = "database empty";
+            $response['message'] = "past database empty";
         }
     }
     else
     {
         $upcomingTripQuery = "SELECT * FROM book_ride WHERE userId = '$userId' OR driverId = '$userId'";
         $upcomingTrip = mysqli_query($con,$upcomingTripQuery);
+        $upcomingData = [];
 
-        $time = '';
-
-        if(mysqli_num_rows($upcomingTrip) > 0)
+        while($upcoming = mysqli_fetch_assoc($upcomingTrip))
         {
-            while($upcoming = mysqli_fetch_assoc($upcomingTrip))
+            if($upcoming['userId'] == $userId)
             {
-                if($upcoming['userId'] == $userId)
-                {
-                    $dataQuery = mysqli_query($con,"SELECT driverLetitude,driverLongitude,mobile_number,Number_plate FROM user INNER JOIN vehicleinfo ON user.driverId = vehicleinfo.driverId WHERE user.driverId = '{$upcoming['driverId']}'");
-                    $data = mysqli_fetch_assoc($dataQuery);
-
-                    $driverdataQuery = "SELECT * FROM trash_driver_request WHERE driverId = '{$upcoming['driverId']}'";
-                    $driverdata = mysqli_query($con,$driverdataQuery);
-                    $driver = mysqli_fetch_assoc($driverdata);
-
-                    $upcoming['drivername'] = $driver['firstname'];
-                    $upcoming['profile'] = $driver['photo'];
-                    $upcoming['mobile_number'] = $data['mobile_number'];
-                    $upcoming['Number_plate'] = $data['Number_plate'];
-                    $upcoming['driverLetitude'] = $data['driverLetitude'];
-                    $upcoming['driverLongitude'] = $data['driverLongitude'];
-                    $upcoming['vehicleBrand'] = $driver['vahicleBrand'];
-                    $upcoming['rating'] = $driver['rating'];
-                    $upcoming['time'] = $driver['time'];
-                    $response['status'] = "200";
-                    $response['data'][] = $upcoming;
-                }
-                elseif($upcoming['driverId'] == $userId)
-                {
-                    $driverdataQuery = "SELECT * FROM trash_driver_request WHERE driverId = '{$upcoming['driverId']}'";
-                    $driverdata = mysqli_query($con,$driverdataQuery);
-                    $driver = mysqli_fetch_assoc($driverdata);
-
-                    $dataQuery = mysqli_query($con,"SELECT * FROM user  WHERE id = '{$upcoming['userId']}'");
-                    $data = mysqli_fetch_assoc($dataQuery);
-                    $upcoming['profile'] = $data['photo'];
-                    $upcoming['mobile_number'] = $data['mobile_number'];
-                    $upcoming['time'] = $driver['time'];
-                    $response['status'] = "200";
-                    $response['data'][] = $upcoming;
-                }
-                else
-                {
-                    $response['status'] = "404";
-                    $response['message'] = "user not found";
-                }
+                $upcoming['driverdata'] = Driverdata($upcoming['driverId']);
+                $upcomingData[] = $upcoming;
+            }
+            elseif($upcoming['driverId'] == $userId)
+            {
+                $upcoming['driverdata'] = Driverdata($upcoming['driverId']);
+                $upcomingData[] = $upcoming;
             }
         }
-        else
+        $time = '';
+
+        $pastTripQuery = "SELECT * FROM completerides WHERE userId = '$userId' OR driverId = '$userId'";
+        $pastTrip = mysqli_query($con,$pastTripQuery);
+        $pastData = [];
+        
+        while($pastTripData = mysqli_fetch_assoc($pastTrip))
         {
-            $response['staus'] = "404";
-            $response['message'] = "database empty";
+            if($pastTripData['userId'] == $userId && $pastTripData['rideStatus'] == 'finish')
+            {
+                $pastTripData['driverData'] = Driverdata($pastTripData['driverId']);
+                $pastData[] = $pastTripData;
+            }
+            elseif($pastTripData['driverId'] == $userId && $pastTripData['rideStatus'] == 'finish')
+            {
+                $pastTripData['driverData'] = Driverdata($pastTripData['driverId']);
+                $pastData[] = $pastTripData;
+            }
         }
+
+
+        $totalData = array_merge($upcomingData,$pastData);
+        $response['status'] = "200";
+        $response['data'] = $totalData; 
     }
     
 

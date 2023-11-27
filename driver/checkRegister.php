@@ -6,7 +6,11 @@ header("content-type:application/json");
 if($_POST['driverId'])
 {
     $driverId = $_POST['driverId'];
-    $table_name = ['user','driving_licese_info','vehicleinfo','police_clearance_certificate','adhaarcard'];
+    $dataQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
+    $data = mysqli_query($con, $dataQuery);
+    $driverdata = mysqli_fetch_assoc($data);
+
+    $table_name = ['user','driving_licese_info','vehicleinfo','police_clearance_certificate','adhaarcard','vehicle_insurance'];
 
     $checkData = array();
     foreach($table_name as $name)
@@ -31,6 +35,7 @@ if($_POST['driverId'])
         }
     }
 
+    $checkData['vehicleType'] = $driverdata['vehicleType'];
     $response['status'] = "200";
     $response['table'] = $checkData;
 }
