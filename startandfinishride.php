@@ -23,6 +23,7 @@ if($_POST['driverId'])
             if($statusUpdate)
             {
                 $response['status'] = "200";
+                $response['rideStatus'] = $status;
                 $response['message'] = "you are arrived at pickup point";
             }
         }
@@ -45,6 +46,7 @@ if($_POST['driverId'])
             if($statusUpdate)
             {
                 $response['status'] = "200";
+                $response['rideStatus'] = $status;
                 $response['message'] = "your ride waiting";
             }
         }
@@ -67,6 +69,7 @@ if($_POST['driverId'])
             if($statusUpdate)
             {
                 $response['status'] = "200";
+                $response['rideStatus'] = $status;
                 $response['message'] = "your ride start";
             }
         }
@@ -105,7 +108,7 @@ if($_POST['driverId'])
         $data = mysqli_fetch_assoc($checkStatus);
         if($data)
         {
-            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,rideStatus,fromAddress,toAddress,booking_date)VALUES('{$data['userId']}','{$data['driverId']}','{$data['pessangerName']}','{$data['pickup_letitude']}','{$data['pickup_longitude']}','{$data['drop_letitude']}','{$data['drop_longitude']}','{$data['vehicle_type']}','{$data['amount']}','{$data['payment_mode']}','$status','{$data['fromAddress']}','{$data['toAddress']}','{$data['booking_date']}')";
+            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status,fromAddress,toAddress,booking_date)VALUES('{$data['userId']}','{$data['driverId']}','{$data['pessangerName']}','{$data['pickup_letitude']}','{$data['pickup_longitude']}','{$data['drop_letitude']}','{$data['drop_longitude']}','{$data['vehicle_type']}','{$data['amount']}','{$data['payment_mode']}','$status','{$data['fromAddress']}','{$data['toAddress']}','{$data['booking_date']}')";
             $insertComplete = mysqli_query($con,$insertCompleteQuery);  
 
             if($insertComplete)
@@ -119,6 +122,7 @@ if($_POST['driverId'])
                 $permenatdeleteQuery = mysqli_query($con,"DELETE FROM trash_driver_request WHERE user_id = '$userId' AND driverId = '$driverId'");
 
                 $response['status'] = "200";
+                $response['rideStatus'] = $status;
                 $response['message'] = "your Ride complete";
             }
         }

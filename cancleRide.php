@@ -41,6 +41,8 @@ function sendPushNotification($driverId)
     }
 }
 
+$response = array();
+
 if(isset($_POST['userId']))
 {
     $userId = $_POST['userId'];
@@ -67,7 +69,7 @@ if(isset($_POST['userId']))
             //     $response['message'] = "cancle your ride";
             // }
 
-            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,rideStatus,cancleReason,fromAddress,toAddress,booking_date)VALUES('{$row['userId']}','{$row['driverId']}','{$row['pessangerName']}','{$row['pickup_letitude']}','{$row['pickup_longitude']}','{$row['drop_letitude']}','{$row['drop_longitude']}','{$row['vehicle_type']}','{$row['amount']}','{$row['payment_mode']}','cancel','$cancleReason','{$row['fromAddress']}','{$row['toAddress']}','{$row['booking_date']}')";
+            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status,cancelReason,fromAddress,toAddress,booking_date)VALUES('{$row['userId']}','{$row['driverId']}','{$row['pessangerName']}','{$row['pickup_letitude']}','{$row['pickup_longitude']}','{$row['drop_letitude']}','{$row['drop_longitude']}','{$row['vehicle_type']}','{$row['amount']}','{$row['payment_mode']}','cancel','$cancleReason','{$row['fromAddress']}','{$row['toAddress']}','{$row['booking_date']}')";
             $insertComplete = mysqli_query($con,$insertCompleteQuery);  
 
             if($insertComplete)
@@ -75,13 +77,17 @@ if(isset($_POST['userId']))
                 $deleteUserRideQuery = "DELETE FROM book_ride WHERE userId = '$userId'";
                 $deleteUserRide = mysqli_query($con,$deleteUserRideQuery);
 
-                $deleteRequestQuery = "DELETE from request where user_id = '$userId' and driverId = '$driverId'";
+                $deleteRequestQuery = "DELETE from request where user_id = '$userId'";
                 $deleteRequest = mysqli_query($con,$deleteRequestQuery);
 
                 $response['status'] = "200";
                 $response['message'] = "your Ride cancel";
             }
         }
+    }
+    else{
+        $response['status'] = "400";
+        $response['message'] = "ERROR:" . mysqli_error($con);
     }
 
 }
@@ -109,7 +115,7 @@ elseif(isset($_POST['userId']) && isset($_POST['driverId']))
     {
         while($row = mysqli_fetch_assoc($checkRide))
         {
-            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,rideStatus,cancleReason,fromAddress,toAddress,booking_date)VALUES('{$row['userId']}','{$row['driverId']}','{$row['pessangerName']}','{$row['pickup_letitude']}','{$row['pickup_longitude']}','{$row['drop_letitude']}','{$row['drop_longitude']}','{$row['vehicle_type']}','{$row['amount']}','{$row['payment_mode']}','cancel','$cancleReason','{$row['fromAddress']}','{$row['toAddress']}','{$row['booking_date']}')";
+            $insertCompleteQuery = "INSERT INTO completerides(userId,driverId,pessangerName,pickup_letitude,pickup_longitude,drop_letitude,drop_longitude,vehicle_type,amount,payment_mode,status,cancelReason,fromAddress,toAddress,booking_date)VALUES('{$row['userId']}','{$row['driverId']}','{$row['pessangerName']}','{$row['pickup_letitude']}','{$row['pickup_longitude']}','{$row['drop_letitude']}','{$row['drop_longitude']}','{$row['vehicle_type']}','{$row['amount']}','{$row['payment_mode']}','cancel','$cancleReason','{$row['fromAddress']}','{$row['toAddress']}','{$row['booking_date']}')";
             $insertComplete = mysqli_query($con,$insertCompleteQuery);  
 
             if($insertComplete)
@@ -117,13 +123,17 @@ elseif(isset($_POST['userId']) && isset($_POST['driverId']))
                 $deleteUserRideQuery = "DELETE FROM book_ride WHERE userId = '$userId' AND driverId = '$driverId'";
                 $deleteUserRide = mysqli_query($con,$deleteUserRideQuery);
 
-                $deleteRequestQuery = "DELETE from request where user_id = '$userId' and driverId = '$driverId'";
+                $deleteRequestQuery = "DELETE from request where user_id = '$userId' and driver_id = '$driverId'";
                 $deleteRequest = mysqli_query($con,$deleteRequestQuery);
 
                 $response['status'] = "200";
                 $response['message'] = "your Ride cancel";
             }
         }
+    }
+    else{
+        $response['status'] = "400";
+        $response['message'] = "ERROR:" . mysqli_error($con);
     }
 }
 else

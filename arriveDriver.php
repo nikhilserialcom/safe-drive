@@ -56,7 +56,7 @@ if(isset($_POST['userId']) && isset($_POST['driverId']))
     }
     else
     {
-        $checkFinishRideQuery = "SELECT * FROM completerides WHERE userId = '$userId' AND driverId = '$driverId' AND rideStatus = 'finish' AND fromAddress = '$fromAddress' AND toAddress = '$toAddress'";
+        $checkFinishRideQuery = "SELECT * FROM completerides WHERE userId = '$userId' AND driverId = '$driverId' AND status = 'finish' AND fromAddress = '$fromAddress' AND toAddress = '$toAddress'";
         $checkFinishRide = mysqli_query($con,$checkFinishRideQuery);
         if(mysqli_num_rows($checkFinishRide) > 0)
         {
