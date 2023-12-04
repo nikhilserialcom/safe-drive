@@ -82,6 +82,8 @@ function passngerData($userId)
     return $passngerData;
 }
 
+$response = array();
+
 if (isset($_POST['userId'])) 
 {
     $userId = $_POST['userId'];
@@ -91,7 +93,7 @@ if (isset($_POST['userId']))
     {
         $tripHistoryQuery = "SELECT * FROM completerides WHERE userId = '$userId' OR driverId = '$userId'";
         $tripHistory = mysqli_query($con,$tripHistoryQuery);
-
+        $cancelData = array();
         if(mysqli_num_rows($tripHistory) > 0)
         {
             while($row = mysqli_fetch_assoc($tripHistory))
@@ -103,10 +105,20 @@ if (isset($_POST['userId']))
                     $driverdata = mysqli_query($con,$driverDataQuery);
                     $driver = mysqli_fetch_assoc($driverdata);
                     $row['drivername'] = $driver['firstname'];
-                    $response['status'] = "200";
-                    $response['data'][] = $row;
+                    $cancelData[] = $row;
                 }
             }
+
+            if($cancelData)
+            {
+                $response['status'] = "200";
+                $response['data'] = $cancelData;
+            }
+            else
+            {
+                $response['status'] = "null";
+            }
+
         }
         else
         {
@@ -168,8 +180,11 @@ if (isset($_POST['userId']))
 
 
         $totalData = array_merge($upcomingData,$pastData);
-        $response['status'] = "200";
-        $response['data'] = $totalData; 
+        if($totalData)
+        {
+            $response['status'] = "200";
+            $response['data'] = $totalData; 
+        }   
     }
     
 

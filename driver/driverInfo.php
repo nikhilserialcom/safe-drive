@@ -60,8 +60,8 @@ if(isset($_POST['driverId']))
                 {
                     $image_tmp_name = $_FILES['profile']['tmp_name'];
                     $file = rand(111111111,999999999).".jpg";
-                    $image_folder = "../../profile/";
-                    $filepath = $image_folder.$file;
+                    $image_folder = "../profile/";
+                    $filepath = "profile/".$file;
                     if (!file_exists($image_folder)) {
                         mkdir($image_folder, 0755, true);
                     }
