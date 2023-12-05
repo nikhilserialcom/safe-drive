@@ -9,39 +9,32 @@ header("content-type: application/json");
 
 session_start();
 
-// $data = json_decode(file_get_contents('php://input'),true);
-if(!isset($_SESSION['user_email']))
-{
+$userEmail = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '          ';
+
+if (!isset($_SESSION['user_email'])) {
     $response = array(
-        'status_code' => 400,
+        'status_code' => 440,
         'email' => 'your session is expire'
     );
-    
-}
+} else {
+    $checkUserQuery = "SELECT * FROM superuser WHERE s_email = '$userEmail'";
+    $checkUser = mysqli_query($con, $checkUserQuery);
 
-$userEmail = $_SESSION['user_email']; 
+    if (mysqli_num_rows($checkUser) > 0) {
+        while ($row = mysqli_fetch_assoc($checkUser)) {
+            $response = array(
+                'status_code' => 200,
+                'userData' => $row
+            );
+        }
+    } else {
 
-$checkUserQuery = "SELECT * FROM superuser WHERE s_email = '$userEmail'";
-$checkUser = mysqli_query($con,$checkUserQuery);
-
-if(mysqli_num_rows($checkUser) > 0)
-{
-    while($row = mysqli_fetch_assoc($checkUser))
-    {
         $response = array(
-            'status_code' => 200,
-            'userData' => $row
+            'status_code' => 404,
+            'message' => 'database empty'
         );
     }
 }
-else
-{
-    
-    $response = array(
-        'status_code' => 404,
-        'message' => 'database empty'
-    );
-}
 
-echo json_encode($response,JSON_PRETTY_PRINT);
-?>
+
+echo json_encode($response, JSON_PRETTY_PRINT);

@@ -20,14 +20,12 @@ if(!isset($_SESSION['user_email']))
 }
 
 $userId = $data['userId'];
-
-
 // $response = array(
 //     'status_code' => 200,
 //     'userData' => $userId
 // );
 
-$checkUserQuery = "SELECT * FROM user WHERE id = '$userId'";
+$checkUserQuery = "SELECT * FROM user WHERE driverId = '$userId'";
 $checkUser = mysqli_query($con,$checkUserQuery);
 
 if(mysqli_num_rows($checkUser) > 0)

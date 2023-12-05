@@ -59,7 +59,9 @@ if(isset($_POST['driverId']))
                 if(!empty($image))
                 {
                     $image_tmp_name = $_FILES['profile']['tmp_name'];
-                    $file = rand(111111111,999999999).".jpg";
+                    $profileNewPart = explode('.', $image['name']);
+                    $extension = end($profileNewPart);
+                    $file = rand(111111111,999999999) . $extension;
                     $image_folder = "../profile/";
                     $filepath = "profile/".$file;
                     if (!file_exists($image_folder)) {
@@ -70,7 +72,7 @@ if(isset($_POST['driverId']))
                         $updateImage = mysqli_query($con,$image_query); 
                         if($updateImage>0)
                         {
-                            move_uploaded_file($image_tmp_name,$filepath);
+                            move_uploaded_file($image_tmp_name,$image_folder . $file);
                             $response['status'] = "200";
                         }       
                 }

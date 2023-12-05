@@ -14,11 +14,11 @@
                 <span>nikhil@gmail.com</span>
             </div> -->
         </div>
-        <div class="modal_btn d_flex">
+        <!-- <div class="modal_btn d_flex">
             <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
             <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
             <button class="view_btn"><i class='bx bxs-show'></i></button>
-        </div>
+        </div> -->
     </div>
 </div>
 <section class="content">
@@ -54,7 +54,7 @@
             <li>
                 <i class='bx bxs-user bg-label-primary'></i>
                 <span class="text">
-                    <h3>1.5K</h3>
+                    <h3 class="total_driver">1.5K</h3>
                     <p>total users</p>
                 </span>
             </li>
@@ -204,6 +204,6 @@
     </main>
 </section>
 
-<script src="assets/js/userlist.js"></script>
+<script src="assets/js/userlist.js" type="module"></script>
 
 <?php require_once 'layout/footer.php'; ?>

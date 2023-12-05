@@ -48,7 +48,7 @@ if(isset($_POST['driverId']))
                 if (move_uploaded_file($policeCertificateTmpName, $policeCertificatePath)) {
                     $update_query = "UPDATE police_clearance_certificate SET Police_clearance_certificate = '$policeCertificatePath' WHERE driverId = '$id'";
                     $update = mysqli_query($con, $update_query);
-                    if ($insert) {
+                    if ($update) {
                         $response['status'] = "200";
                         $response['message'] = "Record UPdated";
                     }

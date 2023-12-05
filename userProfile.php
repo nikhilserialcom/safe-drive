@@ -5,19 +5,19 @@ header("content-type:application/json");
 
 $response = array();
 
-function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
-{   
-    global $response,$con;
+// function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
+// {   
+//     global $response,$con;
 
-    $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE id = '$driverId'");
+//     $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE id = '$driverId'");
 
-    if($updateLocation)
-    {
-        $response['status'] = "true";
-        $response['message'] = "update location";
-    }
+//     if($updateLocation)
+//     {
+//         $response['status'] = "true";
+//         $response['message'] = "update location";
+//     }
 
-}
+// }
 
 if (isset($_POST['userId'])) 
 {
@@ -29,15 +29,15 @@ if (isset($_POST['userId']))
     $checkUserQuery = "SELECT * FROM user WHERE id = '$userId'";
     $checkUser = mysqli_query($con,$checkUserQuery);
 
-     if(isset($_POST['driverLetitude']) && isset($_POST['driverLongitude']))
-     {
-        $driverLetitude = $_POST['driverLetitude'];
-        $driverLogitude = $_POST['driverLongitude'];
-        if(!empty($driverLetitude) && !empty($driverLogitude))
-        {
-            updateDriverLocation($driverLetitude,$driverLogitude,$userId);
-        }
-     }
+    //  if(isset($_POST['driverLetitude']) && isset($_POST['driverLongitude']))
+    //  {
+    //     $driverLetitude = $_POST['driverLetitude'];
+    //     $driverLogitude = $_POST['driverLongitude'];
+    //     if(!empty($driverLetitude) && !empty($driverLogitude))
+    //     {
+    //         updateDriverLocation($driverLetitude,$driverLogitude,$userId);
+    //     }
+    //  }
 
     if (mysqli_num_rows($checkUser) > 0) 
     {
@@ -57,15 +57,20 @@ if (isset($_POST['userId']))
             }  
         }
 
-        if(isset($_FILES['profile']))
+        if(isset($_FILES['profile']) && !empty($_FILES['profile']['tmp_name']))
         {
             $photo = $_FILES['profile'];
             if(!empty($photo))
             {
                 $profileTmpName = $_FILES['profile']['tmp_name'];
-                $fileName = rand(111111111,999999999) . ".jpg";
+                $profileNewPart = explode('.', $photo['name']);
+                $extension = end($profileNewPart);
+                $fileName = rand(111111111,999999999) . $extension;
                 $filedir = "profile/";
                 $filePath = $filedir.$fileName;
+                if (!file_exists($filedir)) {
+                    mkdir($filedir, 0755, true);
+                }
 
                 $profileQuery = "UPDATE user SET photo = '$filePath' WHERE id = '$userId'";
                 $profile = mysqli_query($con,$profileQuery);

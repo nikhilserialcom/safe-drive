@@ -45,17 +45,64 @@ if(isset($_POST['driverId']))
                 $response['message'] = "record adhhar number updated";    
             }
         }
-        if(isset($_FILES['frontadhaar']))
+        if(isset($_FILES['frontadhaar']) && !empty( $_FILES['frontadhaar']['tmp_name']))
         {
-            $front = $_FILES['frontaddhar'];
+            $front = $_FILES['frontadhaar'];
             if(!empty($front))
             {
-                $front_tmp = $_FILES['frontaddhar']['tmp_name'];
+                $front_tmp = $_FILES['frontadhaar']['tmp_name'];
                 $frontname = rand(111111111,999999999)."jpg";
                 $front_folder = 'uploaded/AdhaarCard/';
                 $frontpath = $front_folder.$frontname;
 
                 $update_image_query = "UPDATE adhaarcard SET front_photo_adhaar = '$frontpath' WHERE driverId = '$id'";
+                $update_image = mysqli_query($con,$update_image_query);
+
+                if($update_image_query)
+                {
+                    $response['status'] = "200";
+                    $response['message'] = "record updateded";    
+                }
+            }
+        }
+        if(isset($_FILES['backadhaar'])&& !empty( $_FILES['backadhaar']['tmp_name']))
+        {
+            $front = $_FILES['backadhaar'];
+            if(!empty($front))
+            {
+                $back_tmp = $_FILES['backadhaar']['tmp_name'];
+                $backname =rand(111111111,999999999).".jpg";
+                $back_folder = 'uploaded/AdhaarCard/';
+                $backpath = $back_folder.$backname;
+
+                $update_image_query = "UPDATE adhaarcard SET back_photo_adhaar = '$backpath' WHERE driverId = '$id'";
+                $update_image = mysqli_query($con,$update_image_query);
+
+                if($update_image_query)
+                {
+                    $response['status'] = "200";
+                    $response['message'] = "record updateded";    
+                }
+            }
+        }
+        if(isset($_FILES['selfiwithadhaar'])&& !empty( $_FILES['selfiwithadhaar']['tmp_name']))
+        {
+            $front = $_FILES['selfiwithadhaar'];
+            if(!empty($front))
+            {
+                $selfi_tmp = $_FILES['selfiwithadhaar']['tmp_name'];
+                $selfiname = rand(111111111,999999999).".jpg";
+                $selfi_folder = 'uploaded/AdhaarCard/';
+                $selfipath = $selfi_folder.$selfiname;
+
+                $update_image_query = "UPDATE adhaarcard SET selfi_with_adhaar = '$selfipath' WHERE driverId = '$id'";
+                $update_image = mysqli_query($con,$update_image_query);
+
+                if($update_image_query)
+                {
+                    $response['status'] = "200";
+                    $response['message'] = "record updateded";    
+                }
             }
         }
     }

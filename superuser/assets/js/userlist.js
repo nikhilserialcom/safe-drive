@@ -4,17 +4,20 @@ const user_title = document.querySelector('.user_modal .user_btn h3');
 const user_data_show = document.querySelector('.user_modal .user_data');
 // const view_mode = document.querySelector('.view_mode');
 
+const info_document_div = document.querySelectorAll('.info_document');
+const total_driver = document.querySelector('.total_driver');
 
+var totalDriver;
 
 const recent_user_url = 'api/recentuser.php';
-
-const  user_dataUrl = 'api/driverdata.php'
+const alldriverdata_url = 'api/alldriverdata.php';
+const user_dataUrl = 'api/driverdata.php'
 // console.log(user_list_box);
 
 const user_data = (user_id) => {
     fetch(user_dataUrl, {
         method: 'POST',
-        body:JSON.stringify({
+        body: JSON.stringify({
             userId: user_id
         }),
         headers: {
@@ -25,21 +28,36 @@ const user_data = (user_id) => {
         .then(json => {
             console.log(json);
             let driverData = json.driverData;
-            if(json.status_code == 200){
+           
+            if (json.status_code == 200) {
                 // console.log(user_data_show);
                 user_title.textContent = `detials for ${driverData.firstname} ${driverData.lastname}`;
                 const profile = driverData.photo ? `<img src="../${driverData.photo}" alt="" />` : '<img src="assets/img/user.png" alt="" />';
-                user_data_show.innerHTML = 
-                     `
+                user_data_show.innerHTML =
+                    `
                     <div class="user_pic">
                         ${profile}
                     </div>
+                    <input type="text" class="userId" value="${driverData.driverId}" hidden>
                     <div class="user_name d_flex flex_direction">
                         <span>${driverData.firstname} ${driverData.lastname}</span>
                         <span>${driverData.email}</span>
                     </div>
+                    <div class="modal_btn d_flex">
+                        <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
+                        <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
+                        <button class="view_btn"><i class='bx bxs-show'></i></button>
+                    </div>
                     `;
             }
+            const view_btn = document.querySelectorAll('.view_btn');
+            const driver_id = document.querySelector('.userId');
+
+            view_btn.forEach(element => {
+                element.addEventListener('click', () => {
+                    window.location.href = 'showuser.php' + `?id=${driver_id.value}`;
+                })
+            })
         })
 }
 const recent_user = () => {
@@ -51,11 +69,12 @@ const recent_user = () => {
     })
         .then(response => response.json())
         .then(json => {
-            // console.log(json);
+            console.log(json);
             let userData = json.userList;
+            totalDriver = json.totaldriver;
             if (json.status_code == 200) {
                 user_list_box.innerHTML = userData.map(val => {
-                    const { id,firstname, created_at, photo } = val;
+                    const { driverId, firstname, created_at,driverstatus, photo } = val;
                     const parseDate = new Date(created_at);
                     const formattedDate = new Intl.DateTimeFormat('en-US', {
                         year: 'numeric',
@@ -63,12 +82,12 @@ const recent_user = () => {
                         day: 'numeric'
                     }).format(parseDate);
                     const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/user.png" alt="" />';
-                    // let status = (user_status == "1") ? "driver" : "user";
-                    // let status_class = (user_status == "1") ? "complete" : "pending";
+                    let status = (driverstatus == "online") ? "active" : "pending";
+                    let status_class = (driverstatus == "online") ? "bg-label-success" : "bg-label-warning";
                     return `
                         <tr>
                             <td>
-                                <div class="plus_icon" id="${id}">
+                                <div class="plus_icon" id="${driverId}">
                                     <i class='bx bxs-plus-circle'></i>
                                 </div>
                             </td>
@@ -77,11 +96,11 @@ const recent_user = () => {
                                 <p>${firstname}</p>
                             </td>
                             <td>${formattedDate}</td>
-                            <td><span class="status pending">driver</span></td>
+                            <td><span class="status ${status_class}">${status}</span></td>
                             <td>
                                 <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
                                 <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
-                                <button class="view_btn"><i class='bx bxs-show'></i></button>
+                                <button class="view_btn" id="${driverId}"><i class='bx bxs-show'></i></button>
                             </td>
                         </tr>`;
                 }).join('');
@@ -89,16 +108,7 @@ const recent_user = () => {
             }
 
             const view_btn = document.querySelectorAll('.view_btn');
-
-            view_btn.forEach(element => {
-                element.addEventListener('click', () => {
-                    window.location.href = 'showuser.php';
-                })
-            })
-
             const plus_icon = document.querySelectorAll('.plus_icon');
-           
-
             plus_icon.forEach(element => {
                 element.addEventListener('click', () => {
                     user_modal.style.display = 'block';
@@ -107,11 +117,19 @@ const recent_user = () => {
                 })
             })
 
+            view_btn.forEach(element => {
+                element.addEventListener('click', () => {
+                    window.location.href = 'showuser.php' + `?id=${element.id}`;
+                    // console.log(element.id);
+                })
+            })
             const close_btn = document.querySelector('.close');
 
             close_btn.addEventListener('click', () => {
                 user_modal.style.display = 'none';
             })
+
+            total_driver.innerHTML = totalDriver;
 
         })
 }
@@ -122,8 +140,7 @@ const plus_icon = document.querySelectorAll('.plus_icon');
 
 window.addEventListener('click', (event) => {
     // console.log(event.target);
-    if(event.target == user_modal)
-    {
-       user_modal.style.display = "none";
+    if (event.target == user_modal) {
+        user_modal.style.display = "none";
     }
-  });
+});

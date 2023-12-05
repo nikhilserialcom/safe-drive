@@ -37,6 +37,9 @@ const profile_data = () => {
                 full_name_input.value = user.full_name;
                 profile_image.innerHTML = `<img src="assets/${user.profile_img}" alt="">`
             }
+            else{
+                window.location.href = 'index.php';
+            }
         })
 }
 
@@ -54,11 +57,13 @@ const updateProfile = (image_data) => {
             {
                 profile_data();
             }
+            else{
+                window.location.href = 'index.php';
+            }
         })
 }
 
 change_btn.addEventListener('click', () => {
     const profileImg = window.uploaededFormData;
-
-    updateProfile(profileImg)
+    updateProfile(profileImg);
 })

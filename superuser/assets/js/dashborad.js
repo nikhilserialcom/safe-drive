@@ -14,7 +14,7 @@ const recent_user = () => {
       let userData = json.userList;
       if (json.status_code == 200) {
         user_list_box.innerHTML = userData.map(val => {
-          const { firstname,created_at,photo } = val;
+          const { firstname,created_at,driverstatus,photo } = val;
           const parseDate = new Date(created_at);
                 const formattedDate = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
@@ -22,6 +22,8 @@ const recent_user = () => {
                     day: 'numeric'
                 }).format(parseDate);
           const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
+          let status = (driverstatus == "online") ? "active" : "pending";
+          let status_class = (driverstatus == "online") ? "bg-label-success" : "bg-label-warning";
           return `
             <tr>
                 <td>
@@ -34,7 +36,7 @@ const recent_user = () => {
                     <p>${firstname}</p>
                 </td>
                 <td>${formattedDate}</td>
-                <td><span class="status pending">driver</span></td>
+                <td><span class="status ${status_class}">${status}</span></td>
             </tr>`;
         }).join('');
         

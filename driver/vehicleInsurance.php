@@ -26,7 +26,7 @@ if(isset($_POST['driverId']))
                 if (move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath)) {
                     $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath' WHERE driverId = '$driverId'";
                     $update = mysqli_query($con, $update_query);
-                    if ($insert) {
+                    if ($update) {
                         $response['status'] = "200";
                         $response['message'] = "Record UPdated";
                     }

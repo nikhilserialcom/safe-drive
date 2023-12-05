@@ -1,6 +1,12 @@
 <?php require_once 'layout/header.php'; ?>
 
 <?php require_once 'layout/sidemenu.php'; ?>
+<div class="popup_image">
+    <span class="close_popup">&times;</span>
+    <div class="image_box">
+        <img src="assets/img/2653062775.jpg" alt="">
+    </div>
+</div>
 <section class="content">
     <?php require_once 'layout/navbar.php'; ?>
     <main>
@@ -26,17 +32,17 @@
         <div class="table-data">
             <div class="todo">
                 <div class="user_avatar">
-                    <div class="user_profile">
+                    <!-- <div class="user_profile">
                         <img src="assets/img/7.png" alt="">
                     </div>
                     <div class="user_info">
                         <p class="user_name">nikhil patel</p>
                         <p class="user_type bg-label-secondary">driver</p>
-                    </div>
+                    </div> -->
                 </div>
                 <h5 class="info_title">details</h5>
                 <div class="user_details">
-                    <ul>
+                    <!-- <ul>
                         <li>
                             <span>mobile number:</span>
                             <span>+91635986587</span>
@@ -65,14 +71,14 @@
                             <span>vehicle brand:</span>
                             <span>lamborghini</span>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="action-btn">
                     <button class="btn-label-danger">suspend</button>
                 </div>
             </div>
-            <div class="order">
-                <h3>aadhar card information</h3>
+            <div class="order aadhar_card">
+                <!-- <h3>aadhar card information</h3>
                 <div class="info_header">
                     <span>aadhar no:</span>
                     <span>6359 8598 741</span>
@@ -87,10 +93,10 @@
                     <div class="document_img_box">
                         <img src="assets/img/aadharcard1.png" alt="">
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="order">
-                <h3>driving licence information</h3>
+            <div class="order licese_data">
+                <!-- <h3>driving licence information</h3>
                 <div class="info_header">
                     <ul>
                         <li>
@@ -113,26 +119,30 @@
                     <div class="document_img_box">
                         <img src="assets/img/ID2.png" alt="">
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="todo">
-                <h3>police clearance certificate</h3>
-                <div class="info_document">
-                    <div class="document_img_box">
-                        <img src="assets/img/aadharcard1.png" alt="">
-                    </div>
+                <div class="police_data">
+                    <!-- <h3>police clearance certificate</h3>
+                    <div class="info_document">
+                        <div class="document_img_box">
+                            <img src="assets/img/aadharcard1.png" alt="">
+                        </div>
+                    </div> -->
                 </div>
-                <h3>vehicle insurance</h3>
-                <div class="info_document">
-                    <div class="document_img_box">
-                        <img src="assets/img/aadharcard1.png" alt="">
-                    </div>
+                <div class="insurance_data">
+                    <!-- <h3>vehicle insurance</h3>
+                    <div class="info_document">
+                        <div class="document_img_box">
+                            <img src="assets/img/aadharcard1.png" alt="">
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </div>
         <div class="table-data">
-            <div class="order">
-                <h3>vahicle  information</h3>
+            <div class="order vehicle_info">
+                <!-- <h3>vahicle  information</h3>
                 <div class="info_header">
                     <ul>
                         <li>
@@ -179,10 +189,11 @@
                     <div class="document_img_box">
                         <img src="assets/img/ID2.png" alt="">
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </main>
 </section>
 
+    <script src="assets/js/showuserdata.js" type="module"></script>
 <?php require_once 'layout/footer.php'; ?>
