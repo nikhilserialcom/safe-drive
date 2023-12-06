@@ -51,7 +51,9 @@ if(isset($_POST['driverId']))
             if(!empty($front))
             {
                 $front_tmp = $_FILES['frontadhaar']['tmp_name'];
-                $frontname = rand(111111111,999999999)."jpg";
+                $profileNewPart = explode('.', $front['name']);
+                $extension = end($profileNewPart);
+                $frontname = rand(111111111,999999999).$extension;
                 $front_folder = 'uploaded/AdhaarCard/';
                 $frontpath = $front_folder.$frontname;
 
@@ -60,6 +62,7 @@ if(isset($_POST['driverId']))
 
                 if($update_image_query)
                 {
+                    move_uploaded_file($front_tmp,$frontpath);
                     $response['status'] = "200";
                     $response['message'] = "record updateded";    
                 }
@@ -67,11 +70,13 @@ if(isset($_POST['driverId']))
         }
         if(isset($_FILES['backadhaar'])&& !empty( $_FILES['backadhaar']['tmp_name']))
         {
-            $front = $_FILES['backadhaar'];
-            if(!empty($front))
+            $back = $_FILES['backadhaar'];
+            if(!empty($back))
             {
                 $back_tmp = $_FILES['backadhaar']['tmp_name'];
-                $backname =rand(111111111,999999999).".jpg";
+                $profileNewPart = explode('.', $back['name']);
+                $extension = end($profileNewPart);
+                $backname =rand(111111111,999999999).$extension;
                 $back_folder = 'uploaded/AdhaarCard/';
                 $backpath = $back_folder.$backname;
 
@@ -80,6 +85,7 @@ if(isset($_POST['driverId']))
 
                 if($update_image_query)
                 {
+                    move_uploaded_file($back_tmp,$backpath);
                     $response['status'] = "200";
                     $response['message'] = "record updateded";    
                 }
@@ -87,11 +93,13 @@ if(isset($_POST['driverId']))
         }
         if(isset($_FILES['selfiwithadhaar'])&& !empty( $_FILES['selfiwithadhaar']['tmp_name']))
         {
-            $front = $_FILES['selfiwithadhaar'];
-            if(!empty($front))
+            $selfi = $_FILES['selfiwithadhaar'];
+            if(!empty($selfi))
             {
                 $selfi_tmp = $_FILES['selfiwithadhaar']['tmp_name'];
-                $selfiname = rand(111111111,999999999).".jpg";
+                $profileNewPart = explode('.', $selfi['name']);
+                $extension = end($profileNewPart);
+                $selfiname =rand(111111111,999999999).$extension; 
                 $selfi_folder = 'uploaded/AdhaarCard/';
                 $selfipath = $selfi_folder.$selfiname;
 
@@ -100,6 +108,7 @@ if(isset($_POST['driverId']))
 
                 if($update_image_query)
                 {
+                    move_uploaded_file($selfi_tmp,$selfipath);
                     $response['status'] = "200";
                     $response['message'] = "record updateded";    
                 }

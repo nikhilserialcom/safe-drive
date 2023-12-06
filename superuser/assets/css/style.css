@@ -122,7 +122,7 @@ body.dark {
 }
 
 .bg-label-danger {
-  background-color: #ffe0db !important;
+  background-color: var(--btn-label-danger);
   color: #ff3e1d !important;
 }
 
@@ -1340,6 +1340,7 @@ body.dark {
   font-weight: 600;
   text-transform: capitalize;
   border-radius: 0.375rem;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar {

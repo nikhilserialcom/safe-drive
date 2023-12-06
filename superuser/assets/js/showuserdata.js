@@ -13,6 +13,8 @@ const popup_image = document.querySelector('.popup_image');
 const close_popup_btn = document.querySelector('.close_popup');
 
 const alldriverdata_url = 'api/alldriverdata.php';
+const approved_url = 'api/approved.php';
+var driverId;
 
 const driverData = (id) => {
     fetch(alldriverdata_url, {
@@ -26,13 +28,14 @@ const driverData = (id) => {
     })
         .then(response => response.json())
         .then(json => {
-            console.log(json);
+            // console.log(json);
             const driver_data = json.driverData;
             const aadhar_data = json.aadharData;
             const police_data = json.policeData;
             const insurance_data = json.insuranceData;
             const licese_data = json.liceseData;
             const vehicle_data = json.vehicleData;
+            driverId = driver_data.driverId;
             const profile = driver_data.photo ? `<img src="../${driver_data.photo}" alt="" />` : '<img src="assets/img/user.png" alt="" />';
             const status = (driver_data.driverstatus == 'online') ? "active" : "unactive";
             if (json.status_code == 200) {
@@ -100,10 +103,6 @@ const driverData = (id) => {
                            ${aadhar_selfy}
                         </div>
                     </div>
-                    <div class="action-btn">
-                        <button class="bg-label-success">accept</button>
-                        <button class="bg-label-danger">reject</button>
-                    </div>
                 `;
 
                 const licence_front = licese_data.front_photo_DL ? `<img src="../driver/${licese_data.front_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
@@ -135,10 +134,6 @@ const driverData = (id) => {
                             ${licence_selfy}
                         </div>
                     </div>
-                    <div class="action-btn">
-                        <button class="bg-label-success">accept</button>
-                        <button class="bg-label-danger">reject</button>
-                    </div>
                 `;
 
                 const police_doc = police_data.Police_clearance_certificate ? `<img src="../driver/${police_data.Police_clearance_certificate}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
@@ -151,10 +146,6 @@ const driverData = (id) => {
                             ${police_doc}
                         </div>
                     </div>
-                    <div class="action-btn">
-                        <button class="bg-label-success">accept</button>
-                        <button class="bg-label-danger">reject</button>
-                    </div>
                 `;
 
                 const insurance_doc = insurance_data.vehicle_insurance ? `<img src="../driver/${insurance_data.vehicle_insurance}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
@@ -165,10 +156,6 @@ const driverData = (id) => {
                         <div class="document_img_box">
                             ${insurance_doc}
                         </div>
-                    </div>
-                    <div class="action-btn">
-                        <button class="bg-label-success">accept</button>
-                        <button class="bg-label-danger">reject</button>
                     </div>
                 `;
 
@@ -229,10 +216,6 @@ const driverData = (id) => {
                             ${rc_selfy}
                         </div>
                     </div>
-                    <div class="action-btn">
-                        <button class="bg-label-success">accept</button>
-                        <button class="bg-label-danger">reject</button>
-                    </div>
                 `;
             }
             else {
@@ -266,4 +249,73 @@ driverData(id);
 
 close_popup_btn.addEventListener('click', () => {
     popup_image.style.display = 'none';
+})
+const approvedData = (driver_Id,action_type,doc_type) => {
+    fetch(approved_url, {
+        method: 'POST',
+        body:JSON.stringify({
+            driverId: driver_Id,
+            status: action_type,
+            docType: doc_type
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+        })
+}
+
+
+
+const aadhar_approve_btn = document.querySelector('.aadhar_approve_btn');
+const aadhar_reject_btn = document.querySelector('.aadhar_reject_btn');
+const license_approve_btn = document.querySelector('.license_approve_btn');
+const license_reject_btn = document.querySelector('.license_reject_btn');
+const police_approve_btn = document.querySelector('.police_approve_btn');
+const police_reject_btn = document.querySelector('.police_reject_btn');
+const insurance_approve_btn = document.querySelector('.insurance_approve_btn');
+const insurance_reject_btn = document.querySelector('.insurance_reject_btn');
+const vehicel_approve_btn = document.querySelector('.vehicel_approve_btn');
+const vehicel_reject_btn = document.querySelector('.vehicel_reject_btn');
+
+aadhar_approve_btn.addEventListener('click', () => {
+    approvedData(driverId,aadhar_approve_btn.textContent,'aadhar');
+})
+
+license_approve_btn.addEventListener('click', () => {
+    approvedData(driverId,license_approve_btn.textContent,'license');
+})
+
+police_approve_btn.addEventListener('click', () => {
+    approvedData(driverId,police_approve_btn.textContent,'police');
+})
+
+insurance_approve_btn.addEventListener('click', () => {
+    approvedData(driverId,insurance_approve_btn.textContent,'insurance');
+})
+
+vehicel_approve_btn.addEventListener('click', () => {
+    approvedData(driverId,vehicel_approve_btn.textContent,'vehical');
+})
+
+aadhar_reject_btn.addEventListener('click', () => {
+    approvedData(driverId,aadhar_reject_btn.textContent,'aadhar');
+})
+
+license_reject_btn.addEventListener('click', () => {
+    approvedData(driverId,license_reject_btn.textContent,'license');
+})
+
+police_reject_btn.addEventListener('click', () => {
+    approvedData(driverId,police_reject_btn.textContent,'police');
+})
+
+insurance_reject_btn.addEventListener('click', () => {
+    approvedData(driverId,insurance_reject_btn.textContent,'insurance');
+})
+vehicel_reject_btn.addEventListener('click', () => {
+    approvedData(driverId,vehicel_reject_btn.textContent,'vehical');
 })
