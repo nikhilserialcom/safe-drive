@@ -85,8 +85,12 @@
             <div class="order">
                 <div class="head">
                     <h3>Recent users</h3>
-                    <i class="fas fa-search"></i>
-                    <i class="fas fa-filter"></i>
+                    <div class="search_box">
+                        <input type="serach" class="search_input" placeholder="search...">
+                        <button class="search_btn d_flex"><i class="fas fa-search"></i></button>
+                        <button class="close_btn d_flex"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <!-- <i class="fas fa-filter"></i> -->
                 </div>
 
                 <table>

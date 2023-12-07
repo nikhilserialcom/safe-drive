@@ -1,6 +1,27 @@
 const user_list_box = document.querySelector('.order .user_list');
+const search_box = document.querySelector('.search_box');
+const search_input = document.querySelector('.search_input');
+const search_btn = document.querySelector('.search_btn');
+const close_btn = document.querySelector('.close_btn');
 const recent_user_url = 'api/recentuser.php';
 // console.log(user_list_box);
+
+search_btn.addEventListener('click', () => {
+  if(search_box.classList.contains('active'))
+  {
+    search_input.value = '';
+  }
+  else {
+    search_box.classList.add('active');
+    search_input.focus();
+  }
+})
+
+close_btn.addEventListener('click', () => {
+  search_box.classList.remove('active');
+  search_input.value = '';
+})
+
 const recent_user = () => {
   fetch(recent_user_url, {
     method: 'GET',
