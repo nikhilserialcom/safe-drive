@@ -35,7 +35,7 @@
             <span class="d_flex show_pass"><i class='bx bxs-hide'></i></span>
          </div>
          <!-- <input type="submit" name="submit" value="login now" class="form-btn"> -->
-         <button class="form-btn login_btn">send reset link</button>
+         <button class="form-btn login_btn">change password</button>
          <div class="back_link">
             <a href="#">
                < back to sign in</a>

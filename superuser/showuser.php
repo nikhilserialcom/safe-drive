@@ -7,6 +7,21 @@
         <img src="assets/img/2653062775.jpg" alt="">
     </div>
 </div>
+<div class="reject_modal">
+    <div class="reject_content">
+        <span class="close">&times;</span>
+        <h3>rejection reason</h3>
+        <div class="docu_list">
+            <input type="checkbox" class="checkbox" value="aadhar card"><span>aadhar card</span>  <br>
+            <input type="checkbox" class="checkbox" value="driving license"><span>driving license</span> <br>
+            <input type="checkbox" class="checkbox" value="police certification"><span>police certification</span> <br>
+            <input type="checkbox" class="checkbox" value="vehicel insurance"><span>vehicel insurance</span> <br>
+            <input type="checkbox" class="checkbox" value="vehicel informetion"><span>vehicel informetion</span> 
+        </div>
+        <!-- <input type="text" class="reject_input" placeholder="Enter the reason for rejection"> -->
+        <button class="done_btn">done</button>
+    </div>
+</div>
 <section class="content">
     <?php require_once 'layout/navbar.php'; ?>
     <main>
@@ -74,7 +89,8 @@
                     </ul> -->
                 </div>
                 <div class="action-btn">
-                    <button class="btn-label-danger">suspend</button>
+                    <button class="bg-label-success active_driver">active</button>
+                    <button class="btn-label-danger reject_driver">rejected</button>
                 </div>
             </div>
             <div class="order">

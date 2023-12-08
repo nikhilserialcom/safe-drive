@@ -17,7 +17,7 @@ if(isset($_POST['mobileNumber']))
         $otp = rand(1111,9999);
         // Your Account SID and Auth Token from console.twilio.com
         $sid = "AC9df1a8f5bea5649437e9a9ab191dbbdd";
-        $token = "dab9b51cd9bb9d87fd9e3a40e5af21ae";
+        $token = "2ad68c193942f30d44187b3a93b15c7e";
         $client = new Twilio\Rest\Client($sid, $token);
 
         $message = $client->messages->create(
@@ -48,7 +48,7 @@ if(isset($_POST['mobileNumber']))
         $otp = rand(1111,9999);
         // Your Account SID and Auth Token from console.twilio.com
         $sid = "AC9df1a8f5bea5649437e9a9ab191dbbdd";
-        $token = "dab9b51cd9bb9d87fd9e3a40e5af21ae";
+        $token = "2ad68c193942f30d44187b3a93b15c7e";
         $client = new Twilio\Rest\Client($sid, $token);
 
         $message = $client->messages->create(

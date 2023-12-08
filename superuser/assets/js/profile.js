@@ -6,7 +6,7 @@ const profile_image_input = document.querySelector('.profile_btn .profileImage')
 const change_btn = document.querySelector('.change_btn');
 
 profile_image_input.addEventListener('input', () => {
-    let profile_file = profile_image_input.files[0];
+    let profile_file = profile_image_input.files.length > 0 ? profile_image_input.files[0] : '';
     let formData = new FormData();
 
     formData.append('profileImage',profile_file);
@@ -65,5 +65,6 @@ const updateProfile = (image_data) => {
 
 change_btn.addEventListener('click', () => {
     const profileImg = window.uploaededFormData;
+    // profileImg.append('username',username_input.value);
     updateProfile(profileImg);
 })

@@ -12,7 +12,7 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="assets/css/style.css">
-   <script src="assets/js/login.js" defer></script>
+   <!-- <script src="assets/js/login.js" defer></script> -->
 </head>
 <body>
 
@@ -29,13 +29,13 @@
          <input type="email" name="email" class="email"  placeholder="enter your email">
       </div>
       <!-- <input type="submit" name="submit" value="login now" class="form-btn"> -->
-      <button class="form-btn login_btn">send reset link</button>
+      <button class="form-btn reset_link">send reset link</button>
       <div class="back_link">
           <a href="resetpassword.php">< back to sign in</a>
       </div>
    </div>
 
 </div>
-
+   <script src="assets/js/forgotpass.js"></script>
 </body>
 </html>

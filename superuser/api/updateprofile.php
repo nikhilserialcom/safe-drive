@@ -32,6 +32,12 @@ if (!isset($_SESSION['user_email'])) {
         $filedir = "storage/profile/";
         $filePath = $filedir . $profileNewName;
 
+        // $response = array(
+        //     'status_code' => 200,
+        //     'image' => $profile,
+        //     'username' => $username
+        // );
+
         if (!file_exists($filemovedir)) {
             mkdir($filemovedir, 0755, true);
         }

@@ -14,6 +14,7 @@ const close_popup_btn = document.querySelector('.close_popup');
 
 const alldriverdata_url = 'api/alldriverdata.php';
 const approved_url = 'api/approved.php';
+const active_driver_url = 'api/activedriver.php';
 var driverId;
 
 const driverData = (id) => {
@@ -319,3 +320,70 @@ insurance_reject_btn.addEventListener('click', () => {
 vehicel_reject_btn.addEventListener('click', () => {
     approvedData(driverId,vehicel_reject_btn.textContent,'vehical');
 })
+
+const active_driver_btn = document.querySelector('.active_driver');
+const reject_driver_btn = document.querySelector('.reject_driver');
+const reject_modal = document.querySelector('.reject_modal');
+const reject_input = document.querySelector('.reject_input');
+const close_btn = document.querySelector('.close');
+const done_btn = document.querySelector('.done_btn');
+const doc_list = document.querySelectorAll('.docu_list input');
+
+const activeDriver = (driver_Id,driver_status,reject_reason) => {
+    fetch(active_driver_url, {
+        method: 'POST',
+        body:JSON.stringify({
+            driverId: driver_Id,
+            driverStatus:driver_status,
+            rejectedReason:reject_reason
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            if(json.status_code == 200)
+            {
+                reject_modal.style.display = 'none';
+            }
+            else{
+                console.log(json.message);
+            }
+        })
+}
+
+var document_list = [];
+
+doc_list.forEach(element => {
+    element.addEventListener('click',() => {
+        document_list.push(element.value);
+    })
+})
+
+
+
+active_driver_btn.addEventListener('click', () => {
+    activeDriver(id,active_driver_btn.textContent);
+})
+
+reject_driver_btn.addEventListener('click', () => {
+    reject_modal.style.display = 'block';
+    // activeDriver(id,reject_driver_btn.textContent)
+})
+
+done_btn.addEventListener('click', () => {
+   activeDriver(id,reject_driver_btn.textContent,document_list);
+})
+
+close_btn.addEventListener('click', () => {
+    reject_modal.style.display = 'none';
+})
+
+window.addEventListener('click', (event) => {
+    // console.log(event.target);
+    if (event.target == reject_modal) {
+        reject_modal.style.display = "none";
+    }
+});
