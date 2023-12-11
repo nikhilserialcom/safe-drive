@@ -21,6 +21,7 @@
 
    <div class="form">
       <h3>safe drive</h3>
+      <div class="alert_box alert"></div>
       <div class="form_header">
         <p>forget password?</p>
         <p>Enter your email and we'll send you instructions to reset your password</p>
@@ -31,7 +32,7 @@
       <!-- <input type="submit" name="submit" value="login now" class="form-btn"> -->
       <button class="form-btn reset_link">send reset link</button>
       <div class="back_link">
-          <a href="resetpassword.php">< back to sign in</a>
+          <a href="index.php">< back to sign in</a>
       </div>
    </div>
 

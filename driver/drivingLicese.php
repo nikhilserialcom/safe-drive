@@ -36,11 +36,13 @@ if(isset($_POST['driverId']))
     $check_user = mysqli_query($con,$check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
+        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
+        $update = mysqli_query($con,$update_query);
         if(isset($_POST['DLnumber']) || isset($_POST['expirationDate']))
         {
             if(!empty($DLnumber) || !empty($expirationDate))
             {
-                $update_Licese_Query = "UPDATE driving_licese_info SET driving_licese_no = '$DLnumber', expiration_date = '$expirationDate' WHERE driverId = '$id'";
+                $update_Licese_Query = "UPDATE driving_licese_info SET driving_licese_no = '$DLnumber', expiration_date = '$expirationDate', status = 'pending' WHERE driverId = '$id'";
                 $update_Licese = mysqli_query($con,$update_Licese_Query);
                 
                 if($update_Licese)
@@ -125,18 +127,20 @@ if(isset($_POST['driverId']))
             {
                 $frontDL_tmpName = $_FILES['frontDL']['tmp_name'];
                 $frontname = rand(111111111,999999999).".jpg";
-                $frontDL_folder = "uploaded/DrivingLicese/";
-                $frontpath = $frontDL_folder.$frontname;
+                $DL_folder = "uploaded/DrivingLicese/";
+                $frontpath = $DL_folder.$frontname;
 
                 $backDL_tmpName = $_FILES['backDL']['tmp_name'];
                 $backname = rand(111111111,999999999).".jpg";
-                $backDL_folder = "uploaded/DrivingLicese/";
-                $backpath = $backDL_folder.$backname;
+                $backpath = $DL_folder.$backname;
 
                 $selfiwithDL_tmpName = $_FILES['selfiwithDL']['tmp_name'];
                 $selfiname = rand(111111111,999999999).".jpg";
-                $selfiwithDL_folder = "uploaded/DrivingLicese/";
-                $selfipath = $selfiwithDL_folder.$selfiname;
+                $selfipath = $DL_folder.$selfiname;
+
+                if (!file_exists($DL_folder)) {
+                    mkdir($DL_folder, 0755, true);
+                }
 
                 $insert_query = "INSERT INTO driving_licese_info(driverId,driving_licese_no,expiration_date,front_photo_DL,back_photo_DL,selfi_with_DL)VALUES('$id','$DLnumber','$expirationDate','$frontpath','$backpath','$selfipath')";
                 $insert = mysqli_query($con,$insert_query);

@@ -35,10 +35,12 @@ if(isset($_POST['driverId']))
     $check_user = mysqli_query($con,$check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
-
+        
+        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
+        $update = mysqli_query($con,$update_query);
         if(!empty($adhaarno))
         {
-            $update_addhar_query = "UPDATE adhaarcard SET adhaar_no = '$adhaarno' WHERE driverId = '$id'";
+            $update_addhar_query = "UPDATE adhaarcard SET adhaar_no = '$adhaarno', status = 'pending' WHERE driverId = '$id'";
             $update_addhar = mysqli_query($con,$update_addhar_query);
             if ($update_addhar) {
                 $response['status'] = "200";

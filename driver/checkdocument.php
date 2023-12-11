@@ -3,6 +3,22 @@
 require '../db.php';
 header("content-type:application/json");
 
+function checkonline($driverId){
+    global $con;
+    $checkDataQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
+    $result = mysqli_query($con,$checkDataQuery);
+    $row = mysqli_fetch_assoc($result);
+    if($row['active_status'] == 'active')
+    {
+        $response = "true";
+    }
+    else{
+        $response = "false";
+    }
+
+    return $response;
+}
+
 if($_POST['driverId'])
 {
     $driverId = $_POST['driverId'];
@@ -17,26 +33,23 @@ if($_POST['driverId'])
     {
         $checkDataQuery = "SELECT driverId,status FROM $name WHERE driverId = '$driverId'";
         $result = mysqli_query($con,$checkDataQuery);
-        if (mysqli_num_rows($result))
+        if (mysqli_num_rows($result) > 0)
         {
            $row = mysqli_fetch_assoc($result);
-           if($row['status'] == 'approved')
-           {
-                $checkData[$name] = "true";
-           }
-           else
+           if($row['status'] == 'rejected')
            {
                 $checkData[$name] = "false";
            }
-        }
-        else
-        {
-           $checkData[$name] = false;
+           else
+           {
+                $checkData[$name] = "true";
+           }
         }
     }
 
     $checkData['vehicleType'] = $driverdata['vehicleType'];
     $response['status'] = "200";
+    $response['empty'] = checkonline($driverId);
     $response['table'] = $checkData;
 }
 else

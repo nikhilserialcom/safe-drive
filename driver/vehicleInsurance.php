@@ -13,6 +13,8 @@ if(isset($_POST['driverId']))
     $response = array();
 
     if (mysqli_num_rows($check_user) > 0) {
+        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$driverId'";
+        $update = mysqli_query($con,$update_query);
         if (isset($_FILES['vehicleInsurance']) && !empty($_FILES['vehicleInsurance']['tmp_name'])) {
             $vehicleInsurance = $_FILES['vehicleInsurance'];
 
@@ -24,7 +26,7 @@ if(isset($_POST['driverId']))
 
         
                 if (move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath)) {
-                    $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath' WHERE driverId = '$driverId'";
+                    $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath', status = 'pending' WHERE driverId = '$driverId'";
                     $update = mysqli_query($con, $update_query);
                     if ($update) {
                         $response['status'] = "200";

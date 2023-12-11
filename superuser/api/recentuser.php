@@ -22,7 +22,7 @@ if (!isset($_SESSION['user_email'])) {
     //     'email' => $userEmail
     // );
 
-    $userListQuery = "SELECT * FROM user WHERE user_status = '1' ORDER BY id DESC";
+    $userListQuery = "SELECT * FROM user WHERE user_status = '1' ORDER BY updated_at DESC";
     $userList = mysqli_query($con, $userListQuery);
     $drivercount = 0;
 
