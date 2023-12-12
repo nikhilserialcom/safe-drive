@@ -72,8 +72,7 @@ body.dark {
   background-color: var(--dark-grey);
 }
 
-.alert_box
-{
+.alert_box {
   display: none;
 }
 
@@ -248,8 +247,7 @@ body.dark {
   border-radius: 5px;
 }
 
-.form-container .form .otp_input 
-{
+.form-container .form .otp_input {
   /* border: 1px solid #000000; */
   display: flex;
   align-items: center;
@@ -258,7 +256,12 @@ body.dark {
   padding: 10px;
 }
 
-.form-container .form .otp_input .otp{
+.form-container .form b {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container .form .otp_input .otp {
   /* border: 1px solid #000000; */
   width: 50px;
   height: 50px;
@@ -1171,7 +1174,7 @@ body.dark {
   padding: 10px 20px;
 }
 
-.reject_modal{
+.reject_modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -1182,7 +1185,7 @@ body.dark {
   display: none;
 }
 
-.reject_modal .reject_content{
+.reject_modal .reject_content {
   background-color: #f9f9f9;
   margin: 10% auto;
   padding: 20px;
@@ -1192,32 +1195,30 @@ body.dark {
   position: relative;
 }
 
-.reject_modal .reject_content h3
-{
+.reject_modal .reject_content h3 {
   text-align: center;
-  text-transform: capitalize; 
+  text-transform: capitalize;
   color: #342e37;
 }
 
-.reject_modal .reject_content .docu_list
-{
+.reject_modal .reject_content .docu_list {
   /* border: 1px solid #000000; */
   padding: 10px;
   margin: 10px 0px;
 }
 
-.reject_modal .reject_content .docu_list .checkbox{
+.reject_modal .reject_content .docu_list .checkbox {
   margin: 0px 10px;
   color: #342e37;
 }
 
-.reject_modal .reject_content .docu_list span{
+.reject_modal .reject_content .docu_list span {
   text-transform: capitalize;
   color: #342e37;
   font-weight: 600
 }
 
-.reject_modal .reject_content .reject_input{
+.reject_modal .reject_content .reject_input {
   /* border: 1px solid #000000; */
   width: 100%;
   height: 40px;
@@ -1227,7 +1228,7 @@ body.dark {
   margin: 20px 0px;
 }
 
-.reject_modal .reject_content button{
+.reject_modal .reject_content button {
   width: 100%;
   padding: 10px;
   font-size: 18px;
@@ -1502,6 +1503,43 @@ body.dark {
   border-radius: 5rem;
 }
 
+.content main .order .msg_box,
+.content main .todo .msg_box {
+  margin-left: auto;
+  text-align: center;
+  text-transform: uppercase;
+  display: none;
+  margin: 20px 0px;
+  animation: fadeInOut 1s ease-in-out;
+}
+
+.content .message_box {
+  margin-left: auto;
+  text-align: center;
+  text-transform: uppercase;
+  display: none;
+  animation: fadeInOut 1s ease-in-out;
+}
+
+.content .message_box span,
+.content main .order .msg_box span,
+.content main .todo .msg_box span {
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 0.375rem;
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
 
 
 .content .profile_card {
@@ -1642,6 +1680,65 @@ body.dark {
   color: var(--light);
   border-radius: 10px;
   background-color: var(--red);
+  cursor: pointer;
+}
+
+.delete_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: none;
+}
+
+.delete_modal .delete_content {
+  background-color: var(--light);
+  margin: 10% auto;
+  padding: 20px;
+  /* width: 80%; */
+  max-width: 400px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.delete_modal .delete_content .icon_box {
+  /* border: 1px solid #000000; */
+  display: flex;
+  justify-content: center;
+  font-size: 70px;
+  color: var(--red);
+}
+
+.delete_modal .delete_content h4 {
+  text-align: center;
+  text-transform: capitalize;
+  margin: 10px;
+  font-size: 20px;
+  color: var(--dark);
+}
+
+.delete_modal .delete_content p {
+  font-size: 15px;
+  color: var(--dark);
+}
+
+.delete_modal .delete_content .btn_box {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.delete_modal .delete_content .btn_box button {
+  padding: 10px 20px;
+  border-radius: 0.37rem;
+  text-transform: capitalize;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 @media only screen and (max-width:991px) and (min-width:768px) {
@@ -1852,6 +1949,10 @@ body.dark {
     font-size: smaller;
     font-weight: 600;
   }
+
+  .delete_modal .delete_content{
+    margin: 50% auto;
+  }
 }
 
 @media screen and (max-width:450px) {
@@ -1952,12 +2053,17 @@ body.dark {
     cursor: pointer;
   }
 
-  .reject_modal .reject_content{
+  .reject_modal .reject_content {
     margin: 50% auto;
     width: 300px;
   }
 
-  .popup_image .image_box{
+  .popup_image .image_box {
     width: 400px;
+  }
+
+  .delete_modal .delete_content{
+    margin: 60% auto;
+    width: 300px;
   }
 }

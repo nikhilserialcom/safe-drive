@@ -22,40 +22,50 @@ if (!isset($_SESSION['user_email'])) {
 
     if (mysqli_num_rows($checkUser) > 0) {
         $row = mysqli_fetch_assoc($checkUser);
-        $profile = isset($_FILES['profileImage']) ? $_FILES['profileImage'] : $row['profile_img'];
-        $username = isset($_POST['username']) ? $_POST['username'] : $row['username'];
-        $profile_tmpName = $_FILES['profileImage']['tmp_name'];
-        $profileNewPart = explode('.', $profile['name']);
-        $extension = end($profileNewPart);
-        $profileNewName = rand(111111111, 999999999) . "." . $extension;
-        $filemovedir = "../assets/storage/profile";
-        $filedir = "storage/profile/";
-        $filePath = $filedir . $profileNewName;
-
-        // $response = array(
-        //     'status_code' => 200,
-        //     'image' => $profile,
-        //     'username' => $username
-        // );
-
-        if (!file_exists($filemovedir)) {
-            mkdir($filemovedir, 0755, true);
+        $profile = isset($_FILES['profileImage']) ? $_FILES['profileImage'] : null;
+       
+        if($profile){
+            $profile_tmpName = $_FILES['profileImage']['tmp_name'];
+            $profileNewPart = explode('.', $profile['name']);
+            $extension = end($profileNewPart);
+            $profileNewName = rand(111111111, 999999999) . "." . $extension;
+            $filemovedir = "../assets/storage/profile";
+            $filedir = "storage/profile/";
+            $filePath = $filedir . $profileNewName;
+            if (!file_exists($filemovedir)) {
+                mkdir($filemovedir, 0755, true);
+            }
+    
+            $updateProfileQuery = "UPDATE superuser SET profile_img = '$filePath' WHERE s_email = '$userEmail'";
+            $updateProfile = mysqli_query($con, $updateProfileQuery);
+    
+            if ($updateProfile) {
+                move_uploaded_file($profile_tmpName, $filemovedir . '/' . $profileNewName);
+                $response = array(
+                    'status_code' => 200,
+                    'message' => 'profile update successfully'
+                );
+            } 
         }
-
-        $updateProfileQuery = "UPDATE superuser SET profile_img = '$filePath', username = '$username' WHERE s_email = '$userEmail'";
-        $updateProfile = mysqli_query($con, $updateProfileQuery);
-
-        if ($updateProfile) {
-            move_uploaded_file($profile_tmpName, $filemovedir . '/' . $profileNewName);
-            $response = array(
-                'status_code' => 200,
-                'message' => 'profile update successfully'
-            );
-        } else {
-            $response = array(
-                'status_code' => 400,
-                'message' => "ERROR:" . mysqli_error($con)
-            );
+        else{
+            $username = isset($_POST['username']) ? $_POST['username'] : '';
+            $full_name = isset($_POST['fullName']) ? $_POST['fullName'] : '';
+            $newpassword = isset($_POST['newpassword']) ? password_hash($_POST['newpassword'],PASSWORD_BCRYPT) : $row['s_password'];
+            $updateQuery = "UPDATE superuser SET username = '$username',full_name = '$full_name',s_password = '$newpassword' WHERE s_email = '$userEmail'";
+            $update = mysqli_query($con, $updateQuery);
+    
+            if ($update) {
+                $response = array(
+                    'status_code' => 200,
+                    'message' => 'profile details update successfully'
+                );
+            } 
+            else{
+                $response = array(
+                    'status_code' => 400,
+                    'message' => "ERROR:" . mysqli_error($con)
+                );
+            }
         }
     } else {
 

@@ -24,7 +24,7 @@
          <h3>safe drive</h3>
          <div class="form_header">
             <p>reset password?</p>
-            <p>for example.demo@gmail.com</p>
+            <p class="email">for example.demo@gmail.com</p>
          </div>
          <div class="input_box d_flex">
             <input type="password" name="pass" class="pass" placeholder="enter your new password">

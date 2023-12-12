@@ -12,11 +12,11 @@
         <span class="close">&times;</span>
         <h3>rejection reason</h3>
         <div class="docu_list">
-            <input type="checkbox" class="checkbox" value="aadhar card"><span>aadhar card</span>  <br>
+            <input type="checkbox" class="checkbox" value="aadhar card"><span>aadhar card</span> <br>
             <input type="checkbox" class="checkbox" value="driving license"><span>driving license</span> <br>
             <input type="checkbox" class="checkbox" value="police certification"><span>police certification</span> <br>
             <input type="checkbox" class="checkbox" value="vehicel insurance"><span>vehicel insurance</span> <br>
-            <input type="checkbox" class="checkbox" value="vehicel informetion"><span>vehicel informetion</span> 
+            <input type="checkbox" class="checkbox" value="vehicel informetion"><span>vehicel informetion</span>
         </div>
         <!-- <input type="text" class="reject_input" placeholder="Enter the reason for rejection"> -->
         <button class="done_btn">done</button>
@@ -94,6 +94,9 @@
                 </div>
             </div>
             <div class="order">
+                <div class="msg_box aadhar">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
+                </div>
                 <div class="aadhar_card">
                     <!-- <h3>aadhar card information</h3>
                     <div class="info_header">
@@ -118,6 +121,9 @@
                 </div>
             </div>
             <div class="order">
+                <div class="msg_box license">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
+                </div>
                 <div class="licese_data">
                     <!-- <h3>driving licence information</h3>
                     <div class="info_header">
@@ -145,11 +151,14 @@
                     </div> -->
                 </div>
                 <div class="action-btn">
-                        <button class="bg-label-success license_approve_btn">accept</button>
-                        <button class="bg-label-danger license_reject_btn">reject</button>
-                    </div>
+                    <button class="bg-label-success license_approve_btn">accept</button>
+                    <button class="bg-label-danger license_reject_btn">reject</button>
+                </div>
             </div>
             <div class="todo">
+                <div class="msg_box police">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
+                </div>
                 <div class="police_data">
                     <!-- <h3>police clearance certificate</h3>
                     <div class="info_document">
@@ -161,6 +170,9 @@
                 <div class="action-btn">
                     <button class="bg-label-success police_approve_btn">accept</button>
                     <button class="bg-label-danger police_reject_btn">reject</button>
+                </div>
+                <div class="msg_box insurance">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
                 <div class="insurance_data">
                     <!-- <h3>vehicle insurance</h3>
@@ -178,6 +190,9 @@
         </div>
         <div class="table-data">
             <div class="order">
+                <div class="msg_box vehicale">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
+                </div>
                 <div class="vehicle_info">
                     <!-- <h3>vahicle  information</h3>
                     <div class="info_header">

@@ -1,6 +1,20 @@
 <?php require_once 'layout/header.php'; ?>
 
 <?php require_once 'layout/sidemenu.php'; ?>
+<div class="delete_modal">
+    <div class="delete_content">
+        <div class="icon_box">
+            <i class='bx bx-x-circle'></i>
+        </div>
+        <h4>are you sure?</h4>
+        <input type="text" class="user_id" hidden>
+        <p>Do you really want to delete these records? This process cannot be undone</p>
+        <div class="btn_box">
+            <button class="bg-label-success done_btn">yes</button>
+            <button class="bg-label-danger cancel_btn">cancel</button>
+        </div>
+    </div>
+</div>
 <section class="content">
     <?php require_once 'layout/navbar.php'; ?>
     <main>
@@ -24,9 +38,9 @@
 
         </div>
 
-
         <div class="profile_card">
             <div class="profile_box">
+
                 <h5>profile details</h5>
                 <div class="profile_image_box">
                     <div class="profile_image_content">
@@ -36,6 +50,9 @@
                         <button class="upload_btn">upload new photo</button>
                         <input type="file" name="profileImage" class="profileImage" id="profileImage" accept=".png, .jpg, image/png, image/jpeg">
                         <p>Allowed JPG, GIF or PNG. Max size of 800K</p>
+                    </div>
+                    <div class="message_box">
+                        <span class="alert-success">profile details update successfully !</span>   
                     </div>
                 </div>
                 <hr class="line">
@@ -54,11 +71,11 @@
                         <div class="password_change">
                             <div class="input_box">
                                 <label for="">password :</label>
-                                <input type="text" name="username" class="password" placeholder="enter your new password">
+                                <input type="password" name="pass" class="pass" placeholder="enter your new password">
                             </div>
                             <div class="input_box">
                                 <label for="">confrim password :</label>
-                                <input type="text" name="username" class="username" placeholder="enter your confrim password">
+                                <input type="password" name="c_pass" class="c_pass" placeholder="enter your confrim password">
                             </div>
                         </div>
                     </div>

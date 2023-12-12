@@ -12,7 +12,7 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="assets/css/style.css">
-   <script src="assets/js/resetpassword.js" defer></script>
+   <script src="assets/js/otp.js" defer></script>
 </head>
 
 <body>
@@ -22,9 +22,10 @@
 
       <div class="form">
          <h3>safe drive</h3>
+         <div class="alert_box alert"></div>
          <div class="form_header">
             <p>reset password?</p>
-            <p>for example.demo@gmail.com</p>
+            <p class="email"></p>
          </div>
          <div class="otp_input">
             <input type="text" name="pass" class="otp">
@@ -33,9 +34,10 @@
             <input type="text" name="pass" class="otp">
          </div>
          <!-- <input type="submit" name="submit" value="login now" class="form-btn"> -->
-         <button class="form-btn">verify otp</button>
+         <button class="form-btn continue_btn">countinue</button>
+         <b>Resend code in  <span id="timer"></span></b>
          <div class="back_link">
-            <a href="#">
+            <a href="forgotpassword.php">
                < back to sign in</a>
          </div>
       </div>

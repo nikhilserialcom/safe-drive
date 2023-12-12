@@ -17,7 +17,7 @@
                 <span class="text">users</span>
             </a>
         </li>
-        <li>
+        <!-- <li>
             <a href="#" class="nav-link">
                 <i class="fas fa-chart-simple"></i>
                 <span class="text">analytics</span>
@@ -34,7 +34,7 @@
                 <i class="fas fa-people-group"></i>
                 <span class="text">Team</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 
     <ul class="side-menu">

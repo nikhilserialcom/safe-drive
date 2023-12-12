@@ -27,6 +27,7 @@ function aadharApprove($driverId,$status)
         {
             $response = array(
                 'status_code' => 200,
+                'doc_name' => 'aadhar',
                 'message' => $final_status
             );
         }
@@ -58,6 +59,7 @@ function licenseapprove($driverId,$status)
         {
             $response = array(
                 'status_code' => 200,
+                'doc_name' => 'license',
                 'message' => $final_status
             );
         }
@@ -89,6 +91,7 @@ function policecertificationapproval($driverId,$status)
         {
             $response = array(
                 'status_code' => 200,
+                'doc_name' => 'police',
                 'message' => $final_status
             );
         }
@@ -120,6 +123,7 @@ function insuranceapproval($driverId,$status)
         {
             $response = array(
                 'status_code' => 200,
+                'doc_name' => 'insurance',
                 'message' => $final_status
             );
         }
@@ -151,6 +155,7 @@ function vehicleapproval($driverId,$status)
         {
             $response = array(
                 'status_code' => 200,
+                'doc_name' => 'vehicale',
                 'message' => $final_status
             );
         }
