@@ -67,6 +67,10 @@
                                 <label for="">full_name :</label>
                                 <input type="text" name="name" class="full_name" placeholder="enter your full name">
                             </div>
+                            <div class="input_box">
+                                <label for="">email :</label>
+                                <input type="text" name="email" class="email" placeholder="enter your full name">
+                            </div>
                         </div>
                         <div class="password_change">
                             <div class="input_box">

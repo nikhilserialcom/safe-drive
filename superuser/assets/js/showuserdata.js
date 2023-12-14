@@ -16,6 +16,9 @@ const license_msg_box = document.querySelector('.license');
 const vehicale_msg_box = document.querySelector('.vehicale');
 const insurance_msg_box = document.querySelector('.insurance');
 const police_msg_box = document.querySelector('.police');
+const active_btn = document.querySelector('.active_btn');
+
+const action_btn = document.querySelector('.action-btn');
 
 const alldriverdata_url = 'api/alldriverdata.php';
 const approved_url = 'api/approved.php';
@@ -319,6 +322,7 @@ const vehicel_reject_btn = document.querySelector('.vehicel_reject_btn');
 
 aadhar_approve_btn.addEventListener('click', () => {
     approvedData(driverId, aadhar_approve_btn.textContent, 'aadhar');
+    aadhar_approve_btn.parentElement.classList.add('d_none');
 })
 
 license_approve_btn.addEventListener('click', () => {
@@ -381,6 +385,11 @@ const activeDriver = (driver_Id, driver_status, reject_reason) => {
             console.log(json);
             if (json.status_code == 200) {
                 reject_modal.style.display = 'none';
+                var alert_msg;
+                const alert_class = (json.message == 'active') ? 'alert-success' : 'alert-danger';
+                alert_msg = (json.message == 'active') ? 'driver active successfully' : 'driver detail rejected';
+                active_btn.style.display = 'block';
+                active_btn.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
             }
             else {
                 console.log(json.message);
@@ -404,7 +413,7 @@ active_driver_btn.addEventListener('click', () => {
 
 reject_driver_btn.addEventListener('click', () => {
     reject_modal.style.display = 'block';
-    // activeDriver(id,reject_driver_btn.textContent)
+    activeDriver(id, reject_driver_btn.textContent)
 })
 
 done_btn.addEventListener('click', () => {

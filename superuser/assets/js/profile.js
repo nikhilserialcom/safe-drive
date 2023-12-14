@@ -1,5 +1,6 @@
 const username_input = document.querySelector('.username');
 const full_name_input = document.querySelector('.full_name');
+const email_input = document.querySelector('.email');
 const password_input = document.querySelector('.pass');
 const c_password_input = document.querySelector('.c_pass');
 const upload_btn = document.querySelector('.upload_btn');
@@ -45,6 +46,7 @@ const profile_data = () => {
             if (json.status_code == 200) {
                 username_input.value = user.username;
                 full_name_input.value = user.full_name;
+                email_input.value = user.s_email;
                 profile_image.innerHTML = `<img src="assets/${user.profile_img}" alt="">`
                 user_id.id = user.id;
             }
@@ -87,6 +89,7 @@ change_btn.addEventListener('click', () => {
     const newpassword = (password_input.value == c_password_input.value) ? password_input.value : 'password is not match';
     formData.append('username', username_input.value);
     formData.append('fullName',full_name_input.value);
+    formData.append('email',email_input.value);
     formData.append('newpassword',newpassword);
     updateProfile(formData);
 })

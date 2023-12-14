@@ -25,6 +25,7 @@ if (!isset($_SESSION['user_email'])) {
     $userListQuery = "SELECT * FROM user WHERE user_status = '1' ORDER BY id DESC";
     $userList = mysqli_query($con, $userListQuery);
     $drivercount = 0;
+    $pendingCount = $activeCount = $rejectCount = 0;
 
     if (mysqli_num_rows($userList) > 0) {
         $user_list = array();
@@ -33,11 +34,26 @@ if (!isset($_SESSION['user_email'])) {
         }
         foreach($user_list as $driver)
         {
+            if($driver['active_status'] == "pending")
+            {
+                $pendingCount ++;
+            }
+            elseif($driver['active_status'] == "active")
+            {
+                $activeCount ++;
+            }
+            elseif($driver['active_status'] == "reject")
+            {
+                $rejectCount ++;
+            }
             $drivercount ++;
         }
         $response = array(
             'status_code' => 200,
             'totaldriver' => $drivercount,
+            'pending' => $pendingCount,
+            'active' => $activeCount,
+            'reject' => $rejectCount,
             'userList' => $user_list
         );
     } else {

@@ -3,6 +3,12 @@ const search_box = document.querySelector('.search_box');
 const search_input = document.querySelector('.search_input');
 const search_btn = document.querySelector('.search_btn');
 const close_btn = document.querySelector('.close_btn');
+
+const total_driver = document.querySelector('.total_driver');
+const reject_driver = document.querySelector('.reject_driver');
+const active_driver = document.querySelector('.active_driver');
+const pending_driver = document.querySelector('.pending_driver');
+
 const recent_user_url = 'api/recentuser.php';
 const serach_driver_url = 'api/search.php';
 // console.log(user_list_box);
@@ -20,16 +26,16 @@ const recent_user = () => {
       let userData = json.userList;
       if (json.status_code == 200) {
         user_list_box.innerHTML = userData.map(val => {
-          const { firstname,created_at,driverstatus,photo } = val;
+          const { firstname, created_at, active_status, photo } = val;
           const parseDate = new Date(created_at);
-                const formattedDate = new Intl.DateTimeFormat('en-US', {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric'
-                }).format(parseDate);
+          const formattedDate = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+          }).format(parseDate);
           const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
-          let status = (driverstatus == "online") ? "active" : "pending";
-          let status_class = (driverstatus == "online") ? "bg-label-success" : "bg-label-warning";
+          let status = (active_status == "active") ? "active" : "pending";
+          let status_class = (active_status == "active") ? "bg-label-success" : "bg-label-warning";
           return `
             <tr>
                 <td>
@@ -45,11 +51,17 @@ const recent_user = () => {
                 <td><span class="status ${status_class}">${status}</span></td>
             </tr>`;
         }).join('');
-        
+
       }
       else {
         console.log(json.message);
       }
+
+      total_driver.innerHTML = json.totaldriver;
+      pending_driver.innerHTML = json.pending;
+      active_driver.innerHTML = json.active;
+      reject_driver.innerHTML = json.reject;
+
     })
 }
 
@@ -68,22 +80,21 @@ const driver_search = (driver_name) => {
     .then(response => response.json())
     .then(json => {
       console.log(json);
-      if(json.status_code == 200)
-      {
+      if (json.status_code == 200) {
         const driver_data = json.userData;
         user_list_box.innerHTML = driver_data.map(val => {
-          const { firstname,created_at,driverstatus,photo } = val;
+          const { firstname, created_at, driverstatus, photo } = val;
           const parseDate = new Date(created_at);
-                  const formattedDate = new Intl.DateTimeFormat('en-US', {
-                      year: 'numeric',
-                      month: 'numeric',
-                      day: 'numeric'
-                  }).format(parseDate);
-            const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
-            let status = (driverstatus == "online") ? "active" : "pending";
-            let status_class = (driverstatus == "online") ? "bg-label-success" : "bg-label-warning";
-  
-            return `
+          const formattedDate = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+          }).format(parseDate);
+          const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
+          let status = (driverstatus == "online") ? "active" : "pending";
+          let status_class = (driverstatus == "online") ? "bg-label-success" : "bg-label-warning";
+
+          return `
             <tr>
                 <td>
                     <div class="plus_icon">
@@ -99,17 +110,16 @@ const driver_search = (driver_name) => {
             </tr>`;
         }).join('');
       }
-      else{
+      else {
         console.log(json.message);
       }
-      
+
     })
 }
 
 
 search_btn.addEventListener('click', () => {
-  if(search_box.classList.contains('active'))
-  {
+  if (search_box.classList.contains('active')) {
     driver_search(search_input.value);
   }
   else {

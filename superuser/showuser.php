@@ -44,6 +44,10 @@
             </div>
         </div>
 
+        <div class="msg_box active_btn">
+            <!-- <span class="alert-success">profile details update successfully !</span> -->
+        </div>
+
         <div class="table-data">
             <div class="todo">
                 <div class="user_avatar">
@@ -94,9 +98,6 @@
                 </div>
             </div>
             <div class="order">
-                <div class="msg_box aadhar">
-                    <!-- <span class="alert-success">profile details update successfully !</span> -->
-                </div>
                 <div class="aadhar_card">
                     <!-- <h3>aadhar card information</h3>
                     <div class="info_header">
@@ -118,6 +119,9 @@
                 <div class="action-btn">
                     <button class="bg-label-success aadhar_approve_btn">accept</button>
                     <button class="bg-label-danger aadhar_reject_btn">reject</button>
+                </div>
+                <div class="msg_box aadhar">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
             </div>
             <div class="order">

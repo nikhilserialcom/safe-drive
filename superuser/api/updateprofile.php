@@ -50,8 +50,9 @@ if (!isset($_SESSION['user_email'])) {
         else{
             $username = isset($_POST['username']) ? $_POST['username'] : '';
             $full_name = isset($_POST['fullName']) ? $_POST['fullName'] : '';
+            $email = isset($_POST['email']) ? $_POST['email'] : '';
             $newpassword = isset($_POST['newpassword']) ? password_hash($_POST['newpassword'],PASSWORD_BCRYPT) : $row['s_password'];
-            $updateQuery = "UPDATE superuser SET username = '$username',full_name = '$full_name',s_password = '$newpassword' WHERE s_email = '$userEmail'";
+            $updateQuery = "UPDATE superuser SET username = '$username',full_name = '$full_name', s_email = '$email' ,s_password = '$newpassword' WHERE s_email = '$userEmail'";
             $update = mysqli_query($con, $updateQuery);
     
             if ($update) {

@@ -54,29 +54,29 @@
             <li>
                 <i class='bx bxs-user bg-label-primary'></i>
                 <span class="text">
-                    <h3 class="total_driver">1.5K</h3>
-                    <p>total users</p>
+                    <h3 class="total_driver"></h3>
+                    <p>total drivers</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-user-check bg-label-danger'></i>
                 <span class="text">
-                    <h3>1M</h3>
-                    <p>Clients</p>
+                    <h3 class="reject_driver"></h3>
+                    <p>reject drivers</p>
                 </span>
             </li>
             <li>
                 <i class="bx bx-group bx-sm bg-label-success"></i>
                 <span class="text">
-                    <h3>$900k</h3>
-                    <p>active users</p>
+                    <h3 class="active_driver"></h3>
+                    <p>active drivers</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-user-voice bg-label-warning'></i>
                 <span class="text">
-                    <h3>$900k</h3>
-                    <p>pending users</p>
+                    <h3 class="pending_driver"></h3>
+                    <p>pending drivers</p>
                 </span>
             </li>
         </div>
@@ -84,7 +84,7 @@
         <div class="table-data">
             <div class="order">
                 <div class="head">
-                    <h3>Recent users</h3>
+                    <h3>driver list</h3>
                     <div class="search_box">
                         <input type="serach" class="search_input" placeholder="search...">
                         <button class="search_btn d_flex"><i class="fas fa-search"></i></button>
@@ -97,8 +97,8 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>User</th>
-                            <th>Order Date</th>
+                            <th>Driver</th>
+                            <th>Create Date</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -203,6 +203,17 @@
 
                     </tbody>
                 </table>
+                <!-- <div class="pegination_box">
+                    <ul class="page_list">
+                        <li class="page_no">previous</li>
+                        <li class="page_no">1</li>
+                        <li class="page_no">2</li>
+                        <li class="page_no">3</li>
+                        <li class="page_no">4</li>
+                        <li class="page_no">5</li>
+                        <li class="page_no">next</i></li>
+                    </ul>
+                </div> -->
             </div>
         </div>
     </main>

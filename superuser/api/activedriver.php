@@ -40,7 +40,7 @@ if (!isset($_SESSION['user_email'])) {
                 {
                     $response = array(
                         'status_code' => 200,
-                        'userData' => $row 
+                        'message' => 'reject' 
                     );
                 }
                 else{
@@ -57,7 +57,7 @@ if (!isset($_SESSION['user_email'])) {
                 {
                     $response = array(
                         'status_code' => 200,
-                        'userData' => $row 
+                        'message' => 'active' 
                     );
                 }
                 else{
