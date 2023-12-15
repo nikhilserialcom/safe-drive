@@ -327,37 +327,46 @@ aadhar_approve_btn.addEventListener('click', () => {
 
 license_approve_btn.addEventListener('click', () => {
     approvedData(driverId, license_approve_btn.textContent, 'license');
+    license_approve_btn.parentElement.classList.add('d_none');
 })
 
 police_approve_btn.addEventListener('click', () => {
     approvedData(driverId, police_approve_btn.textContent, 'police');
+    police_approve_btn.parentElement.classList.add('d_none');
 })
 
 insurance_approve_btn.addEventListener('click', () => {
     approvedData(driverId, insurance_approve_btn.textContent, 'insurance');
+    insurance_approve_btn.parentElement.classList.add('d_none');
 })
 
 vehicel_approve_btn.addEventListener('click', () => {
     approvedData(driverId, vehicel_approve_btn.textContent, 'vehical');
+    vehicel_approve_btn.parentElement.classList.add('d_none');
 })
 
 aadhar_reject_btn.addEventListener('click', () => {
     approvedData(driverId, aadhar_reject_btn.textContent, 'aadhar');
+    aadhar_reject_btn.parentElement.classList.add('d_none');
 })
 
 license_reject_btn.addEventListener('click', () => {
     approvedData(driverId, license_reject_btn.textContent, 'license');
+    license_reject_btn.parentElement.classList.add('d_none');
 })
 
 police_reject_btn.addEventListener('click', () => {
     approvedData(driverId, police_reject_btn.textContent, 'police');
+    police_reject_btn.parentElement.classList.add('d_none');
 })
 
 insurance_reject_btn.addEventListener('click', () => {
     approvedData(driverId, insurance_reject_btn.textContent, 'insurance');
+    insurance_reject_btn.parentElement.classList.add('d_none');
 })
 vehicel_reject_btn.addEventListener('click', () => {
     approvedData(driverId, vehicel_reject_btn.textContent, 'vehical');
+    vehicel_reject_btn.parentElement.classList.add('d_none');
 })
 
 const active_driver_btn = document.querySelector('.active_driver');

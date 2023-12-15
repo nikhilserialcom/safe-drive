@@ -24,6 +24,16 @@ const updateInputConfig = (element, disabledStatus) => {
     }
 }
 
+const filledClass = (filed) => {
+    if(filed.value)
+    {
+        filed.classList.add('filled');
+    }
+    else{
+        filed.classList.remove('filled');
+    }
+}
+
 otp_input.forEach((element) => {
     element.addEventListener("keyup", (e) => {
         e.target.value = e.target.value.replace(/[^0-9]/g, "");
@@ -51,15 +61,12 @@ otp_input.forEach((element) => {
         } else if (value.length > 1) {
             e.target.value = value.split("")[0];
         }
-        continue_btn.classList.add("hide");
     });
 
 });
 
 window.addEventListener("keyup", (e) => {
     if (inputCount > 3) {
-        continue_btn.classList.remove("hide");
-        continue_btn.classList.add("show");
         if (e.key == "Backspace") {
             finalInput = finalInput.substring(0, finalInput.length - 1);
             updateInputConfig(inputField.lastElementChild, false);

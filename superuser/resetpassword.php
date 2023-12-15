@@ -37,7 +37,7 @@
          <!-- <input type="submit" name="submit" value="login now" class="form-btn"> -->
          <button class="form-btn change_btn">change password</button>
          <div class="back_link">
-            <a href="#">
+            <a href="index.php">
                < back to sign in</a>
          </div>
       </div>

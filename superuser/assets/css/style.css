@@ -139,6 +139,11 @@ body.dark {
   color: #ffab00 !important;
 }
 
+.border-top-right{
+  border:1px solid black;
+  border-top-right-radius: 0;
+}
+
 .d_none{
   opacity: 0;
 }
@@ -306,6 +311,10 @@ body.dark {
   border-radius: 5px;
 }
 
+.form-container .form .otp_input .otp.filled{
+  outline-color: rgb(7, 192, 99) ;
+}
+
 .form-container .form .forget_pass {
   display: flex;
   align-items: end;
@@ -349,12 +358,13 @@ body.dark {
 
 .form-container .form .input_box span {
   /* border: 1px solid #000000; */
-  background-color: #eee;
   width: 35px;
   height: 45px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   cursor: pointer;
+  position: absolute;
+  right: 450px;
 }
 
 .form-container .form .input_box.error input {
@@ -1669,7 +1679,7 @@ body.dark {
 }
 
 .content .profile_card .profile_box .profile_data .form .user_data .input_box label,
-.content .profile_card .profile_box .profile_data .form .password_change .input_box label {
+.content .profile_card .profile_box .profile_data .form .password_change label {
   text-transform: capitalize;
   font-weight: 700;
 }
@@ -1995,6 +2005,15 @@ body.dark {
 
 @media screen and (max-width:450px) {
 
+  .form-container .form .input_box span{
+    position: absolute;
+    right: 40px;
+  }
+
+  .form-container .form .form_link{
+    text-transform: capitalize;
+    font-size: 18px;
+  }
 
   .content main .table-data .order table {
     /* border: 1px solid #000000; */

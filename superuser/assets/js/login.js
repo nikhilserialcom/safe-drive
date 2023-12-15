@@ -2,8 +2,21 @@ const log_btn = document.querySelector('.form .login_btn');
 const user_email = document.querySelector('.input_box .email');
 const user_pass = document.querySelector('.input_box .pass');
 const alert_msg = document.querySelector('.alert_msg');
+const show_pass = document.querySelector('.show_pass');
 
 const loginUrl = 'api/login.php';
+
+show_pass.addEventListener('click', () => {
+    const icon_btn = show_pass.querySelector('.bx');
+    const input = show_pass.previousElementSibling;
+    if (input.type === "password") {
+        input.type = "text";
+        icon_btn.classList.add('bxs-show');
+    } else {
+        input.type = "password";
+        icon_btn.classList.remove('bxs-show');
+    }
+})
 
 const userLogin = (user_email, user_pass) => {
     fetch(loginUrl, {
