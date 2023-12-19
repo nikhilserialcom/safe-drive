@@ -275,30 +275,25 @@ const approvedData = (driver_Id, action_type, doc_type) => {
         .then(json => {
             console.log(json);
             if (json.status_code == 200) {
-                var alert_msg;
+                var alert_msg = json.message;
                 const alert_class = (json.message == 'approved') ? 'alert-success' : 'alert-danger';
                 if (json.doc_name == 'aadhar') {
-                    alert_msg = (json.message == 'approved') ? 'aadhar card deatil is approved' : 'aadhar card deatil is rejected';
                     aadhar_msg_box.style.display = 'block';
                     aadhar_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'license') {
-                    alert_msg = (json.message == 'approved') ? 'driving license deatil is approved' : 'driving license deatil is rejected';
                     license_msg_box.style.display = 'block';
                     license_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'police') {
-                    alert_msg = (json.message == 'approved') ? 'police ceritificate  is approved' : 'police ceritificate is rejected';
                     police_msg_box.style.display = 'block';
                     police_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'insurance') {
-                    alert_msg = (json.message == 'approved') ? 'vehicel insurance is approved' : 'vehicel insurance is rejected';
                     insurance_msg_box.style.display = 'block';
                     insurance_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'vehicale') {
-                    alert_msg = (json.message == 'approved') ? 'vehicel deatil is approved' : 'vehicel deatil is rejected';
                     vehicale_msg_box.style.display = 'block';
                     vehicale_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
@@ -393,12 +388,7 @@ const activeDriver = (driver_Id, driver_status, reject_reason) => {
         .then(json => {
             console.log(json);
             if (json.status_code == 200) {
-                reject_modal.style.display = 'none';
-                var alert_msg;
-                const alert_class = (json.message == 'active') ? 'alert-success' : 'alert-danger';
-                alert_msg = (json.message == 'active') ? 'driver active successfully' : 'driver detail rejected';
-                active_btn.style.display = 'block';
-                active_btn.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
+                // reject_modal.style.display = 'none';
             }
             else {
                 console.log(json.message);
