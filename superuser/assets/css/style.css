@@ -118,6 +118,10 @@ body.dark {
   color: var(--bg-label-secondary-color);
 }
 
+.empty{
+  display: none;
+}
+
 .btn-label-danger {
   color: #ff3e1d;
   border-color: rgba(0, 0, 0, 0);

@@ -33,7 +33,7 @@ $table_name = ['driving_licese_info','vehicleinfo','police_clearance_certificate
         }
         else
         {
-            $checkData = "database empty";
+            $checkData[$name] = "database empty";
         }
     }
 

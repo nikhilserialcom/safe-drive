@@ -19,11 +19,37 @@ const police_msg_box = document.querySelector('.police');
 const active_btn = document.querySelector('.active_btn');
 
 const action_btn = document.querySelector('.action-btn');
+const insurance_btn = document.querySelector('.insurance_btn');
+const aadhar_btn = document.querySelector('.aadhar_btn');
 
 const alldriverdata_url = 'api/alldriverdata.php';
 const approved_url = 'api/approved.php';
 const active_driver_url = 'api/activedriver.php';
+const checkdocument_url = 'api/checkdocument.php';
 var driverId;
+
+const checkdocument = () => {
+    fetch(checkdocument_url, {
+        method: 'POST',
+        body: JSON.stringify({
+            driverId: '66482'
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            const table_name = json.table;
+            if(json.status == 200)
+            {   
+                console.log(table_name);
+            }
+        })
+}
+
+checkdocument();
 
 const driverData = (id) => {
     fetch(alldriverdata_url, {
@@ -37,7 +63,7 @@ const driverData = (id) => {
     })
         .then(response => response.json())
         .then(json => {
-            // console.log(json);
+            console.log(json);
             const driver_data = json.driverData;
             const aadhar_data = json.aadharData;
             const police_data = json.policeData;
@@ -157,9 +183,16 @@ const driverData = (id) => {
                     </div>
                 `;
 
-                const insurance_doc = insurance_data.vehicle_insurance ? `<img src="../driver/${insurance_data.vehicle_insurance}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+                if (insurance_data == '') {
+                    insurance_doc_data.classList.add('empty');
+                    insurance_btn.classList.remove('action-btn');
+                    insurance_btn.classList.add('empty');
+                }
+                else {
+                    insurance_btn.classList.remove('empty');
+                    const insurance_doc = insurance_data.vehicle_insurance ? `<img src="../driver/${insurance_data.vehicle_insurance}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
 
-                insurance_doc_data.innerHTML = `
+                    insurance_doc_data.innerHTML = `
                     <h3>vehicle insurance</h3>
                     <div class="info_document">
                         <div class="document_img_box">
@@ -167,6 +200,7 @@ const driverData = (id) => {
                         </div>
                     </div>
                 `;
+                }
 
                 const car_front = vehicle_data.car_photo ? `<img src="../driver/${vehicle_data.car_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                 const car_back = vehicle_data.backside_photo ? `<img src="../driver/${vehicle_data.backside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`

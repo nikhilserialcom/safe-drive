@@ -116,7 +116,7 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="action-btn">
+                <div class="action-btn aadhar_btn">
                     <button class="bg-label-success aadhar_approve_btn">accept</button>
                     <button class="bg-label-danger aadhar_reject_btn">reject</button>
                 </div>
@@ -125,9 +125,6 @@
                 </div>
             </div>
             <div class="order">
-                <div class="msg_box license">
-                    <!-- <span class="alert-success">profile details update successfully !</span> -->
-                </div>
                 <div class="licese_data">
                     <!-- <h3>driving licence information</h3>
                     <div class="info_header">
@@ -158,11 +155,11 @@
                     <button class="bg-label-success license_approve_btn">accept</button>
                     <button class="bg-label-danger license_reject_btn">reject</button>
                 </div>
-            </div>
-            <div class="todo">
-                <div class="msg_box police">
+                <div class="msg_box license">
                     <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
+            </div>
+            <div class="todo">
                 <div class="police_data">
                     <!-- <h3>police clearance certificate</h3>
                     <div class="info_document">
@@ -175,7 +172,7 @@
                     <button class="bg-label-success police_approve_btn">accept</button>
                     <button class="bg-label-danger police_reject_btn">reject</button>
                 </div>
-                <div class="msg_box insurance">
+                <div class="msg_box police">
                     <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
                 <div class="insurance_data">
@@ -186,17 +183,17 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="action-btn">
+                <div class="action-btn insurance_btn">
                     <button class="bg-label-success insurance_approve_btn">accept</button>
                     <button class="bg-label-danger insurance_reject_btn">reject</button>
+                </div>
+                <div class="msg_box insurance">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
             </div>
         </div>
         <div class="table-data">
             <div class="order">
-                <div class="msg_box vehicale">
-                    <!-- <span class="alert-success">profile details update successfully !</span> -->
-                </div>
                 <div class="vehicle_info">
                     <!-- <h3>vahicle  information</h3>
                     <div class="info_header">
@@ -250,6 +247,9 @@
                 <div class="action-btn">
                     <button class="bg-label-success vehicel_approve_btn">accept</button>
                     <button class="bg-label-danger vehicel_reject_btn">reject</button>
+                </div>
+                <div class="msg_box vehicale">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
             </div>
         </div>
