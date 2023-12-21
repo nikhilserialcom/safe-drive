@@ -21,6 +21,9 @@ const active_btn = document.querySelector('.active_btn');
 const action_btn = document.querySelector('.action-btn');
 const insurance_btn = document.querySelector('.insurance_btn');
 const aadhar_btn = document.querySelector('.aadhar_btn');
+const licese_btn = document.querySelector('.licese_btn');
+const police_btn = document.querySelector('.police_btn');
+const vehicel_btn = document.querySelector('.vehicel_btn');
 
 const alldriverdata_url = 'api/alldriverdata.php';
 const approved_url = 'api/approved.php';
@@ -28,11 +31,11 @@ const active_driver_url = 'api/activedriver.php';
 const checkdocument_url = 'api/checkdocument.php';
 var driverId;
 
-const checkdocument = () => {
+const checkdocument = (driver_Id) => {
     fetch(checkdocument_url, {
         method: 'POST',
         body: JSON.stringify({
-            driverId: '66482'
+            driverId: driver_Id
         }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -45,11 +48,72 @@ const checkdocument = () => {
             if(json.status == 200)
             {   
                 console.log(table_name);
+                if(table_name.adhaarcard == "approved")
+                {
+                    console.log(table_name.adhaarcard);
+                    aadhar_btn.classList.remove('action-btn');
+                    aadhar_btn.classList.add('empty');
+                    aadhar_msg_box.style.display = 'block';
+                    aadhar_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
+                }
+                else if(table_name.adhaarcard == "rejected")
+                {
+                    aadhar_btn.classList.remove('action-btn');
+                    aadhar_btn.classList.add('empty');
+                    aadhar_msg_box.style.display = 'block';
+                    aadhar_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
+                }
+
+                if(table_name.driving_licese_info == "approved")
+                {
+                    licese_btn.classList.remove('action-btn');
+                    licese_btn.classList.add('empty');
+                    license_msg_box.style.display = 'block';
+                    license_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
+                }
+                else if(table_name.driving_licese_info == "rejected")
+                {
+                    licese_btn.classList.remove('action-btn');
+                    licese_btn.classList.add('empty');
+                    license_msg_box.style.display = 'block';
+                    license_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
+                }
+
+                if(table_name.vehicleinfo == "approved")
+                {
+                    vehicel_btn.classList.remove('action-btn');
+                    vehicel_btn.classList.add('empty');
+                    vehicale_msg_box.style.display = 'block';
+                    vehicale_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
+                }
+                else if(table_name.vehicleinfo == "rejected")
+                {
+                    vehicel_btn.classList.remove('action-btn');
+                    vehicel_btn.classList.add('empty');
+                    vehicale_msg_box.style.display = 'block';
+                    vehicale_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
+                }
+
+                if(table_name.police_clearance_certificate == "approved")
+                {
+                    
+                    police_btn.classList.remove('action-btn');
+                    police_btn.classList.add('empty');
+                    police_msg_box.style.display = 'block';
+                    police_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
+                }
+                else if(table_name.police_clearance_certificate == "rejected")
+                {
+                    police_btn.classList.remove('action-btn');
+                    police_btn.classList.add('empty');
+                    police_msg_box.style.display = 'block';
+                    police_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
+                }
             }
         })
 }
 
-checkdocument();
+checkdocument(id);
 
 const driverData = (id) => {
     fetch(alldriverdata_url, {
@@ -72,7 +136,7 @@ const driverData = (id) => {
             const vehicle_data = json.vehicleData;
             driverId = driver_data.driverId;
             const profile = driver_data.photo ? `<img src="../${driver_data.photo}" alt="" />` : '<img src="assets/img/user.png" alt="" />';
-            const status = (driver_data.driverstatus == 'online') ? "active" : "unactive";
+            const status = (driver_data.active_status == 'active') ? "active" : "unactive";
             if (json.status_code == 200) {
                 user_avatar_box.innerHTML = `
                 <div class="user_profile">
@@ -117,74 +181,109 @@ const driverData = (id) => {
                 </ul>
                 `;
 
-                const aadhar_fornt = aadhar_data.front_photo_adhaar ? `<img src="../driver/${aadhar_data.front_photo_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
-                const aadhar_back = aadhar_data.back_photo_adhaar ? `<img src="../driver/${aadhar_data.back_photo_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
-                const aadhar_selfy = aadhar_data.selfi_with_adhaar ? `<img src="../driver/${aadhar_data.selfi_with_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+                if(aadhar_data == '')
+                {
+                    aadhar_card.innerHTML = `
+                    <div class="empty_msg">
+                        <p>database empty</p>
+                    </div>`;
+                    aadhar_btn.classList.remove('action-btn');
+                    aadhar_btn.classList.add('empty');
+                }
+                else{
+                    const aadhar_fornt = aadhar_data.front_photo_adhaar ? `<img src="../driver/${aadhar_data.front_photo_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+                    const aadhar_back = aadhar_data.back_photo_adhaar ? `<img src="../driver/${aadhar_data.back_photo_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+                    const aadhar_selfy = aadhar_data.selfi_with_adhaar ? `<img src="../driver/${aadhar_data.selfi_with_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+    
+                    aadhar_card.innerHTML = `
+                        <div class="info_header">
+                            <span>aadhar no:</span>
+                            <span>${aadhar_data.adhaar_no}</span>
+                        </div>
+                        <div class="info_document">
+                            <div class="document_img_box">
+                                ${aadhar_fornt}
+                            </div>
+                            <div class="document_img_box">
+                                ${aadhar_back}
+                            </div>
+                            <div class="document_img_box">
+                               ${aadhar_selfy}
+                            </div>
+                        </div>
+                    `;
+                }
 
-                aadhar_card.innerHTML = `
-                    <h3>aadhar card information</h3>
-                    <div class="info_header">
-                        <span>aadhar no:</span>
-                        <span>${aadhar_data.adhaar_no}</span>
-                    </div>
-                    <div class="info_document">
-                        <div class="document_img_box">
-                            ${aadhar_fornt}
+                if(licese_data == '')
+                {
+                    driving_licese.innerHTML = `
+                    <div class="empty_msg">
+                        <p>database empty</p>
+                    </div>`;
+                    licese_btn.classList.remove('action-btn');
+                    licese_btn.classList.add('empty');
+                }
+                else
+                {
+                    const licence_front = licese_data.front_photo_DL ? `<img src="../driver/${licese_data.front_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const licence_back = licese_data.back_photo_DL ? `<img src="../driver/${licese_data.back_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const licence_selfy = licese_data.selfi_with_DL ? `<img src="../driver/${licese_data.selfi_with_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+    
+                    driving_licese.innerHTML = `
+                        <div class="info_header">
+                            <ul>
+                                <li>
+                                    <span>driveing licence no:</span>
+                                    <span>${licese_data.driving_licese_no}</span>
+                                </li>
+                                <li>
+                                    <span>expiration date:</span>
+                                    <span>${licese_data.expiration_date}</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="document_img_box">
-                            ${aadhar_back}
+                        <div class="info_document">
+                            <div class="document_img_box">
+                                ${licence_front}
+                            </div>
+                            <div class="document_img_box">
+                               ${licence_back}
+                            </div>
+                            <div class="document_img_box">
+                                ${licence_selfy}
+                            </div>
                         </div>
-                        <div class="document_img_box">
-                           ${aadhar_selfy}
-                        </div>
-                    </div>
-                `;
-
-                const licence_front = licese_data.front_photo_DL ? `<img src="../driver/${licese_data.front_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const licence_back = licese_data.back_photo_DL ? `<img src="../driver/${licese_data.back_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const licence_selfy = licese_data.selfi_with_DL ? `<img src="../driver/${licese_data.selfi_with_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-
-                driving_licese.innerHTML = `
-                    <h3>driving licence information</h3>
-                    <div class="info_header">
-                        <ul>
-                            <li>
-                                <span>driveing licence no:</span>
-                                <span>${licese_data.driving_licese_no}</span>
-                            </li>
-                            <li>
-                                <span>expiration date:</span>
-                                <span>${licese_data.expiration_date}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="info_document">
-                        <div class="document_img_box">
-                            ${licence_front}
-                        </div>
-                        <div class="document_img_box">
-                           ${licence_back}
-                        </div>
-                        <div class="document_img_box">
-                            ${licence_selfy}
-                        </div>
-                    </div>
-                `;
-
-                const police_doc = police_data.Police_clearance_certificate ? `<img src="../driver/${police_data.Police_clearance_certificate}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+                    `;
+                }
 
 
-                police_doc_data.innerHTML = `
-                    <h3>police clearance certificate</h3>
-                    <div class="info_document">
-                        <div class="document_img_box">
-                            ${police_doc}
+                if(police_data == '')
+                {
+                    police_doc_data.innerHTML = `
+                    <div class="empty_msg">
+                        <p>database empty</p>
+                    </div>`;
+                    police_btn.classList.remove('action-btn');
+                    police_btn.classList.add('empty');
+                }
+                else{
+                    const police_doc = police_data.Police_clearance_certificate ? `<img src="../driver/${police_data.Police_clearance_certificate}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
+    
+                    police_doc_data.innerHTML = `
+                        <div class="info_document">
+                            <div class="document_img_box">
+                                ${police_doc}
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }
+
 
                 if (insurance_data == '') {
-                    insurance_doc_data.classList.add('empty');
+                    insurance_doc_data.innerHTML = `
+                    <div class="empty_msg">
+                        <p>database empty</p>
+                    </div>`;
                     insurance_btn.classList.remove('action-btn');
                     insurance_btn.classList.add('empty');
                 }
@@ -193,7 +292,6 @@ const driverData = (id) => {
                     const insurance_doc = insurance_data.vehicle_insurance ? `<img src="../driver/${insurance_data.vehicle_insurance}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
 
                     insurance_doc_data.innerHTML = `
-                    <h3>vehicle insurance</h3>
                     <div class="info_document">
                         <div class="document_img_box">
                             ${insurance_doc}
@@ -202,64 +300,75 @@ const driverData = (id) => {
                 `;
                 }
 
-                const car_front = vehicle_data.car_photo ? `<img src="../driver/${vehicle_data.car_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const car_back = vehicle_data.backside_photo ? `<img src="../driver/${vehicle_data.backside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const car_right = vehicle_data.rigthside_photo ? `<img src="../driver/${vehicle_data.rigthside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const car_left = vehicle_data.leftside_photo ? `<img src="../driver/${vehicle_data.leftside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const rc_front = vehicle_data.frontRC ? `<img src="../driver/${vehicle_data.frontRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const rc_back = vehicle_data.backRC ? `<img src="../driver/${vehicle_data.backRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                const rc_selfy = vehicle_data.selfiwithRC ? `<img src="../driver/${vehicle_data.selfiwithRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                if(vehicle_data == '')
+                {
+                    vehicle_info.innerHTML = `
+                    <div class="empty_msg">
+                        <p>database empty</p>
+                    </div>`;
+                    vehicel_btn.classList.remove('action-btn');
+                    vehicel_btn.classList.add('empty');
+                }
+                else{
+                    const car_front = vehicle_data.car_photo ? `<img src="../driver/${vehicle_data.car_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const car_back = vehicle_data.backside_photo ? `<img src="../driver/${vehicle_data.backside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const car_right = vehicle_data.rigthside_photo ? `<img src="../driver/${vehicle_data.rigthside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const car_left = vehicle_data.leftside_photo ? `<img src="../driver/${vehicle_data.leftside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const rc_front = vehicle_data.frontRC ? `<img src="../driver/${vehicle_data.frontRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const rc_back = vehicle_data.backRC ? `<img src="../driver/${vehicle_data.backRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const rc_selfy = vehicle_data.selfiwithRC ? `<img src="../driver/${vehicle_data.selfiwithRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+    
+                    vehicle_info.innerHTML = `
+                        <div class="info_header">
+                            <ul>
+                                <li>
+                                    <span>vahicle Brand:</span>
+                                    <span>${vehicle_data.vehicle_brand_name}</span>
+                                </li>
+                                <li>
+                                    <span>vahicel modal:</span>
+                                    <span>${vehicle_data.modal}</span>
+                                </li>
+                                <li>
+                                    <span>number plate no:</span>
+                                    <span>${vehicle_data.Number_plate}</span>
+                                </li>
+                                <li>
+                                    <span>transport year:</span>
+                                    <span>${vehicle_data.transport_year}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <h4>vehicel photo:</h4>
+                        <div class="vehicel_car_document">
+                            <div class="car_img_box">
+                                ${car_front}
+                            </div>
+                            <div class="car_img_box">
+                                ${car_back}
+                            </div>
+                            <div class="car_img_box">
+                                ${car_right}
+                            </div>
+                            <div class="car_img_box">
+                               ${car_left}
+                            </div>
+                        </div>
+                        <h4>rc photo:</h4>
+                        <div class="info_document">
+                            <div class="document_img_box">
+                                ${rc_front}
+                            </div>
+                            <div class="document_img_box">
+                                ${rc_back}
+                            </div>
+                            <div class="document_img_box">
+                                ${rc_selfy}
+                            </div>
+                        </div>
+                    `;
+                }
 
-                vehicle_info.innerHTML = `
-                    <h3>vahicle  information</h3>
-                    <div class="info_header">
-                        <ul>
-                            <li>
-                                <span>vahicle Brand:</span>
-                                <span>${vehicle_data.vehicle_brand_name}</span>
-                            </li>
-                            <li>
-                                <span>vahicel modal:</span>
-                                <span>${vehicle_data.modal}</span>
-                            </li>
-                            <li>
-                                <span>number plate no:</span>
-                                <span>${vehicle_data.Number_plate}</span>
-                            </li>
-                            <li>
-                                <span>transport year:</span>
-                                <span>${vehicle_data.transport_year}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <h4>vehicel photo:</h4>
-                    <div class="vehicel_car_document">
-                        <div class="car_img_box">
-                            ${car_front}
-                        </div>
-                        <div class="car_img_box">
-                            ${car_back}
-                        </div>
-                        <div class="car_img_box">
-                            ${car_right}
-                        </div>
-                        <div class="car_img_box">
-                           ${car_left}
-                        </div>
-                    </div>
-                    <h4>rc photo:</h4>
-                    <div class="info_document">
-                        <div class="document_img_box">
-                            ${rc_front}
-                        </div>
-                        <div class="document_img_box">
-                            ${rc_back}
-                        </div>
-                        <div class="document_img_box">
-                            ${rc_selfy}
-                        </div>
-                    </div>
-                `;
             }
             else {
                 window.location.href = 'index.php';

@@ -172,7 +172,7 @@ const driver_search = (driver_name) => {
             if (json.status_code == 200) {
                 const driver_data = json.userData;
                 user_list_box.innerHTML = driver_data.map(val => {
-                    const { driverId,firstname, created_at, driverstatus, photo } = val;
+                    const { driverId,firstname, created_at, active_status, photo } = val;
                     const parseDate = new Date(created_at);
                     const formattedDate = new Intl.DateTimeFormat('en-US', {
                         year: 'numeric',
@@ -180,8 +180,8 @@ const driver_search = (driver_name) => {
                         day: 'numeric'
                     }).format(parseDate);
                     const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
-                    let status = (driverstatus == "online") ? "active" : "pending";
-                    let status_class = (driverstatus == "online") ? "bg-label-success" : "bg-label-warning";
+                    let status = (active_status == "active") ? "active" : "pending";
+                    let status_class = (active_status == "active") ? "bg-label-success" : "bg-label-warning";
 
                     return `
                 <tr>

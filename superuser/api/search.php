@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_email'])) {
 
     $driverName = isset($data['drivername']) ? $data['drivername'] : '';
     $userData = array();
-    $searchQuery = "SELECT * FROM user WHERE firstname LIKE '%".$driverName."%'";
+    $searchQuery = "SELECT * FROM user WHERE user_status = '1' AND firstname LIKE '%".$driverName."%' ORDER BY id DESC";
     $search = mysqli_query($con,$searchQuery);
     if(mysqli_num_rows($search) > 0){
         while($row = mysqli_fetch_assoc($search))

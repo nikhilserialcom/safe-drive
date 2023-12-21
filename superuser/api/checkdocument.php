@@ -22,14 +22,7 @@ $table_name = ['driving_licese_info','vehicleinfo','police_clearance_certificate
         if (mysqli_num_rows($result) > 0)
         {
            $row = mysqli_fetch_assoc($result);
-           if($row['status'] == 'rejected')
-           {
-                $checkData[$name] = "false";
-           }
-           else
-           {
-                $checkData[$name] = "true";
-           }
+           $checkData[$name] = $row['status'];
         }
         else
         {

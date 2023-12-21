@@ -98,8 +98,9 @@
                 </div>
             </div>
             <div class="order">
+                <h3>aadhar card information</h3>
                 <div class="aadhar_card">
-                    <!-- <h3>aadhar card information</h3>
+                    <!-- 
                     <div class="info_header">
                         <span>aadhar no:</span>
                         <span>6359 8598 741</span>
@@ -125,8 +126,9 @@
                 </div>
             </div>
             <div class="order">
+                <h3>driving licence information</h3>
                 <div class="licese_data">
-                    <!-- <h3>driving licence information</h3>
+                    <!--
                     <div class="info_header">
                         <ul>
                             <li>
@@ -151,7 +153,7 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="action-btn">
+                <div class="action-btn licese_btn">
                     <button class="bg-label-success license_approve_btn">accept</button>
                     <button class="bg-label-danger license_reject_btn">reject</button>
                 </div>
@@ -160,6 +162,7 @@
                 </div>
             </div>
             <div class="todo">
+                <h3>police clearance certificate</h3>
                 <div class="police_data">
                     <!-- <h3>police clearance certificate</h3>
                     <div class="info_document">
@@ -168,13 +171,14 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="action-btn">
+                <div class="action-btn police_btn">
                     <button class="bg-label-success police_approve_btn">accept</button>
                     <button class="bg-label-danger police_reject_btn">reject</button>
                 </div>
                 <div class="msg_box police">
                     <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
+                <h3>vehicle insurance</h3>
                 <div class="insurance_data">
                     <!-- <h3>vehicle insurance</h3>
                     <div class="info_document">
@@ -194,6 +198,7 @@
         </div>
         <div class="table-data">
             <div class="order">
+                <h3>vahicle information</h3>
                 <div class="vehicle_info">
                     <!-- <h3>vahicle  information</h3>
                     <div class="info_header">
@@ -244,7 +249,7 @@
                         </div>
                     </div> -->
                 </div>
-                <div class="action-btn">
+                <div class="action-btn vehicel_btn">
                     <button class="bg-label-success vehicel_approve_btn">accept</button>
                     <button class="bg-label-danger vehicel_reject_btn">reject</button>
                 </div>

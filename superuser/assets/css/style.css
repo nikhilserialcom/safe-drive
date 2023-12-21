@@ -122,6 +122,22 @@ body.dark {
   display: none;
 }
 
+.empty_msg {
+  /* border: 1px solid; */
+  display: flex;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.empty_msg p {
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: 700;
+  color: #566a7f;
+}
+
 .btn-label-danger {
   color: #ff3e1d;
   border-color: rgba(0, 0, 0, 0);
