@@ -8,6 +8,7 @@ const total_driver = document.querySelector('.total_driver');
 const reject_driver = document.querySelector('.reject_driver');
 const active_driver = document.querySelector('.active_driver');
 const pending_driver = document.querySelector('.pending_driver');
+const box_info = document.querySelectorAll('.box-info li');
 
 const recent_user_url = 'api/recentuser.php';
 const serach_driver_url = 'api/search.php';
@@ -33,7 +34,7 @@ const recent_user = () => {
             month: 'numeric',
             day: 'numeric'
           }).format(parseDate);
-          const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
+          const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/user.png" alt="" />';
           let status = (active_status == "active") ? "active" : "pending";
           let status_class = (active_status == "active") ? "bg-label-success" : "bg-label-warning";
           return `
@@ -90,7 +91,7 @@ const driver_search = (driver_name) => {
             month: 'numeric',
             day: 'numeric'
           }).format(parseDate);
-          const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/profile.png" alt="" />';
+          const profile = photo ? `<img src="../${photo}" alt="" />` : '<img src="assets/img/user.png" alt="" />';
           let status = (active_status == "active") ? "active" : "pending";
           let status_class = (active_status == "active") ? "bg-label-success" : "bg-label-warning";
 
@@ -135,4 +136,13 @@ search_input.addEventListener('input', () => {
 close_btn.addEventListener('click', () => {
   search_box.classList.remove('active');
   search_input.value = '';
+})
+
+box_info.forEach(element => {
+  // console.log(element);
+  element.addEventListener('click', () => {
+    const info_type = element.querySelector('p').textContent;
+    console.log(info_type);
+    window.location.href = "categorizedriver.php" + `?info_type=${info_type}`;
+  })
 })

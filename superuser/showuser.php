@@ -30,16 +30,16 @@
                 <h1>user information</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a href="dashborad.php">Dashboard</a>
                     </li>
                     <i class="fas fa-chevron-right"></i>
+                    <li>
+                        <a href="users.php" class="active">users</a>
+                    </li>
+                    <!-- <i class="fas fa-chevron-right"></i>
                     <li>
                         <a href="#">Home</a>
-                    </li>
-                    <i class="fas fa-chevron-right"></i>
-                    <li>
-                        <a href="#" class="active">users</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -50,6 +50,9 @@
 
         <div class="table-data">
             <div class="todo">
+                <div class="back-btn back_btn">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
                 <div class="user_avatar">
                     <!-- <div class="user_profile">
                         <img src="assets/img/7.png" alt="">
@@ -92,9 +95,12 @@
                         </li>
                     </ul> -->
                 </div>
-                <div class="action-btn">
+                <div class="action-btn driver_btn">
                     <button class="bg-label-success active_driver">active</button>
                     <button class="btn-label-danger reject_driver">rejected</button>
+                </div>
+                <div class="msg_box driver_active">
+                    <!-- <span class="alert-success">profile details update successfully !</span> -->
                 </div>
             </div>
             <div class="order">

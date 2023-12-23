@@ -7,6 +7,7 @@ const search_input = document.querySelector('.search_input');
 const search_btn = document.querySelector('.search_btn');
 const close_btn = document.querySelector('.close_btn');
 // const view_mode = document.querySelector('.view_mode');
+const box_info = document.querySelectorAll('.box-info li');
 
 const info_document_div = document.querySelectorAll('.info_document');
 const total_driver = document.querySelector('.total_driver');
@@ -61,7 +62,6 @@ const user_data = (user_id) => {
                         <span>${driverData.email}</span>
                     </div>
                     <div class="modal_btn d_flex">
-                        <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
                         <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
                         <button class="view_btn"><i class='bx bxs-show'></i></button>
                     </div>
@@ -115,7 +115,6 @@ const recent_user = () => {
                             <td>${formattedDate}</td>
                             <td><span class="status ${status_class}">${status}</span></td>
                             <td>
-                                <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
                                 <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
                                 <button class="view_btn" id="${driverId}"><i class='bx bxs-show'></i></button>
                             </td>
@@ -172,7 +171,7 @@ const driver_search = (driver_name) => {
             if (json.status_code == 200) {
                 const driver_data = json.userData;
                 user_list_box.innerHTML = driver_data.map(val => {
-                    const { driverId,firstname, created_at, active_status, photo } = val;
+                    const { driverId, firstname, created_at, active_status, photo } = val;
                     const parseDate = new Date(created_at);
                     const formattedDate = new Intl.DateTimeFormat('en-US', {
                         year: 'numeric',
@@ -197,7 +196,6 @@ const driver_search = (driver_name) => {
                     <td>${formattedDate}</td>
                     <td><span class="status ${status_class}">${status}</span></td>
                     <td>
-                        <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
                         <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
                         <button class="view_btn" id="${driverId}"><i class='bx bxs-show'></i></button>
                     </td>
@@ -251,6 +249,15 @@ close_btn.addEventListener('click', () => {
     search_box.classList.remove('active');
     search_input.value = '';
 })
+
+box_info.forEach(element => {
+    // console.log(element);
+    element.addEventListener('click', () => {
+      const info_type = element.querySelector('p').textContent;
+      console.log(info_type);
+      window.location.href = "categorizedriver.php" + `?info_type=${info_type}`;
+    })
+  })
 
 const plus_icon = document.querySelectorAll('.plus_icon');
 

@@ -57,6 +57,8 @@ if(isset($_POST['driverId']))
                 } 
         } 
     } else {
+        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
+        $update = mysqli_query($con,$update_query);
         if (isset($_FILES['policeCertificate']) && !empty($_FILES['policeCertificate']['tmp_name'])) {
             $policeCertificate = $_FILES['policeCertificate'];
 

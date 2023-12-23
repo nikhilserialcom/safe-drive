@@ -24,12 +24,25 @@ const aadhar_btn = document.querySelector('.aadhar_btn');
 const licese_btn = document.querySelector('.licese_btn');
 const police_btn = document.querySelector('.police_btn');
 const vehicel_btn = document.querySelector('.vehicel_btn');
+const driver_btn = document.querySelector('.driver_btn');
+const driver_active_ms_box = document.querySelector('.driver_active');
+
+const back_btn = document.querySelector('.back_btn');
 
 const alldriverdata_url = 'api/alldriverdata.php';
 const approved_url = 'api/approved.php';
 const active_driver_url = 'api/activedriver.php';
 const checkdocument_url = 'api/checkdocument.php';
 var driverId;
+
+const areAllDatabaseEmpty = (obj) => {
+    for (const key in obj) {
+        if (key !== "driver_status" && obj[key] !== "database empty") {
+            return false;
+        }
+        return true;
+    }
+}
 
 const checkdocument = (driver_Id) => {
     fetch(checkdocument_url, {
@@ -45,65 +58,77 @@ const checkdocument = (driver_Id) => {
         .then(json => {
             console.log(json);
             const table_name = json.table;
-            if(json.status == 200)
-            {   
-                console.log(table_name);
-                if(table_name.adhaarcard == "approved")
-                {
-                    console.log(table_name.adhaarcard);
+            if (json.status == 200) {
+                // console.log(table_name);
+                const kit = areAllDatabaseEmpty(json.table);
+                console.log(kit);
+                if (kit == true) {
+                    driver_btn.classList.remove('action-btn');
+                    driver_btn.classList.add('empty');
+                    driver_active_ms_box.style.display = 'block';
+                    driver_active_ms_box.innerHTML = `<span class="bg-label-warning">document not uploaded</span>`;
+                }
+
+                if (table_name.driver_status == "active") {
+                    driver_btn.classList.remove('action-btn');
+                    driver_btn.classList.add('empty');
+                    driver_active_ms_box.style.display = 'block';
+                    driver_active_ms_box.innerHTML = `<span class="alert-success">active</span>`;
+                }
+                else if (table_name.driver_status == "reject") {
+                    driver_btn.classList.remove('action-btn');
+                    driver_btn.classList.add('empty');
+                    driver_active_ms_box.style.display = 'block';
+                    driver_active_ms_box.innerHTML = `<span class="alert-danger">rejected</span>`;
+                }
+
+                if (table_name.adhaarcard == "approved") {
                     aadhar_btn.classList.remove('action-btn');
                     aadhar_btn.classList.add('empty');
                     aadhar_msg_box.style.display = 'block';
                     aadhar_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
                 }
-                else if(table_name.adhaarcard == "rejected")
-                {
+                else if (table_name.adhaarcard == "rejected") {
                     aadhar_btn.classList.remove('action-btn');
                     aadhar_btn.classList.add('empty');
                     aadhar_msg_box.style.display = 'block';
                     aadhar_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
                 }
 
-                if(table_name.driving_licese_info == "approved")
-                {
+                if (table_name.driving_licese_info == "approved") {
                     licese_btn.classList.remove('action-btn');
                     licese_btn.classList.add('empty');
                     license_msg_box.style.display = 'block';
                     license_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
                 }
-                else if(table_name.driving_licese_info == "rejected")
-                {
+                else if (table_name.driving_licese_info == "rejected") {
                     licese_btn.classList.remove('action-btn');
                     licese_btn.classList.add('empty');
                     license_msg_box.style.display = 'block';
                     license_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
                 }
 
-                if(table_name.vehicleinfo == "approved")
-                {
+                if (table_name.vehicleinfo == "approved") {
                     vehicel_btn.classList.remove('action-btn');
                     vehicel_btn.classList.add('empty');
                     vehicale_msg_box.style.display = 'block';
                     vehicale_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
                 }
-                else if(table_name.vehicleinfo == "rejected")
-                {
+                else if (table_name.vehicleinfo == "rejected") {
                     vehicel_btn.classList.remove('action-btn');
                     vehicel_btn.classList.add('empty');
                     vehicale_msg_box.style.display = 'block';
                     vehicale_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
                 }
 
-                if(table_name.police_clearance_certificate == "approved")
-                {
-                    
+                if (table_name.police_clearance_certificate == "approved") {
+
                     police_btn.classList.remove('action-btn');
                     police_btn.classList.add('empty');
                     police_msg_box.style.display = 'block';
                     police_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
                 }
-                else if(table_name.police_clearance_certificate == "rejected")
-                {
+                else if (table_name.police_clearance_certificate == "rejected") {
                     police_btn.classList.remove('action-btn');
                     police_btn.classList.add('empty');
                     police_msg_box.style.display = 'block';
@@ -127,7 +152,7 @@ const driverData = (id) => {
     })
         .then(response => response.json())
         .then(json => {
-            console.log(json);
+            // console.log(json);
             const driver_data = json.driverData;
             const aadhar_data = json.aadharData;
             const police_data = json.policeData;
@@ -181,20 +206,19 @@ const driverData = (id) => {
                 </ul>
                 `;
 
-                if(aadhar_data == '')
-                {
+                if (aadhar_data == '') {
                     aadhar_card.innerHTML = `
                     <div class="empty_msg">
-                        <p>database empty</p>
+                        <p>no recore found</p>
                     </div>`;
                     aadhar_btn.classList.remove('action-btn');
                     aadhar_btn.classList.add('empty');
                 }
-                else{
+                else {
                     const aadhar_fornt = aadhar_data.front_photo_adhaar ? `<img src="../driver/${aadhar_data.front_photo_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
                     const aadhar_back = aadhar_data.back_photo_adhaar ? `<img src="../driver/${aadhar_data.back_photo_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
                     const aadhar_selfy = aadhar_data.selfi_with_adhaar ? `<img src="../driver/${aadhar_data.selfi_with_adhaar}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
-    
+
                     aadhar_card.innerHTML = `
                         <div class="info_header">
                             <span>aadhar no:</span>
@@ -214,21 +238,19 @@ const driverData = (id) => {
                     `;
                 }
 
-                if(licese_data == '')
-                {
+                if (licese_data == '') {
                     driving_licese.innerHTML = `
                     <div class="empty_msg">
-                        <p>database empty</p>
+                        <p>no recore found</p>
                     </div>`;
                     licese_btn.classList.remove('action-btn');
                     licese_btn.classList.add('empty');
                 }
-                else
-                {
+                else {
                     const licence_front = licese_data.front_photo_DL ? `<img src="../driver/${licese_data.front_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const licence_back = licese_data.back_photo_DL ? `<img src="../driver/${licese_data.back_photo_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const licence_selfy = licese_data.selfi_with_DL ? `<img src="../driver/${licese_data.selfi_with_DL}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-    
+
                     driving_licese.innerHTML = `
                         <div class="info_header">
                             <ul>
@@ -257,18 +279,17 @@ const driverData = (id) => {
                 }
 
 
-                if(police_data == '')
-                {
+                if (police_data == '') {
                     police_doc_data.innerHTML = `
                     <div class="empty_msg">
-                        <p>database empty</p>
+                        <p>no recore found</p>
                     </div>`;
                     police_btn.classList.remove('action-btn');
                     police_btn.classList.add('empty');
                 }
-                else{
+                else {
                     const police_doc = police_data.Police_clearance_certificate ? `<img src="../driver/${police_data.Police_clearance_certificate}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`;
-    
+
                     police_doc_data.innerHTML = `
                         <div class="info_document">
                             <div class="document_img_box">
@@ -282,7 +303,7 @@ const driverData = (id) => {
                 if (insurance_data == '') {
                     insurance_doc_data.innerHTML = `
                     <div class="empty_msg">
-                        <p>database empty</p>
+                        <p>no recore found</p>
                     </div>`;
                     insurance_btn.classList.remove('action-btn');
                     insurance_btn.classList.add('empty');
@@ -300,16 +321,15 @@ const driverData = (id) => {
                 `;
                 }
 
-                if(vehicle_data == '')
-                {
+                if (vehicle_data == '') {
                     vehicle_info.innerHTML = `
                     <div class="empty_msg">
-                        <p>database empty</p>
+                        <p>no recore found</p>
                     </div>`;
                     vehicel_btn.classList.remove('action-btn');
                     vehicel_btn.classList.add('empty');
                 }
-                else{
+                else {
                     const car_front = vehicle_data.car_photo ? `<img src="../driver/${vehicle_data.car_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const car_back = vehicle_data.backside_photo ? `<img src="../driver/${vehicle_data.backside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const car_right = vehicle_data.rigthside_photo ? `<img src="../driver/${vehicle_data.rigthside_photo}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
@@ -317,7 +337,7 @@ const driverData = (id) => {
                     const rc_front = vehicle_data.frontRC ? `<img src="../driver/${vehicle_data.frontRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const rc_back = vehicle_data.backRC ? `<img src="../driver/${vehicle_data.backRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const rc_selfy = vehicle_data.selfiwithRC ? `<img src="../driver/${vehicle_data.selfiwithRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-    
+
                     vehicle_info.innerHTML = `
                         <div class="info_header">
                             <ul>
@@ -531,7 +551,13 @@ const activeDriver = (driver_Id, driver_status, reject_reason) => {
         .then(json => {
             console.log(json);
             if (json.status_code == 200) {
-                // reject_modal.style.display = 'none';
+                reject_modal.style.display = 'none';
+                const alert_msg = (json.message == "active") ? "active" : "reject";
+                const alert_class = (json.message == "active") ? "alert-success" : "alert-danger";
+                driver_btn.classList.remove('action-btn');
+                driver_btn.classList.add('empty');
+                driver_active_ms_box.style.display = 'block';
+                driver_active_ms_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
             }
             else {
                 console.log(json.message);
@@ -542,11 +568,18 @@ const activeDriver = (driver_Id, driver_status, reject_reason) => {
 var document_list = [];
 
 doc_list.forEach(element => {
-    element.addEventListener('click', () => {
-        document_list.push(element.value);
+    element.addEventListener('change', () => {
+        if (element.checked) {
+            document_list.push(element.value);
+        }
+        else {
+            const index = document_list.indexOf(element.value);
+            if (index !== -1) {
+                document_list.splice(index, 1);
+            }
+        }
     })
 })
-
 
 
 active_driver_btn.addEventListener('click', () => {
@@ -555,7 +588,6 @@ active_driver_btn.addEventListener('click', () => {
 
 reject_driver_btn.addEventListener('click', () => {
     reject_modal.style.display = 'block';
-    activeDriver(id, reject_driver_btn.textContent)
 })
 
 done_btn.addEventListener('click', () => {
@@ -564,6 +596,10 @@ done_btn.addEventListener('click', () => {
 
 close_btn.addEventListener('click', () => {
     reject_modal.style.display = 'none';
+})
+
+back_btn.addEventListener('click', () => {
+    window.location.href = 'users.php';
 })
 
 window.addEventListener('click', (event) => {

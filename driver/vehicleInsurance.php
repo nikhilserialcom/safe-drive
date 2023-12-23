@@ -35,6 +35,8 @@ if(isset($_POST['driverId']))
                 } 
         } 
     } else {
+        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$driverId'";
+        $update = mysqli_query($con,$update_query);
         if (isset($_FILES['vehicleInsurance']) && !empty($_FILES['vehicleInsurance']['tmp_name'])) {
             $vehicleInsurance = $_FILES['vehicleInsurance'];
 

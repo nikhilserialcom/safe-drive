@@ -34,7 +34,7 @@ if (!isset($_SESSION['user_email'])) {
             if($driverStatus == 'rejected')
             {
                 $jsonData = json_encode($document_type);
-                $rejectDriverQuery = "UPDATE user SET active_status = 'reject', rejection_reason = '$jsonData' WHERE driverId = '$driverId' AND driverstatus = 'offline'";
+                $rejectDriverQuery = "UPDATE user SET active_status = 'reject', rejection_reason = '$jsonData' WHERE driverId = '$driverId'";
                 $rejectDriver = mysqli_query($con,$rejectDriverQuery);
                 if($rejectDriver)
                 {
@@ -51,7 +51,7 @@ if (!isset($_SESSION['user_email'])) {
                 }
             }else{
                
-                $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = 'active' WHERE driverId = '$driverId' AND driverstatus = 'offline'";
+                $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = 'active' WHERE driverId = '$driverId'";
                 $activeDriver = mysqli_query($con,$activeDriverQuery);
                 if($activeDriver)
                 {

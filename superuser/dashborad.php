@@ -9,12 +9,12 @@
                 <h1>Dashboard</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a href="dashborad.php" class="active">Dashboard</a>
                     </li>
                     <i class="fas fa-chevron-right"></i>
-                    <li>
+                    <!--<li>
                         <a href="#" class="active">Home</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
