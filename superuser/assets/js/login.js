@@ -52,3 +52,10 @@ const userLogin = (user_email, user_pass) => {
 log_btn.addEventListener('click', () => {
     userLogin(user_email.value, user_pass.value);
 })
+
+user_pass.addEventListener('keypress',(e) => {
+    if(e.key == "Enter")
+    {
+        userLogin(user_email.value, user_pass.value);
+    }
+})
