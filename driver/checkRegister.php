@@ -13,17 +13,23 @@ if ($_POST['driverId']) {
 
     $checkData = array();
     foreach ($table_name as $name) {
-        $checkDataQuery = "SELECT driverId FROM $name WHERE driverId = '$driverId'";
+        $checkDataQuery = "SELECT * FROM $name WHERE driverId = '$driverId'";
         $result = mysqli_query($con, $checkDataQuery);
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             if ($row) {
-                $checkData[$name] = "true";
+                if($name == 'user' && empty($row['email']))
+                {
+                    $checkData[$name] = "false";
+                }
+                else{
+                    $checkData[$name] = "true";
+                }
             } else {
                 $checkData[$name] = "false";
             }
         } else {
-            $checkData[$name] = false;
+            $checkData[$name] = "false";
         }
     }
 

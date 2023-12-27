@@ -152,7 +152,7 @@ const driverData = (id) => {
     })
         .then(response => response.json())
         .then(json => {
-            // console.log(json);
+            console.log(json);
             const driver_data = json.driverData;
             const aadhar_data = json.aadharData;
             const police_data = json.policeData;
@@ -337,6 +337,8 @@ const driverData = (id) => {
                     const rc_front = vehicle_data.frontRC ? `<img src="../driver/${vehicle_data.frontRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const rc_back = vehicle_data.backRC ? `<img src="../driver/${vehicle_data.backRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const rc_selfy = vehicle_data.selfiwithRC ? `<img src="../driver/${vehicle_data.selfiwithRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const front_parmit = vehicle_data.frontParmit ?`<img src="../driver/${vehicle_data.frontParmit}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const back_parmit = vehicle_data.backParmit ?`<img src="../driver/${vehicle_data.backParmit}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
 
                     vehicle_info.innerHTML = `
                         <div class="info_header">
@@ -359,7 +361,7 @@ const driverData = (id) => {
                                 </li>
                             </ul>
                         </div>
-                        <h4>vehicel photo:</h4>
+                        <h4>vehicel document:</h4>
                         <div class="vehicel_car_document">
                             <div class="car_img_box">
                                 ${car_front}
@@ -374,7 +376,7 @@ const driverData = (id) => {
                                ${car_left}
                             </div>
                         </div>
-                        <h4>rc photo:</h4>
+                        <h4>rc document:</h4>
                         <div class="info_document">
                             <div class="document_img_box">
                                 ${rc_front}
@@ -384,6 +386,15 @@ const driverData = (id) => {
                             </div>
                             <div class="document_img_box">
                                 ${rc_selfy}
+                            </div>
+                        </div>
+                        <h4>parmit document:</h4>
+                        <div class="info_document">
+                            <div class="document_img_box">
+                                ${front_parmit}
+                            </div>
+                            <div class="document_img_box">
+                                ${back_parmit}
                             </div>
                         </div>
                     `;

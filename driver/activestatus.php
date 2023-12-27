@@ -29,6 +29,11 @@ if(mysqli_num_rows($checkDriver) > 0){
             $response['message'] = "rejected";
             $response['reason'] = $rejectedReason;
         }
+        elseif($row['active_status'] == "pending")
+        {
+            $response['status'] = "200";
+            $response['message'] = 'pending';
+        }
         else{
             
             $response['status'] = "200";

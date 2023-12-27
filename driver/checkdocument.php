@@ -58,5 +58,5 @@ else
     $response['message'] = "ERROR:";
 }
 
-echo json_encode($response);
+echo json_encode($response,JSON_PRETTY_PRINT);
 ?>

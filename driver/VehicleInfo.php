@@ -38,6 +38,8 @@ if (isset($_POST['driverId'])) {
     $check_user = mysqli_query($con, $check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
+        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
+        $update = mysqli_query($con, $update_query);
         if (isset($_POST['VehicleBrand']) || isset($_POST['vehicleModel']) || isset($_POST['numberPlate']) || isset($_POST['transportYear'])) {
             if (!empty($Vehicle_brand) || !empty($vehicleModel) || !empty($number_plat) || !empty($transport_year)) {
                 $update_vehicleInfo_query = "UPDATE Vehicleinfo SET vehicle_brand_name = '$Vehicle_brand', modal = '$vehicleModel', Number_plate = '$number_plat', transport_year = '$transport_year', status = 'pending' WHERE driverId = '$id'";
