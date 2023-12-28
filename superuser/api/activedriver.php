@@ -81,6 +81,9 @@ function sendPushNotification($driverId)
                         'body' => 'your document are approved',
                         // 'sound' => '21.mp3',
                     ],
+                    'data' => [
+                        'screen' => "driver status"
+                    ]
                 ];
                 $headers = [
                     'Authorization: key=' . $serverKey,
@@ -130,7 +133,7 @@ if (!isset($_SESSION['user_email'])) {
             if($driverStatus == 'rejected')
             {
                 sendPushNotification($driverId);
-                sendmail($row['email']);
+                // sendmail($row['email']);
                 $jsonData = json_encode($document_type);
                 $rejectDriverQuery = "UPDATE user SET active_status = 'reject', rejection_reason = '$jsonData' WHERE driverId = '$driverId'";
                 $rejectDriver = mysqli_query($con,$rejectDriverQuery);
@@ -149,7 +152,7 @@ if (!isset($_SESSION['user_email'])) {
                 }
             }else{
                 sendPushNotification($driverId);
-                sendmail($row['email']);
+                // sendmail($row['email']);
                 $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = 'active' WHERE driverId = '$driverId'";
                 $activeDriver = mysqli_query($con,$activeDriverQuery);
                 if($activeDriver)
