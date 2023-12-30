@@ -1,0 +1,343 @@
+:root {
+    --main-color: #c0392b;
+    --body-bg: #32323D;
+    --box-bg: #221f1f;
+    --text-color: #ffffff;
+    --arrow-color: #a4a8a4;
+    --space-top: 30px;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Cairo", sans-serif;
+    background-color: var(--body-bg);
+    color: var(--text-color);
+}
+
+
+img {
+    max-width: 100%;
+}
+
+.spad {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+ul {
+    margin-bottom: 0px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--body-bg);
+}
+
+.main-btn {
+    /* border: 1px solid #ffffff; */
+    color: #ffffff;
+    padding: 0.25rem 1.5rem;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+}
+
+.btn-hover::before {
+    z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--main-color);
+    width: 50%;
+    height: 100%;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-hover:hover::before {
+    width: 100%;
+}
+
+.btn-hover:hover i,
+.btn-hover:hover span {
+    color: #181616;
+}
+
+.main-btn i,
+.main-btn span {
+    z-index: 1;
+}
+
+.main-btn i {
+    margin-right: 1rem;
+}
+
+nav {
+    background-color: #EF5052;
+    padding: 1.1rem 1.3rem;
+    /* border: 1px solid #000000; */
+    box-shadow: rgba(0, 0, 0, 0.26) 0px 3px 25px;
+    z-index: 9999;
+}
+
+nav .inner-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav .inner-nav .fa-bars {
+    display: none;
+}
+
+nav .inner-nav .logo {
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+nav .inner-nav .logo img {
+    width: 25px;
+
+}
+
+nav .inner-nav .logo a {
+    color: #ffffff;
+    transition: 0.3s ease;
+}
+
+/* nav .inner-nav .logo:hover a {
+    color: var(--main-color);
+} */
+
+nav .inner-nav .menu {
+    display: flex;
+    gap: 1rem;
+}
+
+nav .inner-nav .menu .fa-xmark {
+    display: none;
+}
+
+nav .inner-nav .menu li {
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: capitalize;
+    font-weight: 700;
+
+}
+
+nav .inner-nav .menu li a {
+    color: #ffffff;
+    transition: 0.3s ease;
+}
+
+nav .inner-nav .menu a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--body-bg);
+    transition: width 0.3s;
+
+}
+
+nav .inner-nav .menu li:hover a::before {
+    width: 100%;
+}
+
+/* nav .inner-nav .menu li:hover a {
+    color: #00AAA1;
+} */
+
+button.btn {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+nav .inner-nav .icon-menu {
+    /* border: 1px solid #000000; */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+
+nav .inner-nav .icon-menu img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+nav .inner-nav .icon-menu .profile-menu {
+    position: absolute;
+    top: 65px;
+    right: 30px;
+    width: 150px;
+    height: 160px;
+    /* border: 1px solid #000000; */
+    color: #000000;
+    background-color: #ffffff;
+    /* box-shadow: rgba(255, 255, 255, .8) 0px 4px 21px; */
+    z-index: 1;
+    display: none;
+    border-radius: 20px;
+}
+
+nav .inner-nav .icon-menu .profile-menu .setting {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+nav .inner-nav .icon-menu .profile-menu .setting li {
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* height: auto; */
+}
+
+
+.special-movie-item {
+    /* border: 1px solid #ffffff; */
+    width: 100%;
+    height: 550px;
+    position: relative;
+}
+
+.special-movie-item .image_box
+{
+    /* border: 1px solid #fff; */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.special-movie-item .image_box img {
+    width: 100%;
+    height: 100%;
+}
+
+.special-movie-item .special-movie-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.special-movie-item .special-movie-content .item-content-wrapper {
+    /* border: 1px solid #ffffff; */
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding:100px;
+}
+
+.special-movie-item .special-movie-content .item-content-wrapper .item-content-title {
+    font-size: 2rem;
+    text-transform: capitalize;
+    line-height: 5rem;
+    font-weight: 900;
+}
+
+.special-movie-item .special-movie-content .item-content-wrapper .item-content-title::before {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 105px;
+    top: 166px;
+    width: 110px;
+    height: 4px;
+    background: #ffffff;
+}
+.special-movie-item .special-movie-content .item-content-wrapper .item-content-description {
+    font-size: 5rem;
+    margin-top: var(--space-top);
+    line-height: 1.5rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.special-movie-item .special-movie-content .item-content-wrapper .item-action {
+    margin-top: var(--space-top);
+}
+
+@media only screen and (max-width:850px) {
+    nav .inner-nav .fa-bars {
+        font-size: 30px;
+        display: flex;
+    }
+
+    nav .inner-nav .menu {
+        z-index: 1;
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #ffffff;
+        width: 250px;
+        height: 100%;
+        animation: fadeInLeft;
+        animation-duration: 1.5s;
+    }
+
+    nav .inner-nav .menu.active {
+        display: flex;
+        transition: left 1s ease;
+        padding: 0;
+    }
+
+    nav .inner-nav .menu a::before {
+        background: blue;
+    }
+
+    nav .inner-nav .menu .fa-xmark {
+        display: flex;
+        color: #000000;
+        justify-content: end;
+        padding: 10px 20px;
+        font-size: 30px;
+    }
+
+    nav .inner-nav .menu li a {
+        color: #000000;
+    }
+
+}

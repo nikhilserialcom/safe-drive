@@ -3,6 +3,7 @@ const search_box = document.querySelector('.search_box');
 const search_input = document.querySelector('.search_input');
 const search_btn = document.querySelector('.search_btn');
 const close_btn = document.querySelector('.close_btn');
+const title = document.querySelector('.content main .table-data .head h3');
 
 const total_driver = document.querySelector('.total_driver');
 const reject_driver = document.querySelector('.reject_driver');
@@ -124,6 +125,7 @@ search_btn.addEventListener('click', () => {
     driver_search(search_input.value);
   }
   else {
+    title.classList.add('active');
     search_box.classList.add('active');
     search_input.focus();
   }
@@ -135,6 +137,7 @@ search_input.addEventListener('input', () => {
 
 close_btn.addEventListener('click', () => {
   search_box.classList.remove('active');
+  title.classList.remove('active');
   search_input.value = '';
 })
 

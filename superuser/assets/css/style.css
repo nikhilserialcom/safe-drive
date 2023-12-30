@@ -1025,6 +1025,14 @@ body.dark {
   font-weight: 600;
 }
 
+
+@media screen and (max-width:580px) {
+  .content main .table-data .head h3.active{
+    display: none;
+  }
+  
+}
+
 .content main .table-data .head h3 i{
   margin-right: 10px;
   cursor: pointer;
