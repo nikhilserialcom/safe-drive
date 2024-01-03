@@ -276,8 +276,6 @@ body.dark {
   background: crimson;
 }
 
-
-
 .form-container {
   min-height: 100vh;
   display: flex;
@@ -1847,6 +1845,11 @@ body.dark {
   /* body{
     position: relative;
   } */
+
+  .form-container .form .input_box span{
+    right: 260px;
+  }
+
   .sidebar {
     width: 200px;
   }
@@ -1901,6 +1904,11 @@ body.dark {
 }
 
 @media (max-width: 767px) {
+
+  .form-container .form .input_box span{
+    right: 155px;
+  }
+
   .sidebar {
     width: 200px;
   }
