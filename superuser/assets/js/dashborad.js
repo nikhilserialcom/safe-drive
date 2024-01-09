@@ -10,6 +10,7 @@ const reject_driver = document.querySelector('.reject_driver');
 const active_driver = document.querySelector('.active_driver');
 const pending_driver = document.querySelector('.pending_driver');
 const box_info = document.querySelectorAll('.box-info li');
+const table = document.querySelector('.order table');
 
 const recent_user_url = 'api/recentuser.php';
 const serach_driver_url = 'api/search.php';
@@ -57,6 +58,11 @@ const recent_user = () => {
       }
       else {
         console.log(json.message);
+        table.innerHTML = `
+        <div class="empty_msg">
+            <p>${json.message}</p>
+        </div>
+        `;
       }
 
       total_driver.innerHTML = json.totaldriver;
