@@ -1,10 +1,7 @@
 <?php
 
-require 'db.php';
+require '../db.php';
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("content-type: application/json");
 
 session_start();
@@ -87,21 +84,8 @@ function vehicleinfo($userId,$vehicle_type)
     return $vehicle_data;
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
-if (!isset($_SESSION['user_email'])) {
-    $response = array(
-        'status_code' => 400,
-        'email' => 'your session is expire'
-    );
-} else {
-    $userId = isset($data['userId']) ? $data['userId'] : '';
-    $vehicle_type = isset($data['vehicle_type']) ? $data['vehicle_type'] : '';
-    // $response = array(
-    //     'status_code' => 200,
-    //     'userData' => $userId,
-    //     'vehicle_name' => $vehicle_type
-    // );
-
+    $userId = isset($_POST['driverId']) ? $_POST['driverId'] : '';
+    $vehicle_type = isset($_POST['vehicle_type']) ? $_POST['vehicle_type'] : '';
     $checkUserQuery = "SELECT * FROM user WHERE driverId = '$userId'";
     $checkUser = mysqli_query($con, $checkUserQuery);
 
@@ -117,7 +101,7 @@ if (!isset($_SESSION['user_email'])) {
             $dirver_data = $row;
         }
         $response = array(
-            'status_code' => 200,
+            'status' => "200",
             'driverData' => $dirver_data,
             'aadharData' => $aadhar_data,
             'policeData' => $police_doc_data,
@@ -128,9 +112,8 @@ if (!isset($_SESSION['user_email'])) {
     } else {
 
         $response = array(
-            'status_code' => 404,
+            'status' => "404",
             'message' => 'database empty'
         );
     }
-}
 echo json_encode($response, JSON_PRETTY_PRINT);

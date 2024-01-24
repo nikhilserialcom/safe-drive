@@ -5,14 +5,23 @@
     <div class="user_btn">
         <span class="close" id="closeModalBtn">&times;</span>
         <h3></h3>
-        <div class="user_data">
-            <!-- <div class="user_pic">
-                <img src="assets/img/7.png" alt="">
+        <div>
+            <div class="user_data">
+                <!-- <div class="user_pic">
+                    <img src="assets/img/7.png" alt="">
+                </div>
+                <div class="user_name d_flex flex_direction">
+                    <span>nikhil patel</span>
+                    <span>nikhil@gmail.com</span>
+                </div> -->
             </div>
-            <div class="user_name d_flex flex_direction">
-                <span>nikhil patel</span>
-                <span>nikhil@gmail.com</span>
-            </div> -->
+            <div class="vehicle_name">
+                <!-- <input type="radio" name="vehicle" value="car"><label for="">car</label> 
+                <input type="radio" name="vehicle" value="bike"><label for="">bike </label> -->
+            </div>
+            <div class="modal_btn d_flex">
+                <button class="done_btn">done</button>
+            </div>
         </div>
         <!-- <div class="modal_btn d_flex">
             <button class="bg-label-success"><i class='bx bxs-edit'></i></button>
@@ -100,6 +109,7 @@
                             <th>Driver</th>
                             <th>Create Date</th>
                             <th>Status</th>
+                            <th>active vehicle</th>
                             <th>Action</th>
                         </tr>
                     </thead>

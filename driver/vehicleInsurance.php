@@ -5,27 +5,30 @@ header("content-type:application/json");
 
 if (isset($_POST['driverId'])) {
     $driverId = $_POST['driverId'];
+    $vehicle_type = $_POST['vehicle_type'];
 
-    $check_user_query = "SELECT * FROM vehicle_insurance WHERE driverId = '$driverId'";
+    $check_user_query = "SELECT * FROM vehicle_insurance WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
     $check_user = mysqli_query($con, $check_user_query);
 
     $response = array();
 
     if (mysqli_num_rows($check_user) > 0) {
-        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
+         $update_query = "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$driverId'";
         $update = mysqli_query($con, $update_query);
         if (isset($_FILES['vehicleInsurance']) && !empty($_FILES['vehicleInsurance']['tmp_name'])) {
             $vehicleInsurance = $_FILES['vehicleInsurance'];
 
             $vehicleInsuranceTmpName = $vehicleInsurance['tmp_name'];
-            $vehicleInsuranceName = rand(111111111, 999999999) . ".jpg";
+            $insurance_new_part = explode('.' , $vehicleInsurance['name']);
+            $insurance_extension = end($insurance_new_part);
+            $vehicleInsuranceName = rand(111111111, 999999999) . "." . $insurance_extension;
             $vehicleInsuranceFolder = 'uploaded/vehicle_insurance/';
             $vehicleInsurancePath = $vehicleInsuranceFolder . $vehicleInsuranceName;
             $targetFileType = strtolower(pathinfo($vehicleInsurance['name'], PATHINFO_EXTENSION));
 
 
             if (move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath)) {
-                $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath', status = 'pending' WHERE driverId = '$driverId'";
+                $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath', status = 'pending' WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
                 $update = mysqli_query($con, $update_query);
                 if ($update) {
                     $response['status'] = "200";
@@ -38,7 +41,9 @@ if (isset($_POST['driverId'])) {
             $vehicleInsurance = $_FILES['vehicleInsurance'];
 
             $vehicleInsuranceTmpName = $vehicleInsurance['tmp_name'];
-            $vehicleInsuranceName = rand(111111111, 999999999) . ".jpg";
+            $insurance_new_part = explode('.' , $vehicleInsurance['name']);
+            $insurance_extension = end($insurance_new_part);
+            $vehicleInsuranceName = rand(111111111, 999999999) . "." . $insurance_extension;
             $vehicleInsuranceFolder = 'uploaded/vehicle_insurance/';
             $vehicleInsurancePath = $vehicleInsuranceFolder . $vehicleInsuranceName;
             $targetFileType = strtolower(pathinfo($vehicleInsurance['name'], PATHINFO_EXTENSION));
@@ -46,15 +51,14 @@ if (isset($_POST['driverId'])) {
                 mkdir($vehicleInsuranceFolder, 0755, true);
             }
 
-
-            if (move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath)) {
-                $insert_query = "INSERT INTO vehicle_insurance (driverId, vehicle_insurance) VALUES ('$driverId', '$vehicleInsurancePath')";
+                $insert_query = "INSERT INTO vehicle_insurance (driverId,vehicle_type, vehicle_insurance) VALUES ('$driverId','$vehicle_type', '$vehicleInsurancePath')";
                 $insert = mysqli_query($con, $insert_query);
                 if ($insert) {
+                    move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath);
                     $response['status'] = "200";
                     $response['message'] = "vehicle Insurance uploaded";
                 }
-            }
+            
         } else {
             $response['error'] = "404";
             $response['message'] = "No file was uploaded.";

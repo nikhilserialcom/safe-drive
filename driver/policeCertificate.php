@@ -34,13 +34,15 @@ if (isset($_POST['driverId'])) {
     $response = array();
 
     if (mysqli_num_rows($check_user) > 0) {
-        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
-        $update = mysqli_query($con, $update_query);
+         $update_query = "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$driverId'";
+         $update = mysqli_query($con, $update_query);
         if (isset($_FILES['policeCertificate']) && !empty($_FILES['policeCertificate']['tmp_name'])) {
             $policeCertificate = $_FILES['policeCertificate'];
 
             $policeCertificateTmpName = $policeCertificate['tmp_name'];
-            $policeCertificateName = rand(111111111, 999999999) . ".jpg";
+            $police_new_part = explode('.', $policeCertificate['name']);
+            $police_extension = end($police_new_part);
+            $policeCertificateName = rand(111111111, 999999999) . "." . $police_extension;
             $policeCertificateFolder = 'uploaded/police_certificate/';
             $policeCertificatePath = $policeCertificateFolder . $policeCertificateName;
             $targetFileType = strtolower(pathinfo($policeCertificate['name'], PATHINFO_EXTENSION));
@@ -55,12 +57,19 @@ if (isset($_POST['driverId'])) {
                 }
             }
         }
+        else
+        {
+            $response['error'] = "404";
+            $response['message'] = "No file was uploaded.";
+        }
     } else {
         if (isset($_FILES['policeCertificate']) && !empty($_FILES['policeCertificate']['tmp_name'])) {
             $policeCertificate = $_FILES['policeCertificate'];
 
             $policeCertificateTmpName = $policeCertificate['tmp_name'];
-            $policeCertificateName = rand(111111111, 999999999) . ".jpg";
+            $police_new_part = explode('.', $policeCertificate['name']);
+            $police_extension = end($police_new_part);
+            $policeCertificateName = rand(111111111, 999999999) . "." . $police_extension;
             $policeCertificateFolder = 'uploaded/police_certificate/';
             $policeCertificatePath = $policeCertificateFolder . $policeCertificateName;
             $targetFileType = strtolower(pathinfo($policeCertificate['name'], PATHINFO_EXTENSION));

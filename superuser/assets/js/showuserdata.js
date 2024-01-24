@@ -1,6 +1,7 @@
 var url = window.location.href;
 var urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get('id');
+let vehicle_name = urlParams.get('vehicle_name');
 
 const user_avatar_box = document.querySelector('.user_avatar');
 const user_details = document.querySelector('.user_details');
@@ -44,11 +45,12 @@ const areAllDatabaseEmpty = (obj) => {
     }
 }
 
-const checkdocument = (driver_Id) => {
+const checkdocument = (driver_Id,vehicle_name) => {
     fetch(checkdocument_url, {
         method: 'POST',
         body: JSON.stringify({
-            driverId: driver_Id
+            driverId: driver_Id,
+            vehicle_type: vehicle_name
         }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -61,7 +63,6 @@ const checkdocument = (driver_Id) => {
             if (json.status == 200) {
                 // console.log(table_name);
                 const kit = areAllDatabaseEmpty(json.table);
-                console.log(kit);
                 if (kit == true) {
                     driver_btn.classList.remove('action-btn');
                     driver_btn.classList.add('empty');
@@ -83,6 +84,7 @@ const checkdocument = (driver_Id) => {
                 }
 
                 if (table_name.adhaarcard == "approved") {
+                    console.log('hello');
                     aadhar_btn.classList.remove('action-btn');
                     aadhar_btn.classList.add('empty');
                     aadhar_msg_box.style.display = 'block';
@@ -134,17 +136,31 @@ const checkdocument = (driver_Id) => {
                     police_msg_box.style.display = 'block';
                     police_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
                 }
+
+                if(table_name.vehicle_insurance == "approved"){
+                    insurance_btn.classList.remove('action-btn');
+                    insurance_btn.classList.add('empty');
+                    insurance_msg_box.style.display = 'block';
+                    insurance_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
+                }
+                else if(table_name.vehicle_insurance == "rejected") {
+                    insurance_btn.classList.remove('action-btn');
+                    insurance_btn.classList.add('empty');
+                    insurance_msg_box.style.display = 'block';
+                    insurance_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
+                }
             }
         })
 }
 
-checkdocument(id);
+checkdocument(id,vehicle_name);
 
-const driverData = (id) => {
+const driverData = (id,vehicle_name) => {
     fetch(alldriverdata_url, {
         method: 'POST',
         body: JSON.stringify({
-            userId: id
+            userId: id,
+            vehicle_type: vehicle_name
         }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -199,12 +215,12 @@ const driverData = (id) => {
                         <span>vehicle type:</span>
                         <span>${driver_data.vehicleType}</span>
                     </li>
-                    <li>
-                        <span>vehicle brand:</span>
-                        <span>${driver_data.vehicleBrand}</span>
-                    </li>
                 </ul>
                 `;
+                    // <li>
+                    //     <span>vehicle brand:</span>
+                    //     <span>${driver_data.vehicleBrand}</span>
+                    // </li>
 
                 if (aadhar_data == '') {
                     aadhar_card.innerHTML = `
@@ -345,6 +361,10 @@ const driverData = (id) => {
                             <ul>
                                 <li>
                                     <span>vahicle Brand:</span>
+                                    <span>${vehicle_data.vehicle_type}</span>
+                                </li>
+                                <li>
+                                    <span>vahicle Brand:</span>
                                     <span>${vehicle_data.vehicle_brand_name}</span>
                                 </li>
                                 <li>
@@ -428,16 +448,18 @@ const driverData = (id) => {
         })
 }
 
-driverData(id);
+driverData(id,vehicle_name);
 
 close_popup_btn.addEventListener('click', () => {
     popup_image.style.display = 'none';
 })
-const approvedData = (driver_Id, action_type, doc_type) => {
+const approvedData = (driver_Id,vehicleType, action_type,reason, doc_type) => {
     fetch(approved_url, {
         method: 'POST',
         body: JSON.stringify({
             driverId: driver_Id,
+            vehicle_type: vehicleType,
+            rejectedReason: reason,
             status: action_type,
             docType: doc_type
         }),
@@ -451,23 +473,29 @@ const approvedData = (driver_Id, action_type, doc_type) => {
             if (json.status_code == 200) {
                 var alert_msg = json.message;
                 const alert_class = (json.message == 'approved') ? 'alert-success' : 'alert-danger';
+                reject_input.value = '';
                 if (json.doc_name == 'aadhar') {
+                    aadhar_reject_btn.parentElement.classList.add('d_none');
                     aadhar_msg_box.style.display = 'block';
                     aadhar_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'license') {
+                    license_reject_btn.parentElement.classList.add('d_none');
                     license_msg_box.style.display = 'block';
                     license_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'police') {
+                    police_reject_btn.parentElement.classList.add('d_none');
                     police_msg_box.style.display = 'block';
                     police_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'insurance') {
+                    insurance_reject_btn.parentElement.classList.add('d_none');
                     insurance_msg_box.style.display = 'block';
                     insurance_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
                 else if (json.doc_name == 'vehicale') {
+                    vehicel_reject_btn.parentElement.classList.add('d_none');
                     vehicale_msg_box.style.display = 'block';
                     vehicale_msg_box.innerHTML = `<span class="${alert_class}">${alert_msg}</span>`;
                 }
@@ -489,61 +517,72 @@ const insurance_reject_btn = document.querySelector('.insurance_reject_btn');
 const vehicel_approve_btn = document.querySelector('.vehicel_approve_btn');
 const vehicel_reject_btn = document.querySelector('.vehicel_reject_btn');
 
+let document_name;
+const accept_modal = document.querySelector('.accept_modal');
+const done_btn = document.querySelector('.done_btn');
+const reject_modal = document.querySelector('.reject_modal');
+const reject_input = document.querySelector('.reject_input');
+
 aadhar_approve_btn.addEventListener('click', () => {
-    approvedData(driverId, aadhar_approve_btn.textContent, 'aadhar');
+    approvedData(driverId,'accept', 'aadhar');
     aadhar_approve_btn.parentElement.classList.add('d_none');
 })
 
 license_approve_btn.addEventListener('click', () => {
-    approvedData(driverId, license_approve_btn.textContent, 'license');
+    approvedData(driverId,vehicle_name,'accept', 'license');
     license_approve_btn.parentElement.classList.add('d_none');
 })
 
 police_approve_btn.addEventListener('click', () => {
-    approvedData(driverId, police_approve_btn.textContent, 'police');
-    police_approve_btn.parentElement.classList.add('d_none');
+    // approvedData(driverId,'accept', 'police');
+    // police_approve_btn.parentElement.classList.add('d_none');
+    accept_modal.style.display = "block";
 })
 
 insurance_approve_btn.addEventListener('click', () => {
-    approvedData(driverId, insurance_approve_btn.textContent, 'insurance');
+    approvedData(driverId,vehicle_name,'accept', 'insurance');
     insurance_approve_btn.parentElement.classList.add('d_none');
 })
 
 vehicel_approve_btn.addEventListener('click', () => {
-    approvedData(driverId, vehicel_approve_btn.textContent, 'vehical');
+    approvedData(driverId,vehicle_name,'accept', 'vehical');
     vehicel_approve_btn.parentElement.classList.add('d_none');
 })
 
 aadhar_reject_btn.addEventListener('click', () => {
-    approvedData(driverId, aadhar_reject_btn.textContent, 'aadhar');
-    aadhar_reject_btn.parentElement.classList.add('d_none');
+    document_name = 'aadhar'
+    reject_modal.style.display = 'block';
 })
 
 license_reject_btn.addEventListener('click', () => {
-    approvedData(driverId, license_reject_btn.textContent, 'license');
-    license_reject_btn.parentElement.classList.add('d_none');
+    document_name = 'license';
+    reject_modal.style.display = 'block';
 })
 
 police_reject_btn.addEventListener('click', () => {
-    approvedData(driverId, police_reject_btn.textContent, 'police');
-    police_reject_btn.parentElement.classList.add('d_none');
+    document_name = 'license';
+    reject_modal.style.display = 'block';
 })
 
 insurance_reject_btn.addEventListener('click', () => {
-    approvedData(driverId, insurance_reject_btn.textContent, 'insurance');
-    insurance_reject_btn.parentElement.classList.add('d_none');
+    document_name = 'insurence';
+    reject_modal.style.display = 'block';
 })
 vehicel_reject_btn.addEventListener('click', () => {
-    approvedData(driverId, vehicel_reject_btn.textContent, 'vehical');
-    vehicel_reject_btn.parentElement.classList.add('d_none');
+    document_name = 'vehilce';
+    reject_modal.style.display = 'block';
+})
+
+done_btn.addEventListener('click', () => {
+    approvedData(driverId,vehicle_name,'reject',reject_input.value,document_name);
+    reject_modal.style.display = 'none';
 })
 
 const active_driver_btn = document.querySelector('.active_driver');
 const reject_driver_btn = document.querySelector('.reject_driver');
-const reject_modal = document.querySelector('.reject_modal');
-const reject_input = document.querySelector('.reject_input');
+
 const close_btn = document.querySelector('.close');
-const done_btn = document.querySelector('.done_btn');
+
 const doc_list = document.querySelectorAll('.docu_list input');
 
 const activeDriver = (driver_Id, driver_status, reject_reason) => {
@@ -597,13 +636,15 @@ active_driver_btn.addEventListener('click', () => {
     activeDriver(id, active_driver_btn.textContent);
 })
 
-reject_driver_btn.addEventListener('click', () => {
-    reject_modal.style.display = 'block';
-})
+// reject_driver_btn.addEventListener('click', () => {
+//     reject_modal.style.display = 'block';
+// })
 
-done_btn.addEventListener('click', () => {
-    activeDriver(id, reject_driver_btn.textContent, document_list);
-})
+// done_btn.addEventListener('click', () => {
+
+
+//     activeDriver(id, reject_driver_btn.textContent,rejected_reason);
+// })
 
 close_btn.addEventListener('click', () => {
     reject_modal.style.display = 'none';
@@ -617,5 +658,6 @@ window.addEventListener('click', (event) => {
     // console.log(event.target);
     if (event.target == reject_modal) {
         reject_modal.style.display = "none";
+        reject_input.value = '';
     }
 });

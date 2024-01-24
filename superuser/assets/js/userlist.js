@@ -15,6 +15,7 @@ const reject_driver = document.querySelector('.reject_driver');
 const active_driver = document.querySelector('.active_driver');
 const pending_driver = document.querySelector('.pending_driver');
 const page_list = document.querySelectorAll('.page_list .page_no');
+const vehicle_name = document.querySelector('.vehicle_name');
 
 var totalDriver;
 
@@ -30,6 +31,7 @@ page_list.forEach(element => {
         window.location.href = 'users.php' + `?page=${element.textContent}`;
     })
 })
+let tmp_driver_id;
 
 
 const user_data = (user_id) => {
@@ -61,22 +63,36 @@ const user_data = (user_id) => {
                         <span>${driverData.firstname} ${driverData.lastname}</span>
                         <span>${driverData.email}</span>
                     </div>
-                    <div class="modal_btn d_flex">
-                        <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
-                        <button class="view_btn"><i class='bx bxs-show'></i></button>
-                    </div>
                     `;
+                vehicle_name.innerHTML = driverData.total_vehicle.map(val => {
+                    return `
+                        <input type="radio" name="vehicle" id="vehicle_radio" value="${val}"><label for="">${val}</label> 
+                    `;
+                }).join('');
             }
-            const view_btn = document.querySelectorAll('.view_btn');
-            const driver_id = document.querySelector('.userId');
+            const driver_id = document.querySelector('.user_modal .user_btn .userId');
+            tmp_driver_id = driver_id.value;
 
-            view_btn.forEach(element => {
-                element.addEventListener('click', () => {
-                    window.location.href = 'showuser.php' + `?id=${driver_id.value}`;
-                })
-            })
         })
 }
+
+const done_btn = document.querySelector('.user_modal .user_btn .done_btn');
+
+done_btn.addEventListener('click', () => {
+    const vehicle_list = document.querySelector('input[name="vehicle"]:checked');
+    console.log(vehicle_list);
+    if(vehicle_list.value != null)
+    {
+        window.location.href = 'showuser.php' + `?id=${tmp_driver_id}&vehicle_name=${vehicle_list.value}`;
+        // console.log(vehicle_list.value);
+    }
+    else
+    {
+        window.location.href = 'showuser.php' + `?id=${tmp_driver_id}`;
+        // console.log(tmp_driver_id);
+
+    }
+})
 const recent_user = () => {
     fetch(recent_user_url, {
         method: 'GET',
@@ -91,7 +107,7 @@ const recent_user = () => {
             totalDriver = json.totaldriver;
             if (json.status_code == 200) {
                 user_list_box.innerHTML = userData.map(val => {
-                    const { driverId, firstname, created_at, active_status, photo } = val;
+                    const { driverId, firstname, created_at, active_status, photo, vehicleType } = val;
                     const parseDate = new Date(created_at);
                     const formattedDate = new Intl.DateTimeFormat('en-US', {
                         year: 'numeric',
@@ -114,6 +130,7 @@ const recent_user = () => {
                             </td>
                             <td>${formattedDate}</td>
                             <td><span class="status ${status_class}">${status}</span></td>
+                            <td>${vehicleType}</td>
                             <td>
                                 <button class="bg-label-danger "><i class='bx bxs-trash-alt'></i></button>
                                 <button class="view_btn" id="${driverId}"><i class='bx bxs-show'></i></button>
@@ -135,8 +152,8 @@ const recent_user = () => {
 
             view_btn.forEach(element => {
                 element.addEventListener('click', () => {
-                    window.location.href = 'showuser.php' + `?id=${element.id}`;
-                    // console.log(element.id);
+                    user_modal.style.display = "block";
+                    user_data(element.id);
                 })
             })
             const close_btn = document.querySelector('.close');
@@ -253,11 +270,11 @@ close_btn.addEventListener('click', () => {
 box_info.forEach(element => {
     // console.log(element);
     element.addEventListener('click', () => {
-      const info_type = element.querySelector('p').textContent;
-      console.log(info_type);
-      window.location.href = "categorizedriver.php" + `?info_type=${info_type}`;
+        const info_type = element.querySelector('p').textContent;
+        console.log(info_type);
+        window.location.href = "categorizedriver.php" + `?info_type=${info_type}`;
     })
-  })
+})
 
 const plus_icon = document.querySelectorAll('.plus_icon');
 

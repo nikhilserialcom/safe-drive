@@ -3,43 +3,22 @@
 require '../db.php';
 header("content-type:application/json");
 
-// function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
-// {   
-//     global $response,$con;
-
-//     $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE user_id = '$driverId'");
-
-//     if($updateLocation)
-//     {
-//         $response['status'] = "true";
-//         $response['message'] = "update location";
-//     }
-
-// }
 
 if (isset($_POST['driverId'])) {
     $id = $_POST['driverId'];
     $DLnumber = $_POST['DLnumber'];
     $expirationDate = $_POST['expirationDate'];
-    // if(isset($_POST['driverLetitude']) && isset($_POST['driverLongitude']))
-    // {
-    // $driverLetitude = $_POST['driverLetitude'];
-    // $driverLogitude = $_POST['driverLongitude'];
-    // if(!empty($driverLetitude) && !empty($driverLogitude))
-    // {
-    //     updateDriverLocation($driverLetitude,$driverLogitude,$userId);
-    // }
-    // }
+    $vehicle_type = $_POST['vehicle_type'];
 
-    $check_user_query = "SELECT * FROM driving_licese_info WHERE driverId = '$id'";
+    $check_user_query = "SELECT * FROM driving_licese_info WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
     $check_user = mysqli_query($con, $check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
-        $update_query = "UPDATE user SET active_status = 'pending',rejection_reason = '' WHERE driverId='$id'";
+        $update_query = "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$driverId'";
         $update = mysqli_query($con, $update_query);
         if (isset($_POST['DLnumber']) || isset($_POST['expirationDate'])) {
-            if (!empty($DLnumber) || !empty($expirationDate)) {
-                $update_Licese_Query = "UPDATE driving_licese_info SET driving_licese_no = '$DLnumber', expiration_date = '$expirationDate', status = 'pending' WHERE driverId = '$id'";
+            if (!empty($vehicle_type) || !empty($DLnumber) || !empty($expirationDate)) {
+                $update_Licese_Query = "UPDATE driving_licese_info SET vehicle_type = '$vehicle_type', driving_licese_no = '$DLnumber', expiration_date = '$expirationDate', status = 'pending' WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
                 $update_Licese = mysqli_query($con, $update_Licese_Query);
 
                 if ($update_Licese) {
@@ -52,11 +31,13 @@ if (isset($_POST['driverId'])) {
             $frontDL = $_FILES['frontDL'];
 
             $frontDL_tmpName = $_FILES['frontDL']['tmp_name'];
-            $frontname = rand(111111111, 999999999) . ".jpg";
+            $front_new_part = explode('.', $frontDL['name']);
+            $front_dl_extension = end($front_new_part);
+            $frontname = rand(111111111, 999999999) . "." . $front_dl_extension;
             $frontDL_folder = "uploaded/DrivingLicese/";
             $frontDLpath = $frontDL_folder . $frontname;
 
-            $update_image_query = "UPDATE driving_licese_info SET front_photo_DL = '$frontDLpath' WHERE driverId = '$id'";
+            $update_image_query = "UPDATE driving_licese_info SET front_photo_DL = '$frontDLpath' WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
             $update_image = mysqli_query($con, $update_image_query);
 
             if ($update_image) {
@@ -70,11 +51,13 @@ if (isset($_POST['driverId'])) {
             $backDL = $_FILES['backDL'];
 
             $backDL_tmpName = $_FILES['backDL']['tmp_name'];
-            $backname = rand(111111111, 999999999) . ".jpg";
+            $back_new_part = explode('.', $backDL['name']);
+            $back_dl_extension = end($back_new_part);
+            $backname = rand(111111111, 999999999) . "." . $back_dl_extension;
             $backDL_folder = "uploaded/DrivingLicese/";
             $backDLpath = $backDL_folder . $backname;
 
-            $update_image_query = "UPDATE driving_licese_info SET back_photo_DL = '$backDLpath' WHERE driverId = '$id'";
+            $update_image_query = "UPDATE driving_licese_info SET back_photo_DL = '$backDLpath' WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
             $update_image = mysqli_query($con, $update_image_query);
 
             if ($update_image) {
@@ -88,11 +71,13 @@ if (isset($_POST['driverId'])) {
             $selfiDL = $_FILES['selfiwithDL'];
 
             $selfiwithDL_tmpName = $_FILES['selfiwithDL']['tmp_name'];
-            $selfiname = rand(111111111, 999999999) . ".jpg";
+            $selfi_new_part = explode('.',$selfiwithDL['name']);
+            $selfi_dl_extenstion = end($selfi_new_part);
+            $selfiname = rand(111111111, 999999999) . "." . $selfi_dl_extension;
             $selfiwithDL_folder = "uploaded/DrivingLicese/";
             $selfiDLpath = $selfiwithDL_folder . $selfiname;
 
-            $update_image_query = "UPDATE driving_licese_info SET selfi_with_DL = '$selfiDLpath' WHERE driverId = '$id'";
+            $update_image_query = "UPDATE driving_licese_info SET selfi_with_DL = '$selfiDLpath' WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
             $update_image = mysqli_query($con, $update_image_query);
 
             if ($update_image) {
@@ -109,23 +94,29 @@ if (isset($_POST['driverId'])) {
             $selfiwithDL = $_FILES['selfiwithDL'];
             if (!empty($frontDL) && !empty($backDL) && !empty($selfiwithDL)) {
                 $frontDL_tmpName = $_FILES['frontDL']['tmp_name'];
-                $frontname = rand(111111111, 999999999) . ".jpg";
+                $front_new_part = explode('.', $frontDL['name']);
+                $front_dl_extension = end($front_new_part);
+                $frontname = rand(111111111, 999999999) . "." . $front_dl_extension;
                 $DL_folder = "uploaded/DrivingLicese/";
                 $frontpath = $DL_folder . $frontname;
 
                 $backDL_tmpName = $_FILES['backDL']['tmp_name'];
-                $backname = rand(111111111, 999999999) . ".jpg";
+                $back_new_part = explode('.', $backDL['name']);
+                $back_dl_extension = end($back_new_part);
+                $backname = rand(111111111, 999999999) . "." . $back_dl_extension;
                 $backpath = $DL_folder . $backname;
 
                 $selfiwithDL_tmpName = $_FILES['selfiwithDL']['tmp_name'];
-                $selfiname = rand(111111111, 999999999) . ".jpg";
+                $selfi_new_part = explode('.',$selfiwithDL['name']);
+                $selfi_dl_extenstion = end($selfi_new_part);
+                $selfiname = rand(111111111, 999999999) . "." . $selfi_dl_extension;
                 $selfipath = $DL_folder . $selfiname;
 
                 if (!file_exists($DL_folder)) {
                     mkdir($DL_folder, 0755, true);
                 }
 
-                $insert_query = "INSERT INTO driving_licese_info(driverId,driving_licese_no,expiration_date,front_photo_DL,back_photo_DL,selfi_with_DL)VALUES('$id','$DLnumber','$expirationDate','$frontpath','$backpath','$selfipath')";
+                $insert_query = "INSERT INTO driving_licese_info(driverId,vehicle_type,driving_licese_no,expiration_date,front_photo_DL,back_photo_DL,selfi_with_DL)VALUES('$id','$vehicle_type','$DLnumber','$expirationDate','$frontpath','$backpath','$selfipath')";
                 $insert = mysqli_query($con, $insert_query);
                 if ($insert) {
                     move_uploaded_file($frontDL_tmpName, $frontpath);
@@ -145,4 +136,4 @@ if (isset($_POST['driverId'])) {
     $response['message'] = "ERROR:";
 }
 
-echo json_encode($response);
+echo json_encode($response,JSON_PRETTY_PRINT);

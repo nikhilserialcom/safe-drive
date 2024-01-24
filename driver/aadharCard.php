@@ -3,38 +3,16 @@
 require '../db.php';
 header("content-type:application/json");
 
-// function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
-// {   
-//     global $response,$con;
-
-//     $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE user_id = '$driverId'");
-
-//     if($updateLocation)
-//     {
-//         $response['status'] = "true";
-//         $response['message'] = "update location";
-//     }
-
-// }
-
 if (isset($_POST['driverId'])) {
     $id = $_POST['driverId'];
     $adhaarno = $_POST['adhaarno'];
-    // if(isset($_POST['driverLetitude']) && isset($_POST['driverLongitude']))
-    // {
-    //     $driverLetitude = $_POST['driverLetitude'];
-    //     $driverLogitude = $_POST['driverLongitude'];
-    //     if(!empty($driverLetitude) && !empty($driverLogitude))
-    //     {
-    //         updateDriverLocation($driverLetitude,$driverLogitude,$userId);
-    //     }
-    // }
 
     $check_user_query = "SELECT * FROM adhaarcard WHERE driverId = '$id'";
     $check_user = mysqli_query($con, $check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
-
+           $update_query = "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$id'";
+             $update = mysqli_query($con, $update_query);
 
         if (!empty($adhaarno)) {
             $update_addhar_query = "UPDATE adhaarcard SET adhaar_no = '$adhaarno', status = 'pending' WHERE driverId = '$id'";
@@ -50,7 +28,7 @@ if (isset($_POST['driverId'])) {
                 $front_tmp = $_FILES['frontadhaar']['tmp_name'];
                 $profileNewPart = explode('.', $front['name']);
                 $extension = end($profileNewPart);
-                $frontname = rand(111111111, 999999999) . $extension;
+                $frontname = rand(111111111, 999999999) . "." . $extension;
                 $front_folder = 'uploaded/AdhaarCard/';
                 $frontpath = $front_folder . $frontname;
 
@@ -70,7 +48,7 @@ if (isset($_POST['driverId'])) {
                 $back_tmp = $_FILES['backadhaar']['tmp_name'];
                 $profileNewPart = explode('.', $back['name']);
                 $extension = end($profileNewPart);
-                $backname = rand(111111111, 999999999) . $extension;
+                $backname = rand(111111111, 999999999) . "." . $extension;
                 $back_folder = 'uploaded/AdhaarCard/';
                 $backpath = $back_folder . $backname;
 
@@ -90,7 +68,7 @@ if (isset($_POST['driverId'])) {
                 $selfi_tmp = $_FILES['selfiwithadhaar']['tmp_name'];
                 $profileNewPart = explode('.', $selfi['name']);
                 $extension = end($profileNewPart);
-                $selfiname = rand(111111111, 999999999) . $extension;
+                $selfiname = rand(111111111, 999999999) . "." . $extension;
                 $selfi_folder = 'uploaded/AdhaarCard/';
                 $selfipath = $selfi_folder . $selfiname;
 
@@ -110,18 +88,24 @@ if (isset($_POST['driverId'])) {
             $back = $_FILES['backadhaar'];
             $selfi = $_FILES['selfiwithadhaar'];
             if (!empty($front) && !empty($back) && !empty($selfi)) {
-                $front_tmp = $_FILES['frontadhaar']['tmp_name'];
-                $frontname = rand(111111111, 999999999) . ".jpg";
+              $front_tmp = $_FILES['frontadhaar']['tmp_name'];
+                $front_New_Part = explode('.', $front['name']);
+                $front_extension = end($front_New_Part);
+                $frontname = rand(111111111, 999999999) . "." . $front_extension;
                 $front_folder = 'uploaded/AdhaarCard/';
                 $frontpath = $front_folder . $frontname;
 
                 $back_tmp = $_FILES['backadhaar']['tmp_name'];
-                $backname = rand(111111111, 999999999) . ".jpg";
+                $back_new_part = explode('.',$back['name']);
+                $back_extension = end($back_new_part);
+                $backname = rand(111111111, 999999999) . "." . $back_extension;
                 $back_folder = 'uploaded/AdhaarCard/';
                 $backpath = $back_folder . $backname;
 
                 $selfi_tmp = $_FILES['selfiwithadhaar']['tmp_name'];
-                $selfiname = rand(111111111, 999999999) . ".jpg";
+                $selfi_new_part = explode('.',$selfi['name']);
+                $selfi_extension = end($selfi_new_part);
+                $selfiname = rand(111111111, 999999999) . "." . $selfi_extension;
                 $selfi_folder = 'uploaded/AdhaarCard/';
                 $selfipath = $selfi_folder . $selfiname;
 

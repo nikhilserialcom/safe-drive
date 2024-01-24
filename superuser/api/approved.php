@@ -10,7 +10,7 @@ header("content-type: application/json");
 session_start();
 $data = json_decode(file_get_contents('php://input'),true);
 
-function aadharApprove($driverId,$status)
+function aadharApprove($driverId,$status,$reason)
 {
     global $con;
 
@@ -21,7 +21,7 @@ function aadharApprove($driverId,$status)
     {
         $final_status = ($status == "accept") ? "approved" : "rejected";
 
-        $updateQuery = "UPDATE adhaarcard SET status = '$final_status' WHERE driverId = '$driverId'";
+        $updateQuery = "UPDATE adhaarcard SET status = '$final_status',rejection_reason = '$reason' WHERE driverId = '$driverId'";
         $update = mysqli_query($con,$updateQuery);
         if($update)
         {
@@ -42,18 +42,18 @@ function aadharApprove($driverId,$status)
     return $response;
 }
 
-function licenseapprove($driverId,$status)
+function licenseapprove($driverId,$status,$vehicle_type,$reason)
 {
     global $con;
 
-    $checkUserQuery = "SELECT * FROM driving_licese_info WHERE driverId = '$driverId'";
+    $checkUserQuery = "SELECT * FROM driving_licese_info WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
     $checkUser = mysqli_query($con,$checkUserQuery);
 
     if(mysqli_num_rows($checkUser) > 0)
     {
         $final_status = ($status == "accept") ? "approved" : "rejected";
 
-        $updateQuery = "UPDATE driving_licese_info SET status = '$final_status' WHERE driverId = '$driverId'";
+        $updateQuery = "UPDATE driving_licese_info SET status = '$final_status', rejection_reason = '$reason' WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
         $update = mysqli_query($con,$updateQuery);
         if($update)
         {
@@ -74,7 +74,7 @@ function licenseapprove($driverId,$status)
     return $response;
 }
 
-function policecertificationapproval($driverId,$status)
+function policecertificationapproval($driverId,$status,$reason)
 {
     global $con;
 
@@ -85,7 +85,7 @@ function policecertificationapproval($driverId,$status)
     {
         $final_status = ($status == "accept") ? "approved" : "rejected";
 
-        $updateQuery = "UPDATE police_clearance_certificate SET status = '$final_status' WHERE driverId = '$driverId'";
+        $updateQuery = "UPDATE police_clearance_certificate SET status = '$final_status',rejection_reason = '$reason' WHERE driverId = '$driverId'";
         $update = mysqli_query($con,$updateQuery);
         if($update)
         {
@@ -106,18 +106,18 @@ function policecertificationapproval($driverId,$status)
     return $response;
 }
 
-function insuranceapproval($driverId,$status)
+function insuranceapproval($driverId,$status,$vehicle_type,$reason)
 {
     global $con;
 
-    $checkUserQuery = "SELECT * FROM vehicle_insurance WHERE driverId = '$driverId'";
+    $checkUserQuery = "SELECT * FROM vehicle_insurance WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
     $checkUser = mysqli_query($con,$checkUserQuery);
 
     if(mysqli_num_rows($checkUser) > 0)
     {
         $final_status = ($status == "accept") ? "approved" : "rejected";
 
-        $updateQuery = "UPDATE vehicle_insurance SET status = '$final_status' WHERE driverId = '$driverId'";
+        $updateQuery = "UPDATE vehicle_insurance SET status = '$final_status', rejection_reason = '$reason' WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
         $update = mysqli_query($con,$updateQuery);
         if($update)
         {
@@ -138,18 +138,18 @@ function insuranceapproval($driverId,$status)
     return $response;
 }
 
-function vehicleapproval($driverId,$status)
+function vehicleapproval($driverId,$status,$vehicle_type,$reason)
 {
     global $con;
 
-    $checkUserQuery = "SELECT * FROM vehicleinfo WHERE driverId = '$driverId'";
+    $checkUserQuery = "SELECT * FROM vehicleinfo WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
     $checkUser = mysqli_query($con,$checkUserQuery);
 
     if(mysqli_num_rows($checkUser) > 0)
     {
         $final_status = ($status == "accept") ? "approved" : "rejected";
 
-        $updateQuery = "UPDATE vehicleinfo SET status = '$final_status' WHERE driverId = '$driverId'";
+        $updateQuery = "UPDATE vehicleinfo SET status = '$final_status', rejection_reason = '$reason' WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
         $update = mysqli_query($con,$updateQuery);
         if($update)
         {
@@ -180,32 +180,42 @@ if(!isset($_SESSION['user_email']))
 else
 {
     $driverId = isset($data['driverId']) ? $data['driverId'] : '';
+    $vehicle_type = isset($data['vehicle_type']) ? $data['vehicle_type'] : '';
     $status = isset($data['status']) ? $data['status'] : '';
+    $rejected_resason = isset($data['rejectedReason']) ? $data['rejectedReason'] : '';
     $docType = isset($data['docType']) ? $data['docType'] : '';
-    if($docType == "aadhar")
-    {
-       $response = aadharApprove($driverId,$status);
-    }
-    elseif($docType == "license")
-    {
-        $response = licenseapprove($driverId,$status);
-    }
-    elseif($docType == "police")
-    {
-        $response = policecertificationapproval($driverId,$status);
-    }
-    elseif($docType == "insurance"){
-        $response = insuranceapproval($driverId,$status);
-    }
-    elseif($docType == "vehical"){
-        $response = vehicleapproval($driverId,$status);
-    }
-    else{
-        $response = array(
-            'status_code' => 500,
-            'message' => "ERROR:" . mysqli_error($con)
-        );
-    }
+
+    $response = array(
+        'driverId' => $driverId,
+        'vehicle_type' => $vehicle_type,
+        'reason' => $rejected_resason,
+        'status' => $status,
+        'docType' => $docType,
+    );
+    // if($docType == "aadhar")
+    // {
+    //    $response = aadharApprove($driverId,$status,$rejected_resason);
+    // }
+    // elseif($docType == "license")
+    // {
+    //     $response = licenseapprove($driverId,$status,$vehicle_type,$rejected_resason);
+    // }
+    // elseif($docType == "police")
+    // {
+    //     $response = policecertificationapproval($driverId,$status,$rejected_resason);
+    // }
+    // elseif($docType == "insurance"){
+    //     $response = insuranceapproval($driverId,$status,$vehicle_type,$rejected_resason);
+    // }
+    // elseif($docType == "vehical"){
+    //     $response = vehicleapproval($driverId,$status,$vehicle_type,$rejected_resason);
+    // }
+    // else{
+    //     $response = array(
+    //         'status_code' => 500,
+    //         'message' => "ERROR:" . mysqli_error($con)
+    //     );
+    // }
 }
 
 echo json_encode($response,JSON_PRETTY_PRINT);

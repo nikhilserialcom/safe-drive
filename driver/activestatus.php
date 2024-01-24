@@ -19,12 +19,22 @@ if(mysqli_num_rows($checkDriver) > 0){
         }
         elseif($row['active_status'] == "reject")
         {
-            $arr = json_decode($row['rejection_reason'], true);;
-            $rejectedReason = array();
-            $rejectedReason = is_array($arr) ? array_map(function($reason) {
-                return ["document" => $reason, "reason" => $reason . " detail is not valid"];
-            }, $arr) : [];
+            $arr = json_decode($row['rejection_reason'], true);
+            $vehicle_name = isset($arr['vehicle_type']) ? $arr['vehicle_type'] : '';
+            $rejectedReason = $doc_arr = array();
+            
+            $doc_name = is_array($arr['document_list']) ? $arr['document_list'] : '';
+            foreach($doc_name as $document){
+                $doc_arr[] = [
+                    'document' => $document,
+                    'reason' => $document . " detail is not valid"
+                ];
+            }
 
+            $rejectedReason = array(
+                
+                $vehicle_name => $doc_arr,
+            );
             $response['status'] = "200";
             $response['message'] = "rejected";
             $response['reason'] = $rejectedReason;
