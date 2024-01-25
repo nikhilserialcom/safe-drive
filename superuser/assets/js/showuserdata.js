@@ -517,35 +517,38 @@ const insurance_reject_btn = document.querySelector('.insurance_reject_btn');
 const vehicel_approve_btn = document.querySelector('.vehicel_approve_btn');
 const vehicel_reject_btn = document.querySelector('.vehicel_reject_btn');
 
-let document_name;
-const accept_modal = document.querySelector('.accept_modal');
+let document_name,reason;
 const done_btn = document.querySelector('.done_btn');
 const reject_modal = document.querySelector('.reject_modal');
 const reject_input = document.querySelector('.reject_input');
 
 aadhar_approve_btn.addEventListener('click', () => {
-    approvedData(driverId,'accept', 'aadhar');
+    reason = "";
+    approvedData(driverId,vehicle_name, 'accept', reason, 'aadhar');
     aadhar_approve_btn.parentElement.classList.add('d_none');
 })
 
 license_approve_btn.addEventListener('click', () => {
-    approvedData(driverId,vehicle_name,'accept', 'license');
+    reason = "";
+    approvedData(driverId,vehicle_name,'accept', reason, 'license');
     license_approve_btn.parentElement.classList.add('d_none');
 })
 
 police_approve_btn.addEventListener('click', () => {
-    // approvedData(driverId,'accept', 'police');
-    // police_approve_btn.parentElement.classList.add('d_none');
-    accept_modal.style.display = "block";
+    reason = "";
+    approvedData(driverId,vehicle_name,'accept',reason,'police');
+    police_approve_btn.parentElement.classList.add('d_none');
 })
 
 insurance_approve_btn.addEventListener('click', () => {
-    approvedData(driverId,vehicle_name,'accept', 'insurance');
+    reason = "";
+    approvedData(driverId,vehicle_name,'accept', reason, 'insurance');
     insurance_approve_btn.parentElement.classList.add('d_none');
 })
 
 vehicel_approve_btn.addEventListener('click', () => {
-    approvedData(driverId,vehicle_name,'accept', 'vehical');
+    reason = "";
+    approvedData(driverId,vehicle_name,'accept', reason, 'vehical');
     vehicel_approve_btn.parentElement.classList.add('d_none');
 })
 
@@ -585,13 +588,12 @@ const close_btn = document.querySelector('.close');
 
 const doc_list = document.querySelectorAll('.docu_list input');
 
-const activeDriver = (driver_Id, driver_status, reject_reason) => {
+const activeDriver = (driver_Id, driver_status) => {
     fetch(active_driver_url, {
         method: 'POST',
         body: JSON.stringify({
             driverId: driver_Id,
             driverStatus: driver_status,
-            rejectedReason: reject_reason
         }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -633,7 +635,8 @@ doc_list.forEach(element => {
 
 
 active_driver_btn.addEventListener('click', () => {
-    activeDriver(id, active_driver_btn.textContent);
+    let driver_status = "active";
+    activeDriver(id, driver_status);
 })
 
 // reject_driver_btn.addEventListener('click', () => {

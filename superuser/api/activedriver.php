@@ -12,14 +12,13 @@ session_start();
 function sendmail($email)
 {
     // Create the Transport
-    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465,'ssl'))
-    ->setUsername('1nikhil.serialcominfotech@gmail.com')
-    ->setPassword('yltd eqfs jkld dynd')
-    ;
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+        ->setUsername('1nikhil.serialcominfotech@gmail.com')
+        ->setPassword('yltd eqfs jkld dynd');
 
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
-    
+
     $emailTemplate = '<!DOCTYPE html>
             <html>
             <head>
@@ -49,29 +48,25 @@ function sendmail($email)
             </html>';
     // Create a message
     $message = (new Swift_Message('Wonderful Subject'))
-    ->setFrom(['1nikhil.serialcominfotech@gmail.com' => 'Nikhil Patel'])
-    ->setTo($email)
-    ->setBody($emailTemplate,'text/html');
+        ->setFrom(['1nikhil.serialcominfotech@gmail.com' => 'Nikhil Patel'])
+        ->setTo($email)
+        ->setBody($emailTemplate, 'text/html');
 
     // Send the message
     $mailer->send($message);
-    
 }
 
 function sendPushNotification($driverId)
 {
     global $con;
     $findTokenQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
-    $findToken = mysqli_query($con,$findTokenQuery);
+    $findToken = mysqli_query($con, $findTokenQuery);
 
     $deviceToken = array();
-    if(mysqli_num_rows($findToken) > 0)
-    {
-        while($row = mysqli_fetch_assoc($findToken))
-        {
+    if (mysqli_num_rows($findToken) > 0) {
+        while ($row = mysqli_fetch_assoc($findToken)) {
             $token = $row['deviceToken'];
-            if(!empty($token))
-            {
+            if (!empty($token)) {
                 $deviceToken[] = $token;
                 $serverKey = 'AAAAzpUqMlE:APA91bEXySQ-4aw7rQB6Sloy2WLgyAr4XIEToPk5xo98u-wDOICMTC1ExzysY0SYBBio24gHaFgQlPh0BV3RIL-Ls34Y-d-_v205s79Bxj6MZ-tH2WI7_mlp6jGXtsxB5gNmloxmIIgQ'; // Replace with your Firebase Server Key
                 $data = [
@@ -108,7 +103,7 @@ function sendPushNotification($driverId)
     // return $deviceToken;
 }
 
-$data = json_decode(file_get_contents('php://input'),true);
+$data = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($_SESSION['user_email'])) {
     $response = array(
@@ -119,66 +114,37 @@ if (!isset($_SESSION['user_email'])) {
 
     $driverId = isset($data['driverId']) ? $data['driverId'] : '';
     $driverStatus = isset($data['driverStatus']) ? $data['driverStatus'] : '';
-    $document_type = isset($data['rejectedReason']) ? $data['rejectedReason'] : '';
     // $response = array(
     //     'status_code' => 200,
     //     'userData' => $driverId,
     //     'driver_status' => $driverStatus,
     // );
     $searchQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
-    $search = mysqli_query($con,$searchQuery);
-    if(mysqli_num_rows($search) > 0){
-        while($row = mysqli_fetch_assoc($search))
-        {
-            if($driverStatus == 'rejected')
-            {
-                sendPushNotification($driverId);
-                // sendmail($row['email']);
-                $jsonData = json_encode($document_type);
-                $rejectDriverQuery = "UPDATE user SET active_status = 'reject', rejection_reason = '$jsonData' WHERE driverId = '$driverId'";
-                $rejectDriver = mysqli_query($con,$rejectDriverQuery);
-                if($rejectDriver)
-                {
-                    $response = array(
-                        'status_code' => 200,
-                        'message' => 'reject' 
-                    );
-                }
-                else{
-                    $response = array(
-                        'status_code' => 500,
-                        'message' => "ERROR:" . mysqli_error($con)
-                    );
-                }
-            }else{
-                sendPushNotification($driverId);
-                // sendmail($row['email']);
-                $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = 'active' WHERE driverId = '$driverId'";
-                $activeDriver = mysqli_query($con,$activeDriverQuery);
-                if($activeDriver)
-                {
-                    $response = array(
-                        'status_code' => 200,
-                        'message' => 'active' 
-                    );
-                }
-                else{
-                    $response = array(
-                        'status_code' => 500,
-                        'message' => "ERROR:" . mysqli_error($con)
-                    );
-                }
+    $search = mysqli_query($con, $searchQuery);
+    if (mysqli_num_rows($search) > 0) {
+        while ($row = mysqli_fetch_assoc($search)) {
+            sendPushNotification($driverId);
+            // sendmail($row['email']);
+            $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = 'active' WHERE driverId = '$driverId'";
+            $activeDriver = mysqli_query($con, $activeDriverQuery);
+            if ($activeDriver) {
+                $response = array(
+                    'status_code' => 200,
+                    'message' => 'active'
+                );
+            } else {
+                $response = array(
+                    'status_code' => 500,
+                    'message' => "ERROR:" . mysqli_error($con)
+                );
             }
         }
-    }
-    else
-    {
+    } else {
         $response = array(
             'status_code' => 404,
             'message' => "database empty"
         );
     }
-
 }
 
 

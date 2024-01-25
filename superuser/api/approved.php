@@ -185,37 +185,37 @@ else
     $rejected_resason = isset($data['rejectedReason']) ? $data['rejectedReason'] : '';
     $docType = isset($data['docType']) ? $data['docType'] : '';
 
-    $response = array(
-        'driverId' => $driverId,
-        'vehicle_type' => $vehicle_type,
-        'reason' => $rejected_resason,
-        'status' => $status,
-        'docType' => $docType,
-    );
-    // if($docType == "aadhar")
-    // {
-    //    $response = aadharApprove($driverId,$status,$rejected_resason);
-    // }
-    // elseif($docType == "license")
-    // {
-    //     $response = licenseapprove($driverId,$status,$vehicle_type,$rejected_resason);
-    // }
-    // elseif($docType == "police")
-    // {
-    //     $response = policecertificationapproval($driverId,$status,$rejected_resason);
-    // }
-    // elseif($docType == "insurance"){
-    //     $response = insuranceapproval($driverId,$status,$vehicle_type,$rejected_resason);
-    // }
-    // elseif($docType == "vehical"){
-    //     $response = vehicleapproval($driverId,$status,$vehicle_type,$rejected_resason);
-    // }
-    // else{
-    //     $response = array(
-    //         'status_code' => 500,
-    //         'message' => "ERROR:" . mysqli_error($con)
-    //     );
-    // }
+    // $response = array(
+    //     'driverId' => $driverId,
+    //     'vehicle_type' => $vehicle_type,
+    //     'reason' => $rejected_resason,
+    //     'status' => $status,
+    //     'docType' => $docType,
+    // );
+    if($docType == "aadhar")
+    {
+       $response = aadharApprove($driverId,$status,$rejected_resason);
+    }
+    elseif($docType == "license")
+    {
+        $response = licenseapprove($driverId,$status,$vehicle_type,$rejected_resason);
+    }
+    elseif($docType == "police")
+    {
+        $response = policecertificationapproval($driverId,$status,$rejected_resason);
+    }
+    elseif($docType == "insurance"){
+        $response = insuranceapproval($driverId,$status,$vehicle_type,$rejected_resason);
+    }
+    elseif($docType == "vehical"){
+        $response = vehicleapproval($driverId,$status,$vehicle_type,$rejected_resason);
+    }
+    else{
+        $response = array(
+            'status_code' => 500,
+            'message' => "ERROR:" . mysqli_error($con)
+        );
+    }
 }
 
 echo json_encode($response,JSON_PRETTY_PRINT);

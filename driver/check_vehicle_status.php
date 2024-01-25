@@ -2,21 +2,50 @@
 
 require '../db.php';
 header("content-type:application/json");
-function checkonline($driverId){
+function checkonline($driverId)
+{
     global $con;
     $checkDataQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
-    $result = mysqli_query($con,$checkDataQuery);
+    $result = mysqli_query($con, $checkDataQuery);
     $row = mysqli_fetch_assoc($result);
-    if($row['active_status'] == 'active')
-    {
+    if ($row['active_status'] == 'active') {
         $vehicle_name = $row['vehicleType'];
-    }
-    else{
+    } else {
         $vehicle_name = "false";
     }
 
     return $vehicle_name;
 }
+
+function doc_status_check($driverId)
+{
+    global $con;
+
+    $table_arr = ['adhaarcard', 'police_clearance_certificate'];
+    $doc_arr = array(); // Initialize the array
+
+    foreach ($table_arr as $name) {
+        $check_doc_query = "SELECT * FROM $name WHERE driverId = '$driverId'";
+        $check_doc = mysqli_query($con, $check_doc_query);
+        $row = mysqli_fetch_assoc($check_doc);
+        $row['document_name'] = $name;
+        $doc_arr[] = $row;
+    }
+
+    $final_data = array(); // Initialize the final data array
+
+    foreach ($doc_arr as $data) {
+        if ($data['status'] == "rejected") // Fix the comparison here
+        {
+            $final_data[] = array(
+                $data['document_name'] => $data['rejection_reason'],
+            );
+        }
+    }
+
+    return $final_data;
+}
+
 
 $driverId = $_POST['driverId'];
 
@@ -33,20 +62,18 @@ foreach ($vahicle_type as $vehicle) {
             $row = mysqli_fetch_assoc($result);
             $checkData[$vehicle]['result'] = "true";
             $checkData[$vehicle]['status'] = $row['status'];
-            if($row['status'] == "rejected")
-            {
+            if ($row['status'] == "rejected") {
+                // $final_data = doc_status_check($driverId);
+                // $checkData[$vehicle]['reason'] = $final_data;
                 $checkData[$vehicle]['reason'][] = array(
                     $table => $row['rejection_reason']
                 );
-                break;
             }
-        } 
-        else {
+        } else {
             $checkData[$vehicle]['status'] = "";
             $checkData[$vehicle]['result'] = "false";
         }
     }
-    
 }
 
 $response['status'] = "200";

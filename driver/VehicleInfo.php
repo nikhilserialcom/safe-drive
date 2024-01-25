@@ -14,10 +14,7 @@ if (isset($_POST['driverId'])) {
     $check_user_query = "SELECT * FROM vehicleinfo WHERE driverId = '$id' AND vehicle_type = '$vehicle_type' ";
     $check_user = mysqli_query($con, $check_user_query);
 
-    if (mysqli_num_rows($check_user) > 0) {
-        
-          $update_status = mysqli_query($con, "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$driverId'");
-          
+    if (mysqli_num_rows($check_user) > 0) {  
             if (!empty($vehicle_type) || !empty($Vehicle_brand) || !empty($vehicleModel) || !empty($number_plat) || !empty($transport_year)) {
                 $update_vehicleInfo_query = "UPDATE vehicleinfo SET vehicle_brand_name = '$Vehicle_brand', modal = '$vehicleModel', Number_plate = '$number_plat', transport_year = '$transport_year', status = 'pending' WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
                 $update_vehicleInfo = mysqli_query($con, $update_vehicleInfo_query);

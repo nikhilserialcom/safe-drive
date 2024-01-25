@@ -7,18 +7,6 @@
         <img src="assets/img/2653062775.jpg" alt="">
     </div>
 </div>
-<div class="accept_modal">
-    <div class="accept_content">
-        <span class="close">&times;</span>
-        <div class="check_box">
-            <div class="check_img">
-                <img src="assets/img/check.svg" alt="">
-            </div>
-        </div>
-        <p class="text">police clearance certificate is approved</p>
-        <button class="btn" id="next_over">done</button>
-    </div>
-</div>
 <div class="reject_modal">
     <div class="reject_content">
         <span class="close">&times;</span>
@@ -109,7 +97,6 @@
                 </div>
                 <div class="action-btn driver_btn">
                     <button class="bg-label-success active_driver">active</button>
-                    <button class="btn-label-danger reject_driver">rejected</button>
                 </div>
                 <div class="msg_box driver_active">
                     <!-- <span class="alert-success">profile details update successfully !</span> -->

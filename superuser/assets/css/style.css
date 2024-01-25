@@ -1303,7 +1303,7 @@ body.dark {
   background: var(--primary-color);
 }
 
-.reject_modal,.accept_modal {
+.reject_modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -1314,7 +1314,7 @@ body.dark {
   display: none;
 }
 
-.reject_modal .reject_content,.accept_modal .accept_content {
+.reject_modal .reject_content{
   background-color: #f9f9f9;
   margin: 10% auto;
   padding: 20px;
@@ -1369,40 +1369,6 @@ body.dark {
   cursor: pointer;
 }
 
-.accept_modal .accept_content .check_box{
-  width: 80px;
-  height: 80px;
-  margin: 0px auto;
-  /* border: 1px solid #000000; */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #70a363c5;
-}
-
-.accept_modal .accept_content .check_box .check_img{
-  width: 56px;
-  height: 56px;
-  /* border: 1px solid #000000; */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.accept_modal .accept_content .check_box .check_img img{
-  width: 100%;
-  height: 100%;
-}
-
-.accept_modal .accept_content .text{
-  font-size: 15px;
-  font-weight: 700;
-  text-transform: capitalize;
-  text-align: center;
-  margin: 20px 0px;
-}
 
 .popup_image {
   position: fixed;

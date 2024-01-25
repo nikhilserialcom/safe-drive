@@ -14,8 +14,6 @@ if (isset($_POST['driverId'])) {
     $check_user = mysqli_query($con, $check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
-        $update_query = "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$driverId'";
-        $update = mysqli_query($con, $update_query);
         if (isset($_POST['DLnumber']) || isset($_POST['expirationDate'])) {
             if (!empty($vehicle_type) || !empty($DLnumber) || !empty($expirationDate)) {
                 $update_Licese_Query = "UPDATE driving_licese_info SET vehicle_type = '$vehicle_type', driving_licese_no = '$DLnumber', expiration_date = '$expirationDate', status = 'pending' WHERE driverId = '$id' AND vehicle_type = '$vehicle_type'";
