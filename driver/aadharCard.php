@@ -11,6 +11,7 @@ if (isset($_POST['driverId'])) {
     $check_user = mysqli_query($con, $check_user_query);
 
     if (mysqli_num_rows($check_user) > 0) {
+        $update_status = mysqli_query($con,"UPDATE adhaarcard SET status = 'pending' WHERE driverId = '$id'");
         if (!empty($adhaarno)) {
             $update_addhar_query = "UPDATE adhaarcard SET adhaar_no = '$adhaarno', status = 'pending' WHERE driverId = '$id'";
             $update_addhar = mysqli_query($con, $update_addhar_query);

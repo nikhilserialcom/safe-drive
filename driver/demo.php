@@ -1,88 +1,79 @@
 <?php
 
 require '../db.php';
+header("content-type:application/json");
 
-header("content-type: application/json");
-
-session_start();
-function vehicle_insurance($userId)
+function doc_status_check($driverId)
 {
     global $con;
-    $checkUserQuery = "SELECT * FROM vehicle_insurance WHERE driverId = '$userId'";
-    $checkUser = mysqli_query($con, $checkUserQuery);
-    $insurance_data = array();
-    if (mysqli_num_rows($checkUser) > 0) {
-        while($row = mysqli_fetch_assoc($checkUser))
+
+    $table_arr = ['adhaarcard', 'police_clearance_certificate'];
+    $doc_arr = array(); // Initialize the array
+
+    foreach ($table_arr as $name) {
+        $check_doc_query = "SELECT * FROM $name WHERE driverId = '$driverId'";
+        $check_doc = mysqli_query($con, $check_doc_query);
+        $row = mysqli_fetch_assoc($check_doc);
+        $row['document_name'] = $name;
+        $doc_arr[] = $row;
+    }
+
+    $final_data = array(); // Initialize the final data array
+
+    foreach ($doc_arr as $data) {
+        if ($data['status'] == "rejected") // Fix the comparison here
         {
-            $row['document_name'] = "insurance";
-            $insurance_data[] = $row;
-        }
-    } 
-
-    return $insurance_data;
-}
-
-function driving_licese($userId)
-{
-    global $con;
-    $checkUserQuery = "SELECT * FROM driving_licese_info WHERE driverId = '$userId'";
-    $checkUser = mysqli_query($con, $checkUserQuery);
-    $licese_data = array();
-    if (mysqli_num_rows($checkUser) > 0) {
-        while($row = mysqli_fetch_assoc($checkUser))
-        {
-            $row['document_name'] = "license";
-            $licese_data[] = $row;
-        }
-    } 
-
-    return $licese_data;
-}
-
-function vehicleinfo($userId)
-{
-    global $con;
-    $checkUserQuery = "SELECT * FROM vehicleinfo WHERE driverId = '$userId'";
-    $checkUser = mysqli_query($con, $checkUserQuery);
-    $vehicle_data = array();
-    if (mysqli_num_rows($checkUser) > 0) {
-        while($row = mysqli_fetch_assoc($checkUser))
-        {
-            $row['document_name'] = "vehicle";
-            $vehicle_data[] = $row;
-        }
-    } 
-
-    return $vehicle_data;
-}
-
-$userId = isset($_POST['driverId']) ? $_POST['driverId'] : '';
-$insurance_doc_data = vehicle_insurance($userId);
-$licese_data = driving_licese($userId);
-$vehicleinfo = vehicleinfo($userId);
-
-$arr_data = array($vehicleinfo,$licese_data,$insurance_doc_data);
-
-$final_arr = array();
-foreach($arr_data as $data)
-{
-    foreach ($data as $row) {
-        $vehicle_name = $row['vehicle_type'];
-        $final_arr[$vehicle_name][$row['document_name']] = $row['status'];
-        if($final_arr[$vehicle_name][$row['document_name']] == "approved")
-        {
-            $counter[$vehicle_name] = $counter[$vehicle_name] + 1;
-        }
-        else{
-            $counter[$vehicle_name] = 0;
+            $final_data[] = array(
+                $data['document_name'] => $data['rejection_reason'],
+            );
         }
     }
+
+    return $final_data;
 }
 
+$driverId = $_POST['driverId'];
 
-$response = array(
-    'status' => "200",
-    'final_data' => $counter
-);
+$vahicle_type = ['bike', 'auto', 'car', 'tempo'];
+$table_name = ['driving_licese_info', 'vehicleinfo', 'vehicle_insurance'];
 
-echo json_encode($response,JSON_PRETTY_PRINT);
+$checkData = $table_status = array();
+foreach ($vahicle_type as $vehicle) {
+    $count = 0;
+    foreach ($table_name as $table) {
+        $checkDataQuery = "SELECT * FROM $table WHERE driverId = '$driverId' AND vehicle_type = '$vehicle'";
+        $result = mysqli_query($con, $checkDataQuery);
+        if (mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $checkData[$vehicle]['result'] = "true";
+            $table_status[$vehicle][$table] = $row['status'];
+
+            if ($table_status[$vehicle][$table] == "approved") {
+                $count++;
+            } elseif ($table_status[$vehicle][$table] == "rejected") {
+                $count = 1;
+                $checkData[$vehicle]['reason'][] =array( 
+                    $table => $row['rejection_reason']
+                );
+            }
+        } else {
+            $checkData[$vehicle]['status'] = "";
+            $checkData[$vehicle]['result'] = "false";
+        }
+    }
+    if ($count == count($table_name)) {
+        $allApproved = "approved";
+    } elseif ($count == 1) {
+        $allApproved = "rejected";
+    } else {
+        $allApproved = "";
+    }
+
+    $checkData[$vehicle]['status'] = $allApproved;
+}
+
+$response['status'] = "200";
+$response['comman_document'] = doc_status_check($driverId);
+$response['table'] = $checkData;
+
+echo json_encode($response, JSON_PRETTY_PRINT);

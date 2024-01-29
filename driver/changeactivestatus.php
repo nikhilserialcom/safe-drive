@@ -25,27 +25,13 @@ function update_status_vehicle($driverId,$vehicle_type){
 }
 
 $driverId = isset($_POST['driverId']) ? $_POST['driverId'] : '';
+$doc_arr = isset($_POST['document_name']) ? $_POST['document_name'] : '';
 $vehicle_type = isset($_POST['vehicle_type']) ? $_POST['vehicle_type'] :'';
 
-$checkDriverQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
-$checkDriver = mysqli_query($con, $checkDriverQuery);
-
-if (mysqli_num_rows($checkDriver) > 0) {
-
-    $update_query = "UPDATE user SET active_status = 'waiting',driverstatus = 'offline',rejection_reason = '' WHERE driverId='$driverId'";
-    $update = mysqli_query($con, $update_query);
-    $update_status = update_status_vehicle($driverId,$vehicle_type);
-    if ($update) {
-        $response['status'] = "200";
-        $response['update_status'] = $update_status;
-        $response['message'] = "status updatede";
-    } else {
-        $response['status'] = "400";
-        $response['message'] = 'ERROR:';
-    }
-} else {
-    $response['status'] = "404";
-    $response['message'] = "database empty";
+foreach($doc_arr as $table_name)
+{
+    // $update_status_query = "update"
 }
+
 
 echo json_encode($response, JSON_PRETTY_PRINT);

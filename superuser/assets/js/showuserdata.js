@@ -84,7 +84,6 @@ const checkdocument = (driver_Id,vehicle_name) => {
                 }
 
                 if (table_name.adhaarcard == "approved") {
-                    console.log('hello');
                     aadhar_btn.classList.remove('action-btn');
                     aadhar_btn.classList.add('empty');
                     aadhar_msg_box.style.display = 'block';
@@ -563,12 +562,12 @@ license_reject_btn.addEventListener('click', () => {
 })
 
 police_reject_btn.addEventListener('click', () => {
-    document_name = 'license';
+    document_name = 'police';
     reject_modal.style.display = 'block';
 })
 
 insurance_reject_btn.addEventListener('click', () => {
-    document_name = 'insurence';
+    document_name = 'insurance';
     reject_modal.style.display = 'block';
 })
 vehicel_reject_btn.addEventListener('click', () => {
