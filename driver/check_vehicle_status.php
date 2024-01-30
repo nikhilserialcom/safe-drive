@@ -21,36 +21,24 @@ function doc_status_check($driverId)
 {
     global $con;
 
-    $table_arr = ['adhaarcard', 'police_clearance_certificate'];
     $doc_arr = array();
+    $check_doc_query = "SELECT * FROM adhaarcard WHERE driverId = '$driverId'";
+    $check_doc = mysqli_query($con, $check_doc_query);
 
-    foreach ($table_arr as $name) {
-        $check_doc_query = "SELECT * FROM $name WHERE driverId = '$driverId'";
-        $check_doc = mysqli_query($con, $check_doc_query);
+    if (mysqli_num_rows($check_doc) > 0) {
         $row = mysqli_fetch_assoc($check_doc);
-        $row['document_name'] = $name;
-        $doc_arr[] = $row;
-    }
-
-    $final_data = array();
-
-    foreach ($doc_arr as $data) {
-        if ($data['status'] == "rejected") {
-            if ($data['document_name'] == 'adhaarcard') {
-                $document_name = "addhaar card";
-            } elseif ($data['document_name'] == 'police_clearance_certificate') {
-                $document_name = "police clearance certificate";
-            } else {
-                $document_name = "";
-            }
-            $final_data[] = array(
-                'document' => $document_name,
-                'reason' => $data['rejection_reason'],
-            );
+        $doc_arr['result'] = "true";
+        $doc_arr['status'] = $row['status'];
+        if ($row['status'] == 'rejetced') {
+            $doc_arr['reason'] = $row['rejection_reason'];
         }
+    } else {
+        $doc_arr = array(
+            'result' => "false",
+            'status' => ""
+        );
     }
-
-    return $final_data;
+    return $doc_arr;
 }
 
 $driverId = $_POST['driverId'];
@@ -66,7 +54,7 @@ foreach ($vahicle_type as $vehicle) {
             $document_name = "driving licese info";
         } elseif ($table == 'vehicleinfo') {
             $document_name = "vehicle info";
-        }  elseif ($table == 'vehicle_insurance') {
+        } elseif ($table == 'vehicle_insurance') {
             $document_name = "vehicle insurance";
         } else {
             $document_name = "";
@@ -104,6 +92,7 @@ foreach ($vahicle_type as $vehicle) {
 }
 
 $response['status'] = "200";
+// $response['data'] = $table_status;
 $response['comman_document'] = doc_status_check($driverId);
 $response['current_vehicle'] = checkonline($driverId);
 $response['table'] = $checkData;
