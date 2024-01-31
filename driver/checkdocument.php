@@ -23,7 +23,7 @@ function doc_status_check($driverId)
 {
     global $con;
 
-    $table_arr = ['adhaarcard', 'police_clearance_certificate'];
+    $table_arr = ['adhaarcard','police_clearance_certificate'];
     $doc_arr = array();
 
     foreach ($table_arr as $name) {

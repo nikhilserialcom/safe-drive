@@ -146,7 +146,7 @@ foreach($doc_arr as $table_name){
 
 }
 
-if($adhaar_card_data == "ture" || $policae_certificate_data == "true" || $driving_license_data == "true" || $vehicle_info_data == "true" || $vehicle_insurance == "true")
+if($adhaar_card_data == "true" || $policae_certificate_data == "true" || $driving_license_data == "true" || $vehicle_info_data == "true" || $vehicle_insurance == "true")
 {
     $response = array(
         'status' => "200",
