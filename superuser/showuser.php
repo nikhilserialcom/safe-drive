@@ -97,6 +97,7 @@
                 </div>
                 <div class="action-btn driver_btn">
                     <button class="bg-label-success active_driver">active</button>
+                    <button class="btn-label-danger reject_driver">rejected</button>
                 </div>
                 <div class="msg_box driver_active">
                     <!-- <span class="alert-success">profile details update successfully !</span> -->

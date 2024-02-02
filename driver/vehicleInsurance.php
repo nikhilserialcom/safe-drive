@@ -13,6 +13,7 @@ if (isset($_POST['driverId'])) {
     $response = array();
 
     if (mysqli_num_rows($check_user) > 0) {
+        $row = mysqli_fetch_assoc($check_user);
         if (isset($_FILES['vehicleInsurance']) && !empty($_FILES['vehicleInsurance']['tmp_name'])) {
             $vehicleInsurance = $_FILES['vehicleInsurance'];
 
@@ -24,15 +25,18 @@ if (isset($_POST['driverId'])) {
             $vehicleInsurancePath = $vehicleInsuranceFolder . $vehicleInsuranceName;
             $targetFileType = strtolower(pathinfo($vehicleInsurance['name'], PATHINFO_EXTENSION));
 
-
-            if (move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath)) {
-                $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath', status = 'pending', rejection_reason = '' WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
-                $update = mysqli_query($con, $update_query);
-                if ($update) {
-                    $response['status'] = "200";
-                    $response['message'] = "Record UPdated";
-                }
-            }
+            move_uploaded_file($vehicleInsuranceTmpName, $vehicleInsurancePath); 
+            $final_status = "pending";  
+        }
+        else{
+            $final_status = $row['status'];
+            $vehicleInsurancePath = $row['vehicle_insurance'];
+        }
+        $update_query = "UPDATE vehicle_insurance SET vehicle_insurance = '$vehicleInsurancePath', status = '$final_status', rejection_reason = '' WHERE driverId = '$driverId' AND vehicle_type = '$vehicle_type'";
+        $update = mysqli_query($con, $update_query);
+        if ($update) {
+            $response['status'] = "200";
+            $response['message'] = "Record Updated";
         }
     } else {
         if (isset($_FILES['vehicleInsurance']) && !empty($_FILES['vehicleInsurance']['tmp_name'])) {

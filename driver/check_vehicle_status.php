@@ -116,27 +116,17 @@ function doc_status_check($driverId)
     $count = 0;
     foreach ($status as $data) {
         if ($data == "approved") {
-            $count++;
+            $count = "approved";
         } elseif ($data == "rejected") {
-            $count = 1;
-            break;
-        } elseif ($data == "waiting") {
-            $count = 3;
-            break;
-        } elseif ($data == "pending") {
-            $count = 4;
+            $count = "rejected";
             break;
         }
     }
 
-    if($count == 2){
+    if($count == "approved"){
         $final_status = "approved";
-    }elseif($count == 1){
-        $final_status = "rejetced";
-    }elseif($count == 3){
-        $final_status = "waiting";
-    }elseif($count == 4){
-        $final_status = "pending";
+    }elseif($count == "rejected"){
+        $final_status = "rejected";
     }else{
         $final_status = "";
     }
@@ -188,12 +178,10 @@ foreach ($vahicle_type as $vehicle) {
     $final_status = check_all_vehicle($table_status);
     foreach ($final_status as $vehicleName => $doc_status) {
         if ($vehicleName == $vehicle) {
-            if ($doc_status == 3) {
+            if ($doc_status == "approved") {
                 $checkData[$vehicle]['status'] = "approved";
-            } elseif ($doc_status == 2) {
+            } elseif ($doc_status == "rejetced") {
                 $checkData[$vehicle]['status'] = "rejected";
-            } elseif ($doc_status == 4) {
-                $checkData[$vehicle]['status'] = "waiting";
             }
         } else {
             $checkData[$vehicle]['status'] = "";

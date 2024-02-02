@@ -56,7 +56,7 @@ function sendmail($email)
     $mailer->send($message);
 }
 
-function sendPushNotification($driverId)
+function sendPushNotification($driverId,$doc_status)
 {
     global $con;
     $findTokenQuery = "SELECT * FROM user WHERE driverId = '$driverId'";
@@ -73,8 +73,7 @@ function sendPushNotification($driverId)
                     'to' => $token, // The recipient's FCM token
                     'notification' => [
                         'title' => 'Safe Drive',
-                        'body' => 'your document are approved',
-                        // 'sound' => '21.mp3',
+                        'body' => 'your document are ' . $doc_status,
                     ],
                     'data' => [
                         'screen' => "driver status"
@@ -123,14 +122,22 @@ if (!isset($_SESSION['user_email'])) {
     $search = mysqli_query($con, $searchQuery);
     if (mysqli_num_rows($search) > 0) {
         while ($row = mysqli_fetch_assoc($search)) {
-            sendPushNotification($driverId);
+            if($driverStatus == "active"){
+                $final_status = "online";
+                $doc_status = "approved";
+            }
+            else{
+                $final_status = "offline";
+                $doc_status = "rejected";
+            }
+            sendPushNotification($driverId,$doc_status);
             // sendmail($row['email']);
-            $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = 'active' WHERE driverId = '$driverId'";
+            $activeDriverQuery = "UPDATE user SET driverstatus = 'online' , active_status = '$driverStatus' WHERE driverId = '$driverId'";
             $activeDriver = mysqli_query($con, $activeDriverQuery);
             if ($activeDriver) {
                 $response = array(
                     'status_code' => 200,
-                    'message' => 'active'
+                    'message' => $driverStatus
                 );
             } else {
                 $response = array(

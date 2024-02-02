@@ -3,37 +3,16 @@
 require '../db.php';
 header("content-type:application/json");
 
-// function updateDriverLocation($driverLetitude,$driverLogitude,$driverId)
-// {   
-//     global $response,$con;
-
-//     $updateLocation = mysqli_query($con,"UPDATE user SET driverLetitude = '$driverLetitude',driverLongitude = '$driverLogitude' WHERE user_id = '$driverId'");
-
-//     if($updateLocation)
-//     {
-//         $response['status'] = "true";
-//         $response['message'] = "update location";
-//     }
-
-// }
-
 if (isset($_POST['driverId'])) {
     $id = $_POST['driverId'];
-    // if(isset($_POST['driverLetitude']) && isset($_POST['driverLongitude']))
-    // {
-    // $driverLetitude = $_POST['driverLetitude'];
-    // $driverLogitude = $_POST['driverLongitude'];
-    // if(!empty($driverLetitude) && !empty($driverLogitude))
-    // {
-    //     updateDriverLocation($driverLetitude,$driverLogitude,$userId);
-    // }
-    // }
+
     $check_user_query = "SELECT * FROM police_clearance_certificate WHERE driverId = '$id'";
     $check_user = mysqli_query($con, $check_user_query);
 
     $response = array();
 
     if (mysqli_num_rows($check_user) > 0) {
+        $row = mysqli_fetch_assoc($check_user);
         if (isset($_FILES['policeCertificate']) && !empty($_FILES['policeCertificate']['tmp_name'])) {
             $policeCertificate = $_FILES['policeCertificate'];
 
@@ -45,20 +24,20 @@ if (isset($_POST['driverId'])) {
             $policeCertificatePath = $policeCertificateFolder . $policeCertificateName;
             $targetFileType = strtolower(pathinfo($policeCertificate['name'], PATHINFO_EXTENSION));
 
-
-            if (move_uploaded_file($policeCertificateTmpName, $policeCertificatePath)) {
-                $update_query = "UPDATE police_clearance_certificate SET Police_clearance_certificate = '$policeCertificatePath', status = 'pending' WHERE driverId = '$id'";
-                $update = mysqli_query($con, $update_query);
-                if ($update) {
-                    $response['status'] = "200";
-                    $response['message'] = "Record UPdated";
-                }
-            }
+            move_uploaded_file($policeCertificateTmpName, $policeCertificatePath);
+            $final_status = "pending";
+            $rejection_reason = "";
         }
-        else
-        {
-            $response['error'] = "404";
-            $response['message'] = "No file was uploaded.";
+        else{
+            $final_status = $row['status'];
+            $rejection_reason = $row['rejection_reason'];
+            $policeCertificatePath = $row['Police_clearance_certificate'];
+        }
+        $update_query = "UPDATE police_clearance_certificate SET Police_clearance_certificate = '$policeCertificatePath', status = '$final_status', rejection_reason = '$rejection_reason' WHERE driverId = '$id'";
+        $update = mysqli_query($con, $update_query);
+        if ($update) {
+            $response['status'] = "200";
+            $response['message'] = "Record UPdated";
         }
     } else {
         if (isset($_FILES['policeCertificate']) && !empty($_FILES['policeCertificate']['tmp_name'])) {

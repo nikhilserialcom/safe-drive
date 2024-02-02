@@ -45,7 +45,7 @@ const areAllDatabaseEmpty = (obj) => {
     }
 }
 
-const checkdocument = (driver_Id,vehicle_name) => {
+const checkdocument = (driver_Id, vehicle_name) => {
     fetch(checkdocument_url, {
         method: 'POST',
         body: JSON.stringify({
@@ -136,13 +136,13 @@ const checkdocument = (driver_Id,vehicle_name) => {
                     police_msg_box.innerHTML = `<span class="alert-danger">rejected</span>`;
                 }
 
-                if(table_name.vehicle_insurance == "approved"){
+                if (table_name.vehicle_insurance == "approved") {
                     insurance_btn.classList.remove('action-btn');
                     insurance_btn.classList.add('empty');
                     insurance_msg_box.style.display = 'block';
                     insurance_msg_box.innerHTML = `<span class="alert-success">approved</span>`;
                 }
-                else if(table_name.vehicle_insurance == "rejected") {
+                else if (table_name.vehicle_insurance == "rejected") {
                     insurance_btn.classList.remove('action-btn');
                     insurance_btn.classList.add('empty');
                     insurance_msg_box.style.display = 'block';
@@ -152,9 +152,9 @@ const checkdocument = (driver_Id,vehicle_name) => {
         })
 }
 
-checkdocument(id,vehicle_name);
+checkdocument(id, vehicle_name);
 
-const driverData = (id,vehicle_name) => {
+const driverData = (id, vehicle_name) => {
     fetch(alldriverdata_url, {
         method: 'POST',
         body: JSON.stringify({
@@ -216,10 +216,10 @@ const driverData = (id,vehicle_name) => {
                     </li>
                 </ul>
                 `;
-                    // <li>
-                    //     <span>vehicle brand:</span>
-                    //     <span>${driver_data.vehicleBrand}</span>
-                    // </li>
+                // <li>
+                //     <span>vehicle brand:</span>
+                //     <span>${driver_data.vehicleBrand}</span>
+                // </li>
 
                 if (aadhar_data == '') {
                     aadhar_card.innerHTML = `
@@ -352,8 +352,8 @@ const driverData = (id,vehicle_name) => {
                     const rc_front = vehicle_data.frontRC ? `<img src="../driver/${vehicle_data.frontRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const rc_back = vehicle_data.backRC ? `<img src="../driver/${vehicle_data.backRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
                     const rc_selfy = vehicle_data.selfiwithRC ? `<img src="../driver/${vehicle_data.selfiwithRC}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                    const front_parmit = vehicle_data.frontParmit ?`<img src="../driver/${vehicle_data.frontParmit}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
-                    const back_parmit = vehicle_data.backParmit ?`<img src="../driver/${vehicle_data.backParmit}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const front_parmit = vehicle_data.frontParmit ? `<img src="../driver/${vehicle_data.frontParmit}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
+                    const back_parmit = vehicle_data.backParmit ? `<img src="../driver/${vehicle_data.backParmit}" alt="">` : `<img src="assets/img/aadharcard1.png" alt="">`
 
                     vehicle_info.innerHTML = `
                         <div class="info_header">
@@ -447,12 +447,12 @@ const driverData = (id,vehicle_name) => {
         })
 }
 
-driverData(id,vehicle_name);
+driverData(id, vehicle_name);
 
 close_popup_btn.addEventListener('click', () => {
     popup_image.style.display = 'none';
 })
-const approvedData = (driver_Id,vehicleType, action_type,reason, doc_type) => {
+const approvedData = (driver_Id, vehicleType, action_type, reason, doc_type) => {
     fetch(approved_url, {
         method: 'POST',
         body: JSON.stringify({
@@ -516,38 +516,38 @@ const insurance_reject_btn = document.querySelector('.insurance_reject_btn');
 const vehicel_approve_btn = document.querySelector('.vehicel_approve_btn');
 const vehicel_reject_btn = document.querySelector('.vehicel_reject_btn');
 
-let document_name,reason;
+let document_name, reason;
 const done_btn = document.querySelector('.done_btn');
 const reject_modal = document.querySelector('.reject_modal');
 const reject_input = document.querySelector('.reject_input');
 
 aadhar_approve_btn.addEventListener('click', () => {
     reason = "";
-    approvedData(driverId,vehicle_name, 'accept', reason, 'aadhar');
+    approvedData(driverId, vehicle_name, 'accept', reason, 'aadhar');
     aadhar_approve_btn.parentElement.classList.add('d_none');
 })
 
 license_approve_btn.addEventListener('click', () => {
     reason = "";
-    approvedData(driverId,vehicle_name,'accept', reason, 'license');
+    approvedData(driverId, vehicle_name, 'accept', reason, 'license');
     license_approve_btn.parentElement.classList.add('d_none');
 })
 
 police_approve_btn.addEventListener('click', () => {
     reason = "";
-    approvedData(driverId,vehicle_name,'accept',reason,'police');
+    approvedData(driverId, vehicle_name, 'accept', reason, 'police');
     police_approve_btn.parentElement.classList.add('d_none');
 })
 
 insurance_approve_btn.addEventListener('click', () => {
     reason = "";
-    approvedData(driverId,vehicle_name,'accept', reason, 'insurance');
+    approvedData(driverId, vehicle_name, 'accept', reason, 'insurance');
     insurance_approve_btn.parentElement.classList.add('d_none');
 })
 
 vehicel_approve_btn.addEventListener('click', () => {
     reason = "";
-    approvedData(driverId,vehicle_name,'accept', reason, 'vehical');
+    approvedData(driverId, vehicle_name, 'accept', reason, 'vehical');
     vehicel_approve_btn.parentElement.classList.add('d_none');
 })
 
@@ -576,7 +576,7 @@ vehicel_reject_btn.addEventListener('click', () => {
 })
 
 done_btn.addEventListener('click', () => {
-    approvedData(driverId,vehicle_name,'reject',reject_input.value,document_name);
+    approvedData(driverId, vehicle_name, 'reject', reject_input.value, document_name);
     reject_modal.style.display = 'none';
 })
 
@@ -638,15 +638,10 @@ active_driver_btn.addEventListener('click', () => {
     activeDriver(id, driver_status);
 })
 
-// reject_driver_btn.addEventListener('click', () => {
-//     reject_modal.style.display = 'block';
-// })
-
-// done_btn.addEventListener('click', () => {
-
-
-//     activeDriver(id, reject_driver_btn.textContent,rejected_reason);
-// })
+reject_driver_btn.addEventListener('click', () => {
+    let driver_status = "reject";
+    activeDriver(id, driver_status);
+})
 
 close_btn.addEventListener('click', () => {
     reject_modal.style.display = 'none';
