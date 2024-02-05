@@ -31,34 +31,35 @@ if(!isset($_SESSION['user_email']))
         'email' => 'your session is expire'
     );
     
-}
-
-$userId = $data['userId'];
-// $response = array(
-//     'status_code' => 200,
-//     'userData' => $userId
-// );
-
-$checkUserQuery = "SELECT * FROM user WHERE driverId = '$userId'";
-$checkUser = mysqli_query($con,$checkUserQuery);
-
-if(mysqli_num_rows($checkUser) > 0)
-{
-    $row = mysqli_fetch_assoc($checkUser);
-    $row['total_vehicle'] = total_vehicle($userId);
-        $response = array(
-            'status_code' => 200,
-            'driverData' => $row
-        );
-}
-else
-{
+}else{
+    $userId = $data['userId'];
+    // $response = array(
+    //     'status_code' => 200,
+    //     'userData' => $userId
+    // );
     
-    $response = array(
-        'status_code' => 404,
-        'message' => 'database empty'
-    );
+    $checkUserQuery = "SELECT * FROM user WHERE driverId = '$userId'";
+    $checkUser = mysqli_query($con,$checkUserQuery);
+    
+    if(mysqli_num_rows($checkUser) > 0)
+    {
+        $row = mysqli_fetch_assoc($checkUser);
+        $row['total_vehicle'] = total_vehicle($userId);
+            $response = array(
+                'status_code' => 200,
+                'driverData' => $row
+            );
+    }
+    else
+    {
+        
+        $response = array(
+            'status_code' => 404,
+            'message' => 'database empty'
+        );
+    }
 }
+
 
 echo json_encode($response,JSON_PRETTY_PRINT);
 ?>

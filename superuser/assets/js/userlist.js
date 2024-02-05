@@ -80,11 +80,15 @@ const done_btn = document.querySelector('.user_modal .user_btn .done_btn');
 
 done_btn.addEventListener('click', () => {
     const vehicle_list = document.querySelector('input[name="vehicle"]:checked');
-    console.log(vehicle_list);
-    if(vehicle_list.value != null)
+    if(vehicle_list != null)
     {
-        window.location.href = 'showuser.php' + `?id=${tmp_driver_id}&vehicle_name=${vehicle_list.value}`;
-        // console.log(vehicle_list.value);
+        if(vehicle_list.value != null)
+        {
+            window.location.href = 'showuser.php' + `?id=${tmp_driver_id}&vehicle_name=${vehicle_list.value}`;
+            // console.log(vehicle_list.value);
+        }else{
+            window.location.href = 'showuser.php' + `?id=${tmp_driver_id}`;
+        }
     }
     else
     {
